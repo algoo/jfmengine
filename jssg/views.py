@@ -50,15 +50,17 @@ class PageView(DetailView):
     model = Page
     template_name = "page.html"
 
-    def get_object(self, queryset: QuerySet[Any] | None = None) -> Model:
-        return self.model.load_page_with_slug(self.kwargs["slug"])
+    def get_object(self, queryset=None) -> Model:
+        print(self.kwargs["slug"])
+        model = self.model.load_page_with_slug(self.kwargs["slug"])
+        return model
 
 
 class IndexView(PageView):
     model = Page
     template_name = "page.html"
 
-    def get_object(self, queryset: QuerySet[Any] | None = None) -> Model:
+    def get_object(self, queryset=None) -> Model:
         self.kwargs["slug"] = "index"
         return super().get_object(queryset)
 

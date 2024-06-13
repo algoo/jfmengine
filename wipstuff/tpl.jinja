@@ -1,0 +1,54 @@
+{% macro SECTION(main_title, desc, extra="bob") %}
+  <section>
+    <h3>{{ main_title }}</h3>
+    <div>{{ desc|safe }}</div>
+    <sub>{{ extra }}</sub>
+  </section>
+{% endmacro %}
+AGAGA
+=====
+{{ title }}
+--
+{{ description }}
+
+{{ SECTION(
+  main_title="CONCLUSION",
+     desc="coucou, <b>monster</b>",
+             extra="bob"
+                ) }}
+
+{% macro WIDGET__SECTION__TESTIMONIAL_LOGOS(logos) %}
+  {% for logo in logos %}
+    {{ logo.name }}: {{ logo.logo_url }}
+  {% endfor %}
+{% endmacro %}
+
+{{ WIDGET__SECTION__TESTIMONIAL_LOGOS((
+  { "name": "oslandia", "logo_url":"https://www.galae.net/assets/img/references/oslandia.png" },
+  { "name": "NARM-PC", "logo_url":"https://www.galae.net/assets/img/references/narm-pc.svg" },
+  { "name": "Domeo conseils", "logo_url": "https://www.galae.net/assets/img/references/domeo-conseils.png" },
+  { "name": "Ethicsys", "logo_url": "https://www.galae.net/assets/img/references/ethicsys.png" },
+  { "name": "pix'n'graph", "logo_url":"https://www.galae.net/assets/img/references/pixngraph.png" }
+))}}
+
+
+{% macro WIDGET__PAGE_BLOCK__H2_WITH_UL__IMAGE_ON_RIGHT(TITLE, IMAGE_URL, CONTENT_ITEMS, CTA_LABEL, CTA_URL) %}
+{{ TITLE }}
+{% endmacro %}
+
+{{ WIDGET__PAGE_BLOCK__H2_WITH_UL__IMAGE_ON_RIGHT(
+    TITLE="
+        Des e-mails <span class='galae-color'>délivrés</span>,
+        conformes aux <span class='galae-color'>standards</span>
+    ",
+    IMAGE_URL="https://www.galae.net/assets/img/undraw_futuristic_interface_re_0cm6.svg",
+    CONTENT_ITEMS=[
+        "Notre plateforme supporte nativement DKIM, SPF et DMARC.",
+        "Vous interagissez avec vos e-mails, carnets d'adresses et agendas via les protocoles standards IMAP, POP3, CalDAV et CardDAV.",
+        "Nous proposons des filtres SIEVE, des alias, une gestion fine des quotas.",
+        "Nous sommes attentifs à la délivérabilité de vos e-mails."
+    ],
+    CTA_LABEL="Découvrir les tarifs",
+    CTA_URL="#pricing",
+
+)}}

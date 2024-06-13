@@ -14,6 +14,8 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 import datetime
+import json
+import typing
 from io import StringIO
 from pathlib import Path
 from typing import Iterator, Mapping, Optional
@@ -44,6 +46,7 @@ class Document:
         self.content = content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
+        self.data = {}
 
     @property
     def content_md(self) -> str:
@@ -54,17 +57,48 @@ class Document:
 
         :return: the rendered document
         """
-        return markdown2.markdown(
-            Template(self.content).render(
-                Context(
-                    {
-                        "posts": sorted(
-                            Post.load_glob(), key=lambda p: p.timestamp, reverse=True
-                        )
-                    }
-                )
-            ),
-            extras=["fenced-code-blocks", "tables"],
+        import re
+        # INFO DA 2024-02-18 - Replace "{{{ }}}" pattern into one-line pattern
+        # this is usefull in order to exploit multi-line includes
+        # {{{ include "block.html" with
+        #     var1 = "some text"
+        #     var2 = "another text"
+        #     var3 = "a standard double-quote
+        #             multiline text
+        #             easy to read"
+        # }}}
+        def convert_case(match_obj):
+            return match_obj.group(2).replace("\n", " ")
+        self.content = re.sub("({{{TO-1-LINE)(((?!TO-1-LINE}}}).)*)(TO-1-LINE}}})", convert_case, self.content, flags=re.DOTALL)
+
+        # INFO - D.A. - Original code is below and is returned a markdown-based processed content
+        # this works only with unindented HTML templates because markdown interprets indentation
+        #
+        # Expected: allow to process both HTML and markdown content types
+        #
+        # return markdown2.markdown(
+        #     Template(self.content).render(
+        #         Context(
+        #             {
+        #                 "posts": sorted(
+        #                     Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+        #                 ),
+        #                 "data": self.data
+        #             }
+        #         )
+        #     ),
+        #     extras=["fenced-code-blocks", "tables"],
+        # )
+
+        return Template(self.content).render(
+            Context(
+                {
+                    "posts": sorted(
+                        Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                    ),
+                    "data": self.data
+                }
+            )
         )
 
     @classmethod
@@ -74,33 +108,60 @@ class Document:
         :param path: Path to the document
         :return: The loaded document
         """
+        _path = path
         metadata = {}
+        data = {}
+        json_data = ""
         content = StringIO()
 
         with path.open() as f:
             # States:
             # 0: search the metadata start block
             # 1: parse the metadata
-            # 2: parse the content
+            # 2: parse the metadata
+            # 3: parse the content
             state = 0
             for line in f:
                 if state == 0:
                     # Search the metadata start block
                     # The metadata start block is expected to be on the first line
-                    if line.rstrip() == "---":
+                    if line.rstrip().startswith("---"):
                         # Metadata start block found
                         state = 1
                     else:
                         # Metadata start block not found, abort
                         break
                 elif state == 1:
-                    if line.rstrip() == "---":
+                    if line.rstrip().startswith("---"):
                         # Metadata end block found
                         state = 2
                     else:
+                        if line.strip() == "":  # ignore empty lines
+                            continue
+                        if line.startswith("#"):  # ignore comment lines
+                            continue
+
                         # Parse a metadata key value pair
-                        key, value = map(str.strip, line.split(":", maxsplit=1))
+                        # key, value = map(str.strip, line.split("", maxsplit=1))
+                        import re
+                        key, value = map(str.strip, re.split("[\s]", line, maxsplit=1))
+                        print("KEY {} : {} (line is: {})".format(key, value, line))
                         metadata[key] = value
+                elif state == 2:
+                    if line.rstrip().startswith("---"):
+                        # data end block found
+                        print("json reading finished: {}".format(json_data))
+                        data = json.loads(json_data)
+                        state = 3
+                    else:
+                        if line.strip() == "":
+                            continue  # remove empty lines
+                        if line.startswith("#"):
+                            continue  # remove comment lines
+
+                        print("json data: append {}".format(line))
+                        json_data += line
+
                 else:
                     # Read the content
                     content.write(line)
@@ -117,8 +178,12 @@ class Document:
             )
 
         metadata["path"] = path
+        metadata["json"] = json_data
+        metadata["data"] = data
 
-        return cls(content=content.getvalue(), **metadata)
+        obj = cls(content=content.getvalue(), **metadata)
+        obj.data = data
+        return obj
 
     @classmethod
     def load_glob(

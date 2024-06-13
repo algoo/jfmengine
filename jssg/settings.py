@@ -143,3 +143,7 @@ if not DEBUG and not VITE_MANIFEST_FILE.exists():
 DJANGO_VITE_PLUGIN = {
     "MANIFEST": VITE_MANIFEST_FILE,
 }
+
+import re
+from django.template import base
+base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)

@@ -1,0 +1,30 @@
+<section id="{{ HTMLID }}" class="testimonials bg-light">
+  <div class="container">
+    <h2 class="mb-5">{{ TITLE }}</h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <p class="lead mb-0">
+          {{ CONTENT|safe }}
+        </p>
+        <p class="lead mb-0 text-center">
+          <img
+                  class="testimonials__priceList__img"
+                  src="{{ MAIN_IMG_URL }}"
+                  alt="{{ MAIN_IMG_ALT }}"
+          />
+        </p>
+        <p class="lead mb-0 text-center">
+          <a href="{{ SECONDARY_CTA_URL }}" target="{{ SECONDARY_CTA_TARGET }}"
+             class="btn btn-link btn-lg">
+            {{ SECONDARY_CTA_LABEL }}
+          </a>
+          <a href="{{ PRIMARY_CTA_URL }}" target="{{ PRIMARY_CTA_TARGET }}"
+             class="btn btn-primary btn-lg">
+            {{ PRIMARY_CTA_LABEL }}
+            <i class="{{ PRIMARY_CTA_ICON }}"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

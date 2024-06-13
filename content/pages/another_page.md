@@ -1,6 +1,6 @@
 ---
-title: Another page
-slug: page2
+title Another page
+slug page2
 ---
 Page 2
 
