@@ -43,4 +43,8 @@ Or, if you prefer docker:
 
 ```shell
 $ docker build -t jssg .
+
+## Others
+
+This repo is a fork of https://github.com/jtremesay/jssg.git for algoo websites use cases.
 ```
