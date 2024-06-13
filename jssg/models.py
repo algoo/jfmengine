@@ -145,12 +145,12 @@ class Document:
                         # key, value = map(str.strip, line.split("", maxsplit=1))
                         import re
                         key, value = map(str.strip, re.split("[\s]", line, maxsplit=1))
-                        print("KEY {} : {} (line is: {})".format(key, value, line))
+                        # FIXME  print("KEY {} : {} (line is: {})".format(key, value, line))
                         metadata[key] = value
                 elif state == 2:
                     if line.rstrip().startswith("---"):
                         # data end block found
-                        print("json reading finished: {}".format(json_data))
+                        # FIXME print("json reading finished: {}".format(json_data))
                         data = json.loads(json_data)
                         state = 3
                     else:
@@ -159,7 +159,7 @@ class Document:
                         if line.startswith("#"):
                             continue  # remove comment lines
 
-                        print("json data: append {}".format(line))
+                        # FIXME print("json data: append {}".format(line))
                         json_data += line
 
                 else:
