@@ -1,0 +1,89 @@
+:root {
+    --galae-dark-blue: #219ebc;
+    --galae-light-blue: #8ecae6;
+    --galae-light-grey: #f9f9f9;
+    --galae-red: #ff6663;
+    --galae-black: #1d1d1b;
+}
+
+a {
+    color: var(--galae-dark-blue);
+}
+a:hover {
+    color: var(--galae-light-blue);
+}
+
+.btn-primary {
+    background-color: var(--galae-dark-blue);
+    border-color: var(--galae-dark-blue);
+}
+.btn-primary:hover {
+    background-color: var(--galae-light-blue);
+    border-color: var(--galae-light-blue);
+}
+
+header.masthead {
+    @media (min-width: 768px) {
+        padding: 6rem;
+    }
+    @media (max-width: 768px) {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+}
+.navbar__logo__image {
+    width: 110px;
+    vertical-align: middle;
+}
+.navbar__logo__label {
+    left: -10px;
+    display: inline;
+    position: relative;
+    color: var(--galae-red);
+}
+.navbar__container__right {
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+}
+.navbar__container__right .languageFlag {
+    width: 20px;
+}
+.masthead__title__galae {
+    color: var(--galae-light-grey);
+}
+.showcase-text li, .testimonials li {
+    list-style-type: square;
+}
+.showcase-text li::marker, .testimonials li::marker {
+    color: var(--galae-dark-blue);
+    font-size: 1.5em;
+}
+.galae-color {
+    color: var(--galae-dark-blue);
+}
+.galae-color-red {
+    color: var(--galae-red);
+}
+.testimonials__priceList__img {
+    margin: 1em 0;
+    object-fit: cover;
+    object-position: 100% 70%;
+}
+
+.img-client-reference {
+    max-height: 2em;
+    margin: 1em 1em;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+
+.help-text {
+    background: var(--bs-highlight-bg);
+}
+
+.text-left {
+    text-align: left;
+}

@@ -11,6 +11,8 @@ Today, it's a django app that can generate a static website with Vite & Typescri
 ```shell
 $ git clone https://github.com/jtremesay/jtremesay.org.git
 $ cd jtremesay.org
+$ python3.9 -m venv env/
+$ source env/bin/activate
 $ direnv allow
 $ npm install
 $ pip install -Ur requirements.txt

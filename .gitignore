@@ -3,6 +3,7 @@ __pycache__/
 
 # Environments
 /.direnv/
+/env/
 
 # Generated site
 /dist/

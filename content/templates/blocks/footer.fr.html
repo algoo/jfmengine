@@ -15,10 +15,10 @@
       <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
         <ul class="list-unstyled mb-0">
           <li class="list-item me-4">
-            <a href="../fr">Accueil</a>
+            <a href="{% url 'index' %}">Accueil</a>
           </li>
           <li class="list-item me-4">
-            <a href="../fr/temoignages-clients.html">Témoignages clients</a>
+            <a href="{% url 'page' 'temoignages-clients' %}">Témoignages clients</a>
           </li>
           <li class="list-item me-4">
             <a href="../assets/docs/grille_tarifaire_galae.pdf" target="_blank">Télécharger la
@@ -42,7 +42,7 @@
             <a href="https://mail.galae.net/" target="_blank">Gestion de mon compte</a>
           </li>
           <li class="list-item me-4">
-            <a href="generateur-enregistrements-dns.html">Générateur d'enregistrements DNS</a>
+            <a href="{% url 'page' 'generateur-enregistrements-dns' %}">Générateur d'enregistrements DNS</a>
           </li>
         </ul>
       </div>

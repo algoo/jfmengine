@@ -1,9 +1,9 @@
 --- METADATA (first) ---
 title   galae - le service e-mail éthique et libre facturé à l'usage
-slug    index
+slug    en-index
 description galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
 language    French
-lang    fr
+lang    en
 # open graph metatada
 og:title        galae - le service e-mail éthique et libre facturé à l'usage
 og:description  galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
@@ -34,11 +34,16 @@ og:locale       fr
         "Nous n'utilisons que des logiciels libres et des protocoles ouverts pour assurer l'interopérabilité."
     ],
     "references": [
-        { "name": "oslandia", "logo_url":"https://www.galae.net/assets/img/references/oslandia.png" },
-        { "name": "NARM-PC", "logo_url":"https://www.galae.net/assets/img/references/narm-pc.svg" },
-        { "name": "Domeo conseils", "logo_url": "https://www.galae.net/assets/img/references/domeo-conseils.png" },
-        { "name": "Ethicsys", "logo_url": "https://www.galae.net/assets/img/references/ethicsys.png" },
-        { "name": "pix'n'graph", "logo_url":"https://www.galae.net/assets/img/references/pixngraph.png" }
+        { "name": "oslandia", "logo_url":"assets/img/references/oslandia.webp" },
+        { "name": "NARM-PC", "logo_url":"assets/img/references/narm-pc.svg" },
+        { "name": "Domeo conseils", "logo_url": "assets/img/references/domeo-conseils.webp" },
+        { "name": "Ethicsys", "logo_url": "assets/img/references/ethicsys.webp" },
+        { "name": "pix'n'graph", "logo_url":"assets/img/references/pixngraph.webp" }
+    ],
+    "testimonials": [
+        { "name": "Dominique Hébert", "fonction": "Directeur du développement Educ'AT", "testimonial": "Je peux créer autant d'adresses email et d'alias que je veux.", "img_url": "assets/img/testimonials/educ-at--dominique-hebert.webp" },
+        { "name": "Mathieu Labonne", "fonction": "Ecohameau du Plessis", "testimonial": "Nous avons été accueillis avec beaucoup d'attention et d'écoute.", "img_url": "assets/img/testimonials/ecohameau-du-plessis--mathieu-labonne.webp" },
+        { "name": "Kévin Guérin", "fonction": "Entrepreneur et conférencier", "testimonial": "J’apprécie particulièrement la souplesse de facturation à l’usage effectif.", "img_url": "assets/img/testimonials/kevin-guerin.webp" }
     ]
 }
 --- BODY (last / third) ---
@@ -56,21 +61,21 @@ TO-1-LINE}}}
         Des e-mails <span class='galae-color'>délivrés</span>,
         conformes aux <span class='galae-color'>standards</span>
     "
-    IMAGE_URL="https://www.galae.net/assets/img/undraw_futuristic_interface_re_0cm6.svg"
+    IMAGE_URL="assets/img/undraw_futuristic_interface_re_0cm6.svg"
     CONTENT_ITEMS=data.items_secu
     CTA_LABEL="Découvrir les tarifs"
     CTA_URL="#pricing"
 %}
 {% include "widgets/page_block_h2_with_ul_content_and_image_left.html" with
     TITLE="Vos données en <span class='galae-color'>sécurité</span>"
-    IMAGE_URL="https://www.galae.net/assets/img/undraw_relaxation_re_ohkx.svg"
+    IMAGE_URL="assets/img/undraw_relaxation_re_ohkx.svg"
     CONTENT_ITEMS=data.items_data
     CTA_LABEL="Découvrir les tarifs"
     CTA_URL="#pricing" 
 %}
 {% include "widgets/page_block_h2_with_ul_content_and_image_right.html" with
     TITLE="Vous êtes <span class='galae-color'>autonomes</span>, accompagnés et souverains."
-    IMAGE_URL="https://www.galae.net/assets/img/undraw_experts_re_i40h.svg"
+    IMAGE_URL="assets/img/undraw_experts_re_i40h.svg"
     CONTENT_ITEMS=data.items_autonomous_sovereign
     CTA_LABEL="Découvrir les tarifs"
     CTA_URL="#pricing"
@@ -83,9 +88,9 @@ TO-1-LINE}}}
     HTMLID="pricing"
     TITLE="Offres et tarifs"
     CONTENT="L'offre galae repose sur les 4 offres suivantes :"
-    MAIN_IMG_URL="https://www.galae.net/assets/img/grille_tarifaire_galae_fr.png"
+    MAIN_IMG_URL="assets/img/grille_tarifaire_galae_fr.png"
     MAIN_IMG_ALT="prix de galae"
-    SECONDARY_CTA_URL="https://www.galae.net/assets/docs/grille_tarifaire_galae.pdf"
+    SECONDARY_CTA_URL="assets/docs/grille_tarifaire_galae.pdf"
     SECONDARY_CTA_TARGET="_blank"
     SECONDARY_CTA_LABEL="Téléchargez la grille tarifaire"
     PRIMARY_CTA_URL="https://pay.galae.net/"
@@ -93,6 +98,9 @@ TO-1-LINE}}}
     PRIMARY_CTA_LABEL="Souscrivez maintenant"
     PRIMARY_CTA_ICON="bi-rocket"
 %}
+
+{% include "widgets/testimonials.html" with PERSONS=data.testimonials %}
+
 {% include "widgets/page_block_h2_with_content_dark_background_no_cta.html" with
     HTMLID=""
     TITLE="Pourquoi j'ai décidé de créer le service <span class=\"galae-color\">galae</span> ?"

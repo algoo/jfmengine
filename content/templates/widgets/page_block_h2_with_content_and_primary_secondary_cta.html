@@ -1,3 +1,5 @@
+{% load static %}
+
 <section id="{{ HTMLID }}" class="testimonials bg-light">
   <div class="container">
     <h2 class="mb-5">{{ TITLE }}</h2>
@@ -9,12 +11,12 @@
         <p class="lead mb-0 text-center">
           <img
                   class="testimonials__priceList__img"
-                  src="{{ MAIN_IMG_URL }}"
+                  src="{% static MAIN_IMG_URL %}"
                   alt="{{ MAIN_IMG_ALT }}"
           />
         </p>
         <p class="lead mb-0 text-center">
-          <a href="{{ SECONDARY_CTA_URL }}" target="{{ SECONDARY_CTA_TARGET }}"
+          <a href="{% static SECONDARY_CTA_URL %}" target="{{ SECONDARY_CTA_TARGET }}"
              class="btn btn-link btn-lg">
             {{ SECONDARY_CTA_LABEL }}
           </a>
