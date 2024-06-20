@@ -2,12 +2,12 @@
 title Temoignages clients
 slug temoignages-clients
 lang fr
+engine jinja2
 ---
 {
 
 }
 --- BODY ---
-{% load static %}
 
 <section class="features-icons text-bg-light light text-center ">
     <div class="container-fluid">
@@ -19,38 +19,38 @@ lang fr
 
         <div class="row" title="ils nous font confiance">
             <div class="col-lg-12">
-                <img class="img-client-reference" src="{% static 'assets/img/references/oslandia.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/narm-pc.svg' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/domeo-conseils.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/ethicsys.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/pixngraph.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/15-09-consulting.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/apeiron-technology.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/arundo-tech.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/association-la-granja.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/association-tostaky.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/astrolabe-cae.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/asvola.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/back2data.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/bag-era.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/cositrex.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/dembell.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/ecohameau-du-plessis.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/educat.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/elycoop.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/ethicsys.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/keyox.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/la-bataille-du-libre.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/le-mignon.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/les-paysans-du-bocage.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/manajet.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/paquerette.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/sempiternelia-humanites-numeriques.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/spirale-coop.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/tele-mille-vaches.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/ville-ayn.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/ville-dullin.webp' %}"/>
-                <img class="img-client-reference" src="{% static 'assets/img/references/fc_home.webp' %}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/oslandia.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/narm-pc.svg')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/domeo-conseils.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/ethicsys.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/pixngraph.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/15-09-consulting.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/apeiron-technology.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/arundo-tech.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/association-la-granja.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/association-tostaky.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/astrolabe-cae.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/asvola.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/back2data.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/bag-era.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/cositrex.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/dembell.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/ecohameau-du-plessis.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/educat.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/elycoop.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/ethicsys.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/keyox.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/la-bataille-du-libre.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/le-mignon.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/les-paysans-du-bocage.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/manajet.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/paquerette.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/sempiternelia-humanites-numeriques.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/spirale-coop.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/tele-mille-vaches.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/ville-ayn.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/ville-dullin.webp')}}"/>
+                <img class="img-client-reference" src="{{ static('assets/img/references/fc_home.webp')}}"/>
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@ lang fr
             <div class="col-md-12 col-sm-12 col-12 col-lg-6 col-xl-4 mb-4">
                 <div class="card testimonial-card">
                     <div class="card-body">
-                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{% static 'assets/img/testimonials/educ-at--dominique-hebert.webp' %}" alt="" />
+                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{{ static('assets/img/testimonials/educ-at--dominique-hebert.webp')}}" alt="" />
                         <h5 class="card-title">Dominique Hébert</h5>
                         <h6 class="card-subtitle mb-2">Directeur du développement de l'association Educ'AT qui oeuvre pour la prévention du harcèlement scolaire</h6>
                         <p class="card-text lead">
@@ -82,7 +82,7 @@ lang fr
             <div class="col-md-12 col-sm-12 col-12 col-lg-6 col-xl-4 mb-4">
                 <div class="card testimonial-card">
                     <div class="card-body">
-                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{% static 'assets/img/testimonials/court-bouillon--lucie-anglade.webp' %}" alt="" />
+                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{{ static('assets/img/testimonials/court-bouillon--lucie-anglade.webp')}}" alt="" />
                         <h5 class="card-title">Lucie ANGLADE</h5>
                         <h6 class="card-subtitle mb-2">CourtBouillon (développement de logiciels libres)</h6>
                         <p class="card-text lead">
@@ -95,7 +95,7 @@ lang fr
                             crowdfunding et nous sommes très satisfaits du service.
                         </p>
                         <p class="card-text lead">
-                            <img class="img-fluid rounded-circle mb-3" style="max-width: 4em; float:right;" src="{% static 'assets/img/testimonials/court-bouillon.webp' %}" alt="" />
+                            <img class="img-fluid rounded-circle mb-3" style="max-width: 4em; float:right;" src="{{ static('assets/img/testimonials/court-bouillon.webp')}}" alt="" />
                             Ça marche, <strong>la communication est claire</strong>
                             et les gens sont sympas&nbsp;!
                         </p>
@@ -105,7 +105,7 @@ lang fr
             <div class="col-md-12 col-sm-12 col-12 col-lg-6 col-xl-4 mb-4">
                 <div class="card testimonial-card">
                     <div class="card-body">
-                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{% static 'assets/img/testimonials/ecohameau-du-plessis--mathieu-labonne.webp' %}" alt="" />
+                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{{ static('assets/img/testimonials/ecohameau-du-plessis--mathieu-labonne.webp')}}" alt="" />
                         <h5 class="card-title">Mathieu Labonne</h5>
                         <h6 class="card-subtitle mb-2">Ecohameau du Plessis (habitat participatif)</h6>
                         <p class="card-text lead">
@@ -134,7 +134,7 @@ lang fr
             <div class="col-md-12 col-sm-12 col-12 col-lg-6 col-xl-4 mb-4">
                 <div class="card testimonial-card">
                     <div class="card-body">
-                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{% static 'assets/img/testimonials/kevin-guerin.webp' %}" alt="" />
+                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{{ static('assets/img/testimonials/kevin-guerin.webp')}}" alt="" />
                         <h5 class="card-title">Kévin Guérin</h5>
                         <h6 class="card-subtitle mb-2">Entrepreneur et conférencier – Expert numérique responsable et low tech.</h6>
                         <p class="card-text lead">
@@ -155,7 +155,7 @@ lang fr
             <div class="col-md-12 col-sm-12 col-12 col-lg-6 col-xl-4 mb-4">
                 <div class="card testimonial-card">
                     <div class="card-body">
-                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{% static 'assets/img/testimonials/f-tech-assistance--frederic-rosain.webp' %}" alt="" />
+                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{{ static('assets/img/testimonials/f-tech-assistance--frederic-rosain.webp')}}" alt="" />
                         <h5 class="card-title">Frédéric ROSAIN</h5>
                         <h6 class="card-subtitle mb-2">Technicien indépendant dans l'emballage industriel.</h6>
                         <p class="card-text lead">

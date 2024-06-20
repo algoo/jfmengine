@@ -22,7 +22,7 @@ from typing import Iterator, Mapping, Optional
 
 import markdown2
 from django.conf import settings
-from django.template import Context, Template
+from django.template import Context, Template, engines
 from django.utils.text import slugify
 
 
@@ -90,16 +90,26 @@ class Document:
         #     extras=["fenced-code-blocks", "tables"],
         # )
 
-        return Template(self.content).render(
-            Context(
+        if "engine" in self.metadata.keys() and self.metadata["engine"] == "jinja2" :
+            return engines["jinja2"].from_string(self.content).render(
                 {
                     "posts": sorted(
                         Post.load_glob(), key=lambda p: p.timestamp, reverse=True
                     ),
-                    "data": self.data
+                    "data":self.data
                 }
             )
-        )
+        else :
+            return Template(self.content).render(
+                Context(
+                    {
+                        "posts": sorted(
+                            Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                        ),
+                        "data": self.data
+                    }
+                )
+            )
 
     @classmethod
     def load(cls, path: Path) -> "Document":

@@ -70,8 +70,16 @@ ROOT_URLCONF = "jssg.urls"
 
 TEMPLATES = [
     {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "DIRS": [JSSG_TEMPLATES_DIR / "jinja"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "jssg.jinja2.environment"
+        },
+    },
+    {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [JSSG_TEMPLATES_DIR],
+        "DIRS": [JSSG_TEMPLATES_DIR / "django"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

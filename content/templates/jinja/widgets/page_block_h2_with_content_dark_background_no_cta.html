@@ -1,0 +1,19 @@
+{% macro page_block_h2_with_content_dark_background_no_cta(
+    HTMLID = "",
+    TITLE = "",
+    CONTENT = ""
+)
+%}
+
+<section id="{{ HTML_ID }}" class="testimonials bg-dark text-white">
+    <div class="container">
+        <h2 class="mb-5">{{ TITLE|safe }}</h2>
+        <div class="row">
+            <div class="col-lg-12">
+                {{ CONTENT|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endmacro %}

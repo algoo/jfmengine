@@ -1,6 +1,7 @@
 ---
 title Another page
 slug page2
+engine jinja2
 ---
 {
 
@@ -8,6 +9,6 @@ slug page2
 
 ---
 
-Page 2
+<h2> Page 2 </h2>
 
-<p>Go to <a href="{% url 'page' 'page1' %}">page 1</a> </p>
+<p>Go to <a href="{{ url('page', args=['page1']) }}">page 1</a> </p>
