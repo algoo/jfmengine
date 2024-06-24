@@ -2,4 +2,4 @@ Django==4.2.9
 django-distill
 django_vite_plugin==3.0.0
 markdown2[all]==2.4.12
-whitenoise==6.6.0
+whitenoise==6.7.0
