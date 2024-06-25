@@ -18,7 +18,7 @@ import json
 import typing
 from io import StringIO
 from pathlib import Path
-from typing import Iterator, Mapping, Optional
+from typing import Iterator, Mapping, Optional, List
 
 import markdown2
 from django.conf import settings
@@ -197,7 +197,7 @@ class Document:
 
     @classmethod
     def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all=False
     ) -> Iterator["Document"]:
         """Load multiple document.
 
@@ -210,8 +210,15 @@ class Document:
 
         if path is None:
             raise RuntimeError("No path and no self.BASE_DIR defined")
-
-        return map(cls.load, path.glob(glob))
+        
+        files = []
+        for p in path :
+            if all :
+                files += (p / dir).rglob(glob)
+            else :
+                files += (p / dir).glob(glob)
+        print(files)
+        return map(cls.load, files)
 
 
 class Page(Document):
@@ -232,16 +239,23 @@ class Page(Document):
         except KeyError:
             self.slug = slugify(self.title)
 
+        p = self.path
+        while (p not in self.BASE_DIR) :
+            p = p.parent
+        self.dir = str(self.path.relative_to(p).parent)
+        if self.dir == '.' :
+            self.dir = ''
+
     @classmethod
-    def load_page_with_slug(cls, slug: str) -> "Page":
-        return next(filter(lambda p: p.slug == slug, cls.load_glob()))
+    def load_page_with_slug(cls, slug: str, dir : str) -> "Page":
+        return next(filter(lambda p: p.slug == slug, cls.load_glob(dir = dir)))
 
     @classmethod
     def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
-        return super().load_glob(path, glob)
+        return super().load_glob(path, dir, glob, all)
 
 
 class Post(Page):
@@ -258,9 +272,16 @@ class Post(Page):
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
 
+        p = self.path
+        while (p not in self.BASE_DIR) :
+            p = p.parent
+        self.dir = str(self.path.relative_to(p).parent)
+        if self.dir == '.' :
+            self.dir = ''
+
     @classmethod
     def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
-        return super().load_glob(path, glob)
+        return super().load_glob(path, dir, glob, all)

@@ -1,0 +1,20 @@
+
+{% macro block(NAME = "", VERSION = "", DEFAULT_NAME = "") %}
+
+    {% if VERSION != "" %}
+        {% include [
+            "blocks/" + NAME + "." + VERSION + ".html",
+            "blocks/" + NAME.split('.')[0] + '.' + VERSION + '.' + NAME.split('.')[-1],
+            "blocks/" + DEFAULT_NAME + ".html", 
+            "blocks/" + DEFAULT_NAME
+        ] %}
+    {% else %}
+        {% include [
+            "blocks/" + NAME + ".html", 
+            "blocks/" + NAME,
+            "blocks/" + DEFAULT_NAME + ".html", 
+            "blocks/" + DEFAULT_NAME
+        ] %}
+    {% endif %}
+
+{% endmacro %}

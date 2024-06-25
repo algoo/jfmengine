@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Any
+from typing import Any, List
 
 from django.contrib.syndication.views import Feed
 from django.db.models.base import Model as Model
@@ -30,7 +30,7 @@ class PostFeedsView(Feed):
     link = ""
     feed_type = Atom1Feed
 
-    def items(self) -> list[Post]:
+    def items(self) -> List[Post]:
         return sorted(Post.load_glob(), key=lambda p: p.timestamp, reverse=True)[:20]
 
     def item_title(self, post: Post) -> str:
@@ -51,8 +51,11 @@ class PageView(DetailView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
+        if "dir" not in self.kwargs.keys() :
+            self.kwargs["dir"] = ""
+        print(self.kwargs["dir"])
         print(self.kwargs["slug"])
-        model = self.model.load_page_with_slug(self.kwargs["slug"])
+        model = self.model.load_page_with_slug(self.kwargs["slug"], self.kwargs["dir"])
         return model
 
 
@@ -61,7 +64,8 @@ class IndexView(PageView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        self.kwargs["slug"] = "fr-index"
+        self.kwargs["dir"] = "en"
+        self.kwargs["slug"] = "en-index"
         return super().get_object(queryset)
 
 

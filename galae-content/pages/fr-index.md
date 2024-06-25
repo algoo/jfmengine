@@ -1,12 +1,13 @@
 --- METADATA (first) ---
-title   galae - ethical and free pay-per-use e-mail
-slug    en-index
+title   galae - le service e-mail éthique et libre facturé à l'usage
+slug    fr-index
 description galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
 language    French
-lang    en
+lang    fr
 engine jinja2
+version .fr
 # open graph metatada
-og:title        galae - ethical and free pay-per-use e-mail
+og:title        galae - le service e-mail éthique et libre facturé à l'usage
 og:description  galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
 og:type         website
 og:site_name    galae.net
@@ -51,15 +52,16 @@ og:locale       fr
 {{ page_block_h2_with_ul_content_and_image_right( 
     TITLE = 
     "
-        <h2>E-mails <span class='galae-color'>delivered</span>, in line with <span class='galae-color'>standards</span></h2>
+        Des e-mails <span class='galae-color'>délivrés</span>,
+        conformes aux <span class='galae-color'>standards</span>
     ",
     IMAGE_URL = "assets/img/undraw_futuristic_interface_re_0cm6.svg",
     CONTENT_ITEMS = 
     [
-        "Our platform natively supports DKIM, SPF and DMARC.",
-        "Interact with your e-mails, address books and calendars via IMAP, POP3, CalDAV and CardDAV standard protocols.",
-        "We offer SIEVE filters, aliases and fine-tuned quota management.",
-        "We pay close attention to the deliverability of your e-mails."
+        "Notre plateforme supporte nativement DKIM, SPF et DMARC.",
+        "Vous interagissez avec vos e-mails, carnets d'adresses et agendas via les protocoles standards IMAP, POP3, CalDAV et CardDAV.",
+        "Nous proposons des filtres SIEVE, des alias, une gestion fine des quotas.",
+        "Nous sommes attentifs à la délivérabilité de vos e-mails."
     ],
     CTA_LABEL = "Découvrir les tarifs",
     CTA_URL = "#pricing"

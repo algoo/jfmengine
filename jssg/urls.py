@@ -12,19 +12,20 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
-from django_distill import distill_path
+from django_distill import distill_path, distill_re_path
 
 from jssg import views
 from jssg.models import Page, Post
 
 
 def get_pages():
-    return ({"slug": p.slug} for p in Page.load_glob())
-
+    return ({"dir":p.dir, "slug": p.slug} for p in Page.load_glob(all = True))
 
 def get_posts():
     return ({"slug": p.slug} for p in Post.load_glob())
 
+# print([p for p in get_pages()])
+# print([p for p in get_p()])
 
 urlpatterns = [
     distill_path(
@@ -32,15 +33,15 @@ urlpatterns = [
     ),
     distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
     distill_path(
-        "pages/<slug:slug>.html",
-        views.PageView.as_view(),
-        name="page",
-        distill_func=get_pages,
-    ),
-    distill_path(
         "posts/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
         distill_func=get_posts,
+    ),
+    distill_re_path(
+        r'^(?P<dir>[a-zA-z0-9-/]*)/(?P<slug>[a-zA-z0-9-/]+).html',
+        views.PageView.as_view(),
+        name="page",
+        distill_func=get_pages,
     ),
 ]

@@ -1,4 +1,4 @@
-{% from "widgets/navbar.html" import navbar %}
+{% from "blocks/block.html" import block %}
 
 
 
@@ -27,43 +27,29 @@
 
 <body>
 
-{% if object.metadata.lang == "fr" %}
-  {{ navbar( 
-    CTA_LABEL="Découvrir les tarifs",
-    CTA_TARGET="",
-    CTA_URL="#pricing",
-    CHANGE_LANG_URL="/pages/en-index.html",
-    CHANGE_LANG_FLAG_URL="assets/img/lang-gb.svg",
-    CHANGE_LANG_ALT="English version" 
-  ) }}
-{% else %}
-  {{ navbar(
-    CTA_LABEL="See pricing",
-    CTA_TARGET="",
-    CTA_URL="#pricing",
-    CHANGE_LANG_URL="/pages/fr-index.html",
-    CHANGE_LANG_FLAG_URL="assets/img/lang-fr.svg",
-    CHANGE_LANG_ALT="Version française" 
-  ) }}
-{% endif %}
+  {{ block(
+    NAME = "navbar",
+    VERSION = object.metadata.lang|default(""),
+    DEFAULT_NAME = "navbar.fr.html"
+) }}
 
 <header>
-  {% if object.metadata.lang == "fr" %}
-    {% include "blocks/header.fr.html" %}
-  {% else %}
-    {% include "blocks/header.en.html" %}
-  {% endif %}
+  {{ block(
+      NAME = "header",
+      VERSION = object.metadata.lang|default(""),
+      DEFAULT_NAME = "header.fr.html"
+  ) }}
 </header>
 
 <main>
   {% block content %}{% endblock %}
 </main>
 
-{% if object.metadata.lang == "fr" %}
-  {% include "blocks/footer.fr.html" %}
-{% else %}
-  {% include "blocks/footer.en.html" %}
-{% endif %}
+{{ block(
+  NAME = "footer",
+  VERSION = object.metadata.lang|default(""),
+  DEFAULT_NAME = "footer.fr.html"
+) }}
 
 <!-- Bootstrap core JS-->
 <script src="{{ static('js/bootstrap.bundle.min.js') }}"></script>

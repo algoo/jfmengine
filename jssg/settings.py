@@ -43,11 +43,13 @@ ALLOWED_HOSTS = ["exemple.org", "localhost"]
 
 
 # JSSG
-JSSG_CONTENT_DIR = BASE_DIR / "content"
-JSSG_PAGES_DIR = JSSG_CONTENT_DIR / "pages"
-JSSG_POSTS_DIR = JSSG_CONTENT_DIR / "posts"
-JSSG_TEMPLATES_DIR = JSSG_CONTENT_DIR / "templates"
-JSSG_STATIC_DIR = JSSG_CONTENT_DIR / "static"
+JSSG_CONTENT_DIR = [BASE_DIR / "content"] + [Path.home() / "algoo" / "jssg" / "galae-content"] + [Path.home() / "algoo" / "jssg" / "common-content"]
+JSSG_PAGES_DIR = [path / "pages" for path in JSSG_CONTENT_DIR]
+JSSG_POSTS_DIR = [path / "posts" for path in JSSG_CONTENT_DIR]
+JSSG_TEMPLATES_DIR = [path / "templates" for path in JSSG_CONTENT_DIR]
+JSSG_STATIC_DIR = [path / "static" for path in JSSG_CONTENT_DIR]
+
+
 
 # Application definition
 
@@ -71,7 +73,7 @@ ROOT_URLCONF = "jssg.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [JSSG_TEMPLATES_DIR / "jinja"],
+        "DIRS": [path / "jinja2" for path in JSSG_TEMPLATES_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "environment": "jssg.jinja2.environment"
@@ -79,7 +81,7 @@ TEMPLATES = [
     },
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [JSSG_TEMPLATES_DIR / "django"],
+        "DIRS": [path / "django" for path in JSSG_TEMPLATES_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -136,7 +138,7 @@ STATIC_URL = "/static/"
 
 DIST_DIR = BASE_DIR / "dist"
 STATIC_ROOT = BASE_DIR / "static"
-STATICFILES_DIRS = [JSSG_STATIC_DIR]
+STATICFILES_DIRS = JSSG_STATIC_DIR
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
