@@ -23,6 +23,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from django.core.management.commands.runserver import Command as runserver
+
 from os import environ
 from pathlib import Path
 
@@ -40,7 +42,8 @@ SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0
 DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 
 ALLOWED_HOSTS = ["exemple.org", "localhost"]
-
+runserver.default_port = '8000'
+runserver.default_addr = '127.0.0.1'
 
 # JSSG
 JSSG_CONTENT_DIR = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]

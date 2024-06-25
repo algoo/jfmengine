@@ -25,6 +25,7 @@ from django.conf import settings
 from django.template import Context, Template, engines
 from django.utils.text import slugify
 
+from django.core.management.commands.runserver import Command as runserver
 
 class Document:
     """A document.
@@ -214,7 +215,7 @@ class Document:
         files = []
         for p in path :
             files += p.glob(glob)
-        print(files)
+        # print(files)
         return map(cls.load, files)
 
 
@@ -246,6 +247,10 @@ class Page(Document):
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, glob)
+    
+    @classmethod
+    def get_pages(_ = ""):
+        return ({"slug": p.slug} for p in Page.load_glob())
 
 
 class Post(Page):
@@ -268,3 +273,17 @@ class Post(Page):
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, glob)
+
+    @classmethod
+    def get_posts(_ = ""):
+        return ({"slug": p.slug} for p in Post.load_glob())
+
+class Sitemap :
+    BASE_DIR = settings.JSSG_PAGES_DIR + settings.JSSG_POSTS_DIR
+    domain = runserver.default_addr + ':' + runserver.default_port
+    pages_slugs = [p["slug"] for p in Page.get_pages()]
+    posts_slugs = [p["slug"] for p in Post.get_posts()]
+
+    # def __init__(self, content) -> None :
+        # print("Pages : " + str([p.path.relative_to(str(settings.JSSG_PAGES_DIR)) for p in Page.load_glob()]))
+        # self.path = [p.path.relative_to(settings.JSSG_PAGES_DIR) for p in Page.load_glob()]

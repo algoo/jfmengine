@@ -30,12 +30,14 @@
   {{ block(
     NAME = "navbar",
     VERSION = object.metadata.lang|default(""),
+    DEFAULT_NAME = "fr/navbar.html"
 ) }}
 
 <header>
   {{ block(
       NAME = "header",
       VERSION = object.metadata.lang|default(""),
+      DEFAULT_NAME = "fr/header.html"
   ) }}
 </header>
 
@@ -46,6 +48,7 @@
 {{ block(
   NAME = "footer",
   VERSION = object.metadata.lang|default(""),
+  DEFAULT_NAME = "fr/footer.html"
 ) }}
 
 <!-- Bootstrap core JS-->
