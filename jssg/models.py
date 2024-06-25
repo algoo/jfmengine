@@ -197,7 +197,7 @@ class Document:
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all=False
+        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
     ) -> Iterator["Document"]:
         """Load multiple document.
 
@@ -213,10 +213,7 @@ class Document:
         
         files = []
         for p in path :
-            if all :
-                files += (p / dir).rglob(glob)
-            else :
-                files += (p / dir).glob(glob)
+            files += p.glob(glob)
         print(files)
         return map(cls.load, files)
 
@@ -239,23 +236,16 @@ class Page(Document):
         except KeyError:
             self.slug = slugify(self.title)
 
-        p = self.path
-        while (p not in self.BASE_DIR) :
-            p = p.parent
-        self.dir = str(self.path.relative_to(p).parent)
-        if self.dir == '.' :
-            self.dir = ''
-
     @classmethod
-    def load_page_with_slug(cls, slug: str, dir : str) -> "Page":
-        return next(filter(lambda p: p.slug == slug, cls.load_glob(dir = dir)))
+    def load_page_with_slug(cls, slug: str) -> "Page":
+        return next(filter(lambda p: p.slug == slug, cls.load_glob()))
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
+        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
-        return super().load_glob(path, dir, glob, all)
+        return super().load_glob(path, glob)
 
 
 class Post(Page):
@@ -272,16 +262,9 @@ class Post(Page):
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
 
-        p = self.path
-        while (p not in self.BASE_DIR) :
-            p = p.parent
-        self.dir = str(self.path.relative_to(p).parent)
-        if self.dir == '.' :
-            self.dir = ''
-
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
+        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
-        return super().load_glob(path, dir, glob, all)
+        return super().load_glob(path, glob)

@@ -19,7 +19,7 @@ from jssg.models import Page, Post
 
 
 def get_pages():
-    return ({"dir":p.dir, "slug": p.slug} for p in Page.load_glob(all = True))
+    return ({"slug": p.slug} for p in Page.load_glob())
 
 def get_posts():
     return ({"slug": p.slug} for p in Post.load_glob())
@@ -31,17 +31,17 @@ urlpatterns = [
     distill_path(
         "", views.IndexView.as_view(), name="index", distill_file="index.html"
     ),
+    distill_path(
+        "pages/<slug:slug>.html",
+        views.PageView.as_view(),
+        name="page",
+        distill_func=get_pages,
+    ),
     distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
     distill_path(
         "posts/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
         distill_func=get_posts,
-    ),
-    distill_re_path(
-        r'^(?P<dir>[a-zA-z0-9-/]*)/(?P<slug>[a-zA-z0-9-/]+).html',
-        views.PageView.as_view(),
-        name="page",
-        distill_func=get_pages,
     ),
 ]

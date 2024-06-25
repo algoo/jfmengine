@@ -18,7 +18,7 @@
             <a href="{{ url('index') }}">Accueil</a>
           </li>
           <li class="list-item me-4">
-            <a href="{{ url_slug('page', 'temoignages-clients') }}">Témoignages clients</a>
+            <a href="{{ url('page', args=['temoignages-clients']) }}">Témoignages clients</a>
           </li>
           <li class="list-item me-4">
             <a href="{{ static('assets/docs/grille_tarifaire_galae.pdf') }}" target="_blank">Télécharger la
@@ -42,7 +42,7 @@
             <a href="https://mail.galae.net/" target="_blank">Gestion de mon compte</a>
           </li>
           <li class="list-item me-4">
-            <a href="{{ url_slug('page', 'generateur-enregistrements-dns') }}">Générateur d'enregistrements DNS</a>
+            <a href="{{ url('page', args=['generateur-enregistrements-dns']) }}">Générateur d'enregistrements DNS</a>
           </li>
         </ul>
       </div>

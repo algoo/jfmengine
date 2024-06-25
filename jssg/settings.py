@@ -43,7 +43,7 @@ ALLOWED_HOSTS = ["exemple.org", "localhost"]
 
 
 # JSSG
-JSSG_CONTENT_DIR = [BASE_DIR / "content"] + [Path.home() / "algoo" / "jssg" / "galae-content"] + [Path.home() / "algoo" / "jssg" / "common-content"]
+JSSG_CONTENT_DIR = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]
 JSSG_PAGES_DIR = [path / "pages" for path in JSSG_CONTENT_DIR]
 JSSG_POSTS_DIR = [path / "posts" for path in JSSG_CONTENT_DIR]
 JSSG_TEMPLATES_DIR = [path / "templates" for path in JSSG_CONTENT_DIR]
