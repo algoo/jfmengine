@@ -1,4 +1,4 @@
-Django==4.2.9
+Django==5.0.6
 django-distill
 django_vite_plugin==3.0.0
 markdown2[all]==2.4.12
