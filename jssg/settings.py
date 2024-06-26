@@ -46,6 +46,7 @@ runserver.default_port = '8000'
 runserver.default_addr = '127.0.0.1'
 
 # JSSG
+JSSG_DOMAIN = "https://www.galae.net"
 JSSG_CONTENT_DIR = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]
 JSSG_PAGES_DIR = [path / "pages" for path in JSSG_CONTENT_DIR]
 JSSG_POSTS_DIR = [path / "posts" for path in JSSG_CONTENT_DIR]

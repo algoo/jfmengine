@@ -249,7 +249,7 @@ class Page(Document):
         return super().load_glob(path, glob)
     
     @classmethod
-    def get_pages(_ = ""):
+    def get_pages(cls):
         return ({"slug": p.slug} for p in Page.load_glob())
 
 
@@ -275,15 +275,11 @@ class Post(Page):
         return super().load_glob(path, glob)
 
     @classmethod
-    def get_posts(_ = ""):
+    def get_posts(cls):
         return ({"slug": p.slug} for p in Post.load_glob())
 
 class Sitemap :
     BASE_DIR = settings.JSSG_PAGES_DIR + settings.JSSG_POSTS_DIR
-    domain = runserver.default_addr + ':' + runserver.default_port
+    domain = settings.JSSG_DOMAIN
     pages_slugs = [p["slug"] for p in Page.get_pages()]
     posts_slugs = [p["slug"] for p in Post.get_posts()]
-
-    # def __init__(self, content) -> None :
-        # print("Pages : " + str([p.path.relative_to(str(settings.JSSG_PAGES_DIR)) for p in Page.load_glob()]))
-        # self.path = [p.path.relative_to(settings.JSSG_PAGES_DIR) for p in Page.load_glob()]
