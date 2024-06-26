@@ -5,6 +5,7 @@ slug generateur-enregistrements-dns
 language French
 lang fr
 engine jinja2
+header_version genenrdns
 
 og:title        galae - le service e-mail éthique et libre facturé à l'usage
 og:description  Cette page vous aide à générer les enregistrements DNS pour vos noms de domaines
@@ -24,67 +25,6 @@ og:locale       fr
 <html lang="en">
 
     <body>
-        <!-- Navigation-->
-        <!-- <nav class="navbar navbar-light bg-light static-top"> 
-            <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img class="navbar__logo__image" src="../assets/logo-galae.svg" alt="galae" />
-                    <div class="navbar__logo__label">le service e-mail qui vous veut du bien</div>
-                </a>
-                <div class="navbar__container__right">
-                    <a class="btn btn-sm btn-link" href="/">Site web galae</a>
-                    <a class="btn btn-sm btn-primary" href="https://mail.galae.net/">Connexion</a>
-                </div>
-            </div>
-        </nav -->
-
-        <!-- Masthead -->
-        <header class="masthead"> 
-            <div class="container position-relative">
-                <div class="row justify-content-center">
-                    <div class="">
-                        <div class="text-center text-white">
-                            <!-- Page heading-->
-                            <h1>
-                                Générez les enregistrements DNS de vos domaines
-                            </h1>
-                        </div>
-                    </div>
-                  <div class="row justify-content-center text-white text-center mt-4">
-
-                          <h2 class="col-md-6">
-                            Saisissez votre nom de domaine
-                            <small>
-                              <i class="bi bi-info-square" title="Ne saisissez pas www au début"></i>
-                            </small>
-
-                            <br/>
-                            <form class="form-control-sm" method="POST" enctype="multipart/form-data">
-                              <div>
-                                <div class="input-group">
-                                  <div class="input-group-text"><i class="bi bi-globe"></i></div>
-                                  <input type="text" name="domainName" class="form-control "
-                                         id="domainName" aria-describedby=""
-                                         aria-label="Saisissez votre nom de domaine, sans www"
-                                         placeholder="Saisissez votre nom de domaine, sans www"
-                                         onchange="this.value = getDomainName(); getElementById('galaeAdminLink').setAttribute('href', getGalaeAdminUrl(getDomainName()))"
-                                  >
-                                  <a
-                                          href="#configure-dkim"
-                                          onclick="document.querySelector('input[name=domainName]').value = getDomainName(); getElementById('galaeAdminLink').setAttribute('href', getGalaeAdminUrl(getDomainName()))"
-                                          class="btn btn-primary"
-                                  >Continuer</a>
-                                </div>
-                              </div>
-                            </form>
-                          </h2>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </header>
 
         <section class="testimonials bg-light">
             <div class="container">
@@ -271,77 +211,6 @@ og:locale       fr
                 </div>
             </div>
         </section>
-        <!-- Footer-->
-        <!-- <footer class="footer bg-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
-                        <p>
-                            Service commercialisé par
-                            <a href="https://www.algoo.fr" target="_blank">algoo</a>.
-                            <br/>
-                            <i class="bi-fw bi-phone-vibrate"></i>&nbsp;&nbsp;<a href="tel:+33972497220">(+33) 9.72.49.72.20</a>
-                            <br/>
-                            <i class="bi-envelope-at"></i>&nbsp;&nbsp;hello@galae.net
-                        </p>
-                    </div>
-                    <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
-                        <ul class="list-inline mb-0">
-                            <li class="list-item me-4">
-                                <a href="../fr" >Accueil</a>
-                            </li>
-                            <li class="list-inline-item me-4">js/bootstrap.bundle.min.js
-                                <a href="../fr/temoignages-clients.html">Témoignages clients</a>
-                            </li>
-                            <li class="list-inline-item me-4">
-                                <a href="../assets/docs/grille_tarifaire_galae.pdf" target="_blank">Télécharger la grille tarifaire</a>
-                            </li>
-                            <li class="list-inline-item me-4">
-                                <a href="https://pay.galae.net/" target="_blank">Passer commande</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
-                        <ul class="list-inline mb-0">
-                            <li class="list-item me-4">
-                                <a href="https://webmail.galae.net/" target="_blank">Accès Webmail</a>
-                            </li>
-                            <li class="list-item me-4">
-                                <a href="https://community.galae.net/" target="_blank">Espace communautaire et Support</a>
-                            </li>
-                            <li class="list-item me-4">
-                                <a href="https://mail.galae.net/" target="_blank">Gestion de mon compte</a>
-                            </li>
-                            <li class="list-inline-item me-4">
-                                <a href="generateur-enregistrements-dns.html" >Générateur d'enregistrements DNS</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 h-100 text-center text-lg-end my-auto">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item me-4">
-                                <a href="https://www.algoo.fr" title="Site web algoo" target="_blank"><i class="bi-globe fs-3"></i></a>
-                            </li>
-
-                            <li class="list-inline-item me-4">
-                                <a href="#!" title="Contactez-nous par e-mail" onclick="this.href='mailto:hello@galae.net?subject=Hello, j\'aimerais en savoir plus sur vos offres e-mail galae...'"><i class="bi-envelope fs-3"></i></a>
-                            </li>
-
-                            <li class="list-inline-item me-4">
-                                <a href="https://public-community.galae.net" title="Communauté, documentation, forums et aide" target="_blank">
-                                    <i class="bi-people-fill fs-3"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p class="text-muted small mt-4 mb-2 mb-lg-0">&copy; Algoo 2023-2024. Tous droits réservés.</p>
-                    </div>
-                </div>
-            </div>
-        </footer -->
 
 
 
@@ -420,25 +289,6 @@ autodiscover 10800 IN CNAME mail.galae.net.`;
           }
 
           </script>
-        <!-- Bootstrap core JS-->
-        <!-- <script src="../js/bootstrap.bundle.min.js"></script> -->
-        <!-- Core theme JS-->
-        <!-- <script src="../js/scripts.js"></script> -->
-        <!-- Matomo -->
-        <!-- <script>
-          var _paq = window._paq = window._paq || [];
-          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u="https://matomo.algoo.fr/";
-            _paq.push(['setTrackerUrl', u+'matomo.php']);
-            _paq.push(['setSiteId', '10']);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-          })();
-        </script> -->
-        <!-- <noscript><p><img src="https://matomo.algoo.fr/matomo.php?idsite=10&amp;rec=1" style="border:0;" alt="" /></p></noscript> -->
-        <!-- End Matomo Code -->
+          
     </body>
 </html>

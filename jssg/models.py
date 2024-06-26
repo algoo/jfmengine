@@ -92,6 +92,14 @@ class Document:
         # )
 
         if "engine" in self.metadata.keys() and self.metadata["engine"] == "jinja2" :
+            print(engines["jinja2"].from_string(self.content).render(
+                {
+                    "posts": sorted(
+                        Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                    ),
+                    "data":self.data
+                }
+            ))
             return engines["jinja2"].from_string(self.content).render(
                 {
                     "posts": sorted(

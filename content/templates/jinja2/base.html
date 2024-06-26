@@ -36,7 +36,7 @@
 <header>
   {{ block(
       NAME = "header",
-      VERSION = object.metadata.lang|default(""),
+      VERSION = object.metadata.header_version|default(object.metadata.lang)|default(""),
       DEFAULT_NAME = "fr/header.html"
   ) }}
 </header>
