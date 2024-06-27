@@ -3,3 +3,4 @@ django-distill
 django_vite_plugin==3.0.0
 markdown2[all]==2.4.13
 whitenoise==6.7.0
+Jinja2==3.1.4

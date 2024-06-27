@@ -1,0 +1,77 @@
+<footer class="footer bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
+        <p>
+          Marketed by
+          <a href="https://www.algoo.fr" target="_blank">algoo</a>.
+          <br/>
+          <i class="bi-fw bi-phone-vibrate"></i>&nbsp;&nbsp;<a href="tel:+33972497220">(+33)
+          9.72.49.72.20</a>
+          <br/>
+          <i class="bi-envelope-at"></i>&nbsp;&nbsp;hello@galae.net
+        </p>
+      </div>
+      <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
+        <ul class="list-unstyled mb-0">
+          <li class="list-item me-4">
+            <a href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="list-item me-4">
+            <a href="{% url 'page' 'temoignages-clients' %}">Customer testimonials (FR)</a>
+          </li>
+          <li class="list-item me-4">
+            <a href="{{ static('assets/docs/galae_price_list.pdf') }}" target="_blank">Download the price
+              list</a>
+          </li>
+          <li class="list-item me-4">
+            <a href="https://pay.galae.net/?current_tab=Strangers" target="_blank">Susbcribe</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
+        <ul class="list-unstyled mb-0">
+          <li class="list-item me-4">
+            <a href="https://webmail.galae.net/" target="_blank">Webmail</a>
+          </li>
+          <li class="list-item me-4">
+            <a href="https://community.galae.net/" target="_blank">Community and support</a>
+          </li>
+          <li class="list-item me-4">
+            <a href="https://mail.galae.net/" target="_blank">Account management</a>
+          </li>
+          <li class="list-item me-4">
+            <a href="{% url 'page' 'generateur-enregistrements-dns' %}">DNS record generator (FR)</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-3 h-100 text-center text-lg-end my-auto">
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item me-4">
+            <a href="https://www.algoo.fr" title="algoo website" target="_blank"><i
+                    class="bi-globe fs-3"></i></a>
+          </li>
+
+          <li class="list-inline-item me-4">
+            <a href="#!" title="Contact-us by e-mail"
+               onclick="this.href='mailto:hello@galae.net?subject=Hello, I\'d like to know more about your galae e-mail offers...'"><i
+                    class="bi-envelope fs-3"></i></a>
+          </li>
+
+          <li class="list-inline-item me-4">
+            <a href="https://public-community.galae.net"
+               title="Community, documentation, forums and help" target="_blank">
+              <i class="bi-people-fill fs-3"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p class="text-muted small mt-4 mb-2 mb-lg-0">&copy; Algoo 2023-2024. All rights
+          reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>

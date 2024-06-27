@@ -1,0 +1,25 @@
+{% macro page_section_reference_logos(
+      REFERENCES = []
+   )
+%}
+
+<!-- Icons Grid -->
+<section class="features-icons text-bg-light light text-center ">
+  <div class="container-fluid">
+    <div class="row mb-5">
+      <div class="col-12">
+          <h3>Plus de 200 clients nous font déjà confiance, pourquoi pas vous ?</h3>
+      </div>
+    </div>
+
+    <div class="row" title="ils nous font confiance">
+      <div class="col-lg-12">
+        {% for reference in REFERENCES %}
+          <img class="img-client-reference" src="{{ static(reference.logo_url) }}" alt="ils utilisent le service email galae: {{ reference.name }}"/>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endmacro %}

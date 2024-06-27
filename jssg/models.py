@@ -18,13 +18,14 @@ import json
 import typing
 from io import StringIO
 from pathlib import Path
-from typing import Iterator, Mapping, Optional
+from typing import Iterator, Mapping, Optional, List
 
 import markdown2
 from django.conf import settings
-from django.template import Context, Template
+from django.template import Context, Template, engines
 from django.utils.text import slugify
 
+from django.core.management.commands.runserver import Command as runserver
 
 class Document:
     """A document.
@@ -90,16 +91,26 @@ class Document:
         #     extras=["fenced-code-blocks", "tables"],
         # )
 
-        return Template(self.content).render(
-            Context(
+        if "engine" in self.metadata.keys() and self.metadata["engine"] == "jinja2" :
+            return engines["jinja2"].from_string(self.content).render(
                 {
                     "posts": sorted(
                         Post.load_glob(), key=lambda p: p.timestamp, reverse=True
                     ),
-                    "data": self.data
+                    "data":self.data
                 }
             )
-        )
+        else :
+            return Template(self.content).render(
+                Context(
+                    {
+                        "posts": sorted(
+                            Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                        ),
+                        "data": self.data
+                    }
+                )
+            )
 
     @classmethod
     def load(cls, path: Path) -> "Document":
@@ -187,7 +198,7 @@ class Document:
 
     @classmethod
     def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
     ) -> Iterator["Document"]:
         """Load multiple document.
 
@@ -200,8 +211,12 @@ class Document:
 
         if path is None:
             raise RuntimeError("No path and no self.BASE_DIR defined")
-
-        return map(cls.load, path.glob(glob))
+        
+        files = []
+        for p in path :
+            files += p.glob(glob)
+        # print(files)
+        return map(cls.load, files)
 
 
 class Page(Document):
@@ -228,10 +243,14 @@ class Page(Document):
 
     @classmethod
     def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, glob)
+    
+    @classmethod
+    def get_pages(cls):
+        return ({"slug": p.slug} for p in Page.load_glob())
 
 
 class Post(Page):
@@ -250,7 +269,17 @@ class Post(Page):
 
     @classmethod
     def load_glob(
-        cls, path: Optional[Path] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, glob)
+
+    @classmethod
+    def get_posts(cls):
+        return ({"slug": p.slug} for p in Post.load_glob())
+
+class Sitemap :
+    BASE_DIR = settings.JSSG_PAGES_DIR + settings.JSSG_POSTS_DIR
+    domain = settings.JSSG_DOMAIN
+    pages_slugs = [p["slug"] for p in Page.get_pages()]
+    posts_slugs = [p["slug"] for p in Post.get_posts()]

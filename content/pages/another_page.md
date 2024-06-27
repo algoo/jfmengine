@@ -1,7 +1,14 @@
 ---
 title Another page
 slug page2
+engine jinja2
 ---
-Page 2
+{
 
-Go to [page 1]({% url 'page' 'page1' %})
+}
+
+---
+
+<h2> Page 2 </h2>
+
+<p>Go to <a href="{{ url('page', args=['page1']) }}">page 1</a> </p>

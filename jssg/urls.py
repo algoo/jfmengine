@@ -12,35 +12,32 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
-from django_distill import distill_path
+from django_distill import distill_path, distill_re_path
 
 from jssg import views
 from jssg.models import Page, Post
-
-
-def get_pages():
-    return ({"slug": p.slug} for p in Page.load_glob())
-
-
-def get_posts():
-    return ({"slug": p.slug} for p in Post.load_glob())
 
 
 urlpatterns = [
     distill_path(
         "", views.IndexView.as_view(), name="index", distill_file="index.html"
     ),
-    distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
     distill_path(
         "pages/<slug:slug>.html",
         views.PageView.as_view(),
         name="page",
-        distill_func=get_pages,
+        distill_func=Page.get_pages,
     ),
+    distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
     distill_path(
         "posts/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
-        distill_func=get_posts,
+        distill_func=Post.get_posts,
     ),
+    distill_path(
+        "sitemap.xml",
+        views.SitemapView.as_view(),
+        name = "sitemap"
+    )
 ]
