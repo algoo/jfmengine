@@ -1,0 +1,25 @@
+{% macro page_block_h2_with_ul_content_and_image_left(
+      IMAGE_URL = '',
+      TITLE = '',
+      CONTENT_ITEMS = [],
+      CTA_URL = '',
+      CTA_LABEL = ''
+)
+%}
+
+<div class="row g-0">
+<div class="col-lg-6 text-white showcase-text" style="">
+<div style="height: 100%; width: 100%; background-image: url({{ static( IMAGE_URL)}}); background-size: contain; background-repeat: no-repeat; background-position-y: center; background-position-x: center;">
+</div>
+</div>
+<div class="col-lg-6 my-auto showcase-text">
+<h2>{{ TITLE|safe }}</h2>
+<p class="lead">
+<ul>{% for ITEM in CONTENT_ITEMS %}
+  <li class="lead">{{ ITEM | safe }}</li>{% endfor %}</ul>
+</p>
+<p class="lead text-end"><a href="{{ CTA_URL }}" class="btn btn-primary">{{ CTA_LABEL }}</a></p>
+</div>
+</div>
+
+{% endmacro %}

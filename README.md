@@ -45,8 +45,9 @@ Or, if you prefer docker:
 
 ```shell
 $ docker build -t jssg .
+$ sudo docker run -p 8080:80 jssg:latest
+```
 
 ## Others
 
 This repo is a fork of https://github.com/jtremesay/jssg.git for algoo websites use cases.
-```

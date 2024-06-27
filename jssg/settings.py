@@ -23,6 +23,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from django.core.management.commands.runserver import Command as runserver
+
 from os import environ
 from pathlib import Path
 
@@ -40,14 +42,18 @@ SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0
 DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 
 ALLOWED_HOSTS = ["exemple.org", "localhost"]
-
+runserver.default_port = '8000'
+runserver.default_addr = '127.0.0.1'
 
 # JSSG
-JSSG_CONTENT_DIR = BASE_DIR / "content"
-JSSG_PAGES_DIR = JSSG_CONTENT_DIR / "pages"
-JSSG_POSTS_DIR = JSSG_CONTENT_DIR / "posts"
-JSSG_TEMPLATES_DIR = JSSG_CONTENT_DIR / "templates"
-JSSG_STATIC_DIR = JSSG_CONTENT_DIR / "static"
+JSSG_DOMAIN = "https://www.galae.net"
+JSSG_CONTENT_DIR = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]
+JSSG_PAGES_DIR = [path / "pages" for path in JSSG_CONTENT_DIR]
+JSSG_POSTS_DIR = [path / "posts" for path in JSSG_CONTENT_DIR]
+JSSG_TEMPLATES_DIR = [path / "templates" for path in JSSG_CONTENT_DIR]
+JSSG_STATIC_DIR = [path / "static" for path in JSSG_CONTENT_DIR]
+
+
 
 # Application definition
 
@@ -70,8 +76,16 @@ ROOT_URLCONF = "jssg.urls"
 
 TEMPLATES = [
     {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "DIRS": [path / "jinja2" for path in JSSG_TEMPLATES_DIR],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "jssg.jinja2.environment"
+        },
+    },
+    {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [JSSG_TEMPLATES_DIR],
+        "DIRS": [path / "django" for path in JSSG_TEMPLATES_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -128,7 +142,7 @@ STATIC_URL = "/static/"
 
 DIST_DIR = BASE_DIR / "dist"
 STATIC_ROOT = BASE_DIR / "static"
-STATICFILES_DIRS = [JSSG_STATIC_DIR]
+STATICFILES_DIRS = JSSG_STATIC_DIR
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

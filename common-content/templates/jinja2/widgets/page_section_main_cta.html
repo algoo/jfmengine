@@ -1,0 +1,30 @@
+{% macro page_section_main_cta(
+    HTMLID = "",
+    TITLE = "",
+    SUBTITLE = "",
+    SECONDARY_TITLE = ""
+)
+%}
+
+<!-- Call to Action-->
+<section class="call-to-action text-white text-center" id="{{ HTMLID }}">
+  <div class="container position-relative">
+    <div class="row justify-content-center">
+      <div class="col-xl-6">
+        <h2 class="mb-4">
+          {{ TITLE|safe }}
+        </h2>
+        {{ SUBTITLE|safe }}
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-xl-6">
+        <h3 class="mb-4">
+          {{ SECONDARY_TITLE|safe }}
+        </h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endmacro %}

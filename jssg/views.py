@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Any
+from typing import Any, List
 
 from django.contrib.syndication.views import Feed
 from django.db.models.base import Model as Model
@@ -22,7 +22,7 @@ from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed
 from django.views.generic import DetailView
 
-from jssg.models import Page, Post
+from jssg.models import Page, Post, Sitemap
 
 
 class PostFeedsView(Feed):
@@ -30,7 +30,7 @@ class PostFeedsView(Feed):
     link = ""
     feed_type = Atom1Feed
 
-    def items(self) -> list[Post]:
+    def items(self) -> List[Post]:
         return sorted(Post.load_glob(), key=lambda p: p.timestamp, reverse=True)[:20]
 
     def item_title(self, post: Post) -> str:
@@ -61,10 +61,23 @@ class IndexView(PageView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        self.kwargs["slug"] = "fr-index"
+        # FIXME - Define which index is the default.
+        # from port_galae_website_to_jssg_prototype branch:
+        # -> self.kwargs["slug"] = "fr-index"
+        # from main branch:
+        # -> self.kwargs["slug"] = "en-index"
+        self.kwargs["slug"] = "index"
         return super().get_object(queryset)
 
 
 class PostView(PageView):
     model = Post
     template_name = "post.html"
+
+
+class SitemapView(DetailView) :
+    model = Sitemap
+    template_name = "sitemap.html"
+
+    def get_object(self, queryset=None) -> Model:
+        return self.model()
