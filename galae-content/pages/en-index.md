@@ -5,7 +5,7 @@ description galae est un service e-mail éthique et libre facturé à l'usage. T
 language    French
 lang        en
 version .en
-engine jinja2
+template_engine jinja2
 # open graph metatada
 og:title        galae - ethical and free pay-per-use e-mail
 og:description  galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.

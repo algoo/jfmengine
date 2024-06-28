@@ -91,7 +91,7 @@ class Document:
         #     extras=["fenced-code-blocks", "tables"],
         # )
 
-        if "engine" in self.metadata.keys() and self.metadata["engine"] == "jinja2" :
+        if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "jinja2" :
             return engines["jinja2"].from_string(self.content).render(
                 {
                     "posts": sorted(

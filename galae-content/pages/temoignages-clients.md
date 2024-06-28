@@ -2,7 +2,7 @@
 title Temoignages clients
 slug temoignages-clients
 lang fr
-engine jinja2
+template_engine jinja2
 
 header_version testimonial
 ---

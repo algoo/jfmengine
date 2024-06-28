@@ -4,7 +4,7 @@ description galae est un service e-mail éthique et libre facturé à l'usage. T
 slug generateur-enregistrements-dns
 language French
 lang fr
-engine jinja2
+template_engine jinja2
 header_version genenrdns
 
 og:title        galae - le service e-mail éthique et libre facturé à l'usage
