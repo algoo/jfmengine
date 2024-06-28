@@ -1,10 +1,10 @@
 ---
-title Temoignages clients
-slug temoignages-clients
-lang fr
-engine jinja2
+title           Temoignages clients
+slug            temoignages-clients
+lang            fr
+engine          jinja2
 
-header_version testimonial
+page_header_h1  Nos clients témoignent ...
 ---
 {
 
