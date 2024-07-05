@@ -91,7 +91,7 @@ For Jinja2 engine, see https://jinja.palletsprojects.com/en/2.11.x/templates/
 ### Pages :
 Pages contain the content of each web page of the site at url `pages/<slug>.html`. They are `.md` files and are structured in 3 sections separated by a line starting with `---` :
 
-- **Metadata** provide some informartion about the page (description, language...). Each metadata is a key, some spaces, and a value. The `title` metadata is required for all pages. Other metadata can be useful, like `slug`, `lang`, `engine` or `og:<key>` (open graph). Metadata are accessible by a dictionary in `object.metadata` in templates.
+- **Metadata** provide some informartion about the page (description, language...). Each metadata is a key, some spaces, and a value. The `title` metadata is required for all pages. Other metadata can be useful, like `slug`, `lang`, `template_engine` or `og:<key>` (open graph). Metadata are accessible by a dictionary in `object.metadata` in templates.
 - **Data** is a section which contains a JSON text. It is accessible by `object.data` in templates.
 - **Body** : It is the concrete content of the page, that can be html or template content. For instance, it is possible to use widgets or blocks in this section. It is accessible by `object.content` in templates.
 
