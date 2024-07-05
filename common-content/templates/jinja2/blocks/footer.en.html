@@ -15,10 +15,10 @@
       <div class="col-lg-3 h-100 text-center text-lg-start my-auto">
         <ul class="list-unstyled mb-0">
           <li class="list-item me-4">
-            <a href="{{ url('index') }}">Home</a>
+            <a href="{{ url_slug('fr-index') }}">Home</a>
           </li>
           <li class="list-item me-4">
-            <a href="{{ url_slug('page', 'temoignages-clients') }}">Customer testimonials (FR)</a>
+            <a href="{{ url_slug('temoignages-clients') }}">Customer testimonials (FR)</a>
           </li>
           <li class="list-item me-4">
             <a href="{{ static('assets/docs/galae_price_list.pdf') }}" target="_blank">Download the price
@@ -41,7 +41,7 @@
             <a href="https://mail.galae.net/" target="_blank">Account management</a>
           </li>
           <li class="list-item me-4">
-            <a href="{{ url_slug('page', 'generateur-enregistrements-dns') }}">DNS record generator (FR)</a>
+            <a href="{{ url_slug('generateur-enregistrements-dns') }}">DNS record generator (FR)</a>
           </li>
         </ul>
       </div>

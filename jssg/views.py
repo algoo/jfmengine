@@ -53,8 +53,8 @@ class PageView(DetailView):
     def get_object(self, queryset=None) -> Model:
         if "dir" not in self.kwargs.keys() :
             self.kwargs["dir"] = ""
-        print(self.kwargs["dir"])
-        print(self.kwargs["slug"])
+        print("dir : " + self.kwargs["dir"])
+        print("slug : " + self.kwargs["slug"])
         model = self.model.load_page_with_slug(self.kwargs["slug"], self.kwargs["dir"])
         return model
 

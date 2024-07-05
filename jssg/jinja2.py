@@ -8,7 +8,7 @@ from jssg.templatetags.filter_opengraph_metadata import filter_opengraph_metadat
 from jssg.models import Document
 from django.conf import settings
 
-def url_from_slug(view_name, slug) :
+def url_from_slug(slug) :
     for path in settings.JSSG_PAGES_DIR :
         files = path.rglob("*.md")
         for f in files :
