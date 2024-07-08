@@ -15,7 +15,7 @@
 version: "3.8"
 services:
   jtremesay:
-    image: "killruana/jtremesay.org:main"
+    image: "jssg"
     ports:
       - 8003:80
     networks:

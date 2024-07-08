@@ -36,7 +36,7 @@ class Document:
     """
 
     # Default dir to search document
-    BASE_DIR = settings.JSSG_CONTENT_DIR
+    BASE_DIR = settings.JFME_CONTENT_DIRS
 
     def __init__(self, content: str, **metadata: Mapping[str, str]) -> None:
         """Create a new document.
@@ -220,7 +220,7 @@ class Document:
 class Page(Document):
     """A webpage, with a title and some content."""
 
-    BASE_DIR = settings.JSSG_PAGES_DIR
+    BASE_DIR = settings.JFME_PAGES_DIRS
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new page.
@@ -254,7 +254,7 @@ class Page(Document):
 class Post(Page):
     """A webblog post."""
 
-    BASE_DIR = settings.JSSG_POSTS_DIR
+    BASE_DIR = settings.JFME_POSTS_DIRS
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new post.
@@ -277,7 +277,7 @@ class Post(Page):
         return ({"slug": p.slug} for p in Post.load_glob())
 
 class Sitemap :
-    BASE_DIR = settings.JSSG_PAGES_DIR + settings.JSSG_POSTS_DIR
-    domain = settings.JSSG_DOMAIN
+    BASE_DIR = settings.JFME_PAGES_DIRS + settings.JFME_POSTS_DIRS
+    domain = settings.JFME_DOMAIN
     pages_slugs = [p["slug"] for p in Page.get_pages()]
     posts_slugs = [p["slug"] for p in Post.get_posts()]
