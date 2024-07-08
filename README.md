@@ -1,6 +1,5 @@
 # JFM-Engine
 
-
 Today, it's a django app that can generate a static website with Vite & Typescript integration.
 
 ## Bootstrap
@@ -52,18 +51,18 @@ $ sudo docker compose up
 For django settings, see https://docs.djangoproject.com/en/5.0/ref/settings/
 
 Otherwise, you have to configure the following settings :
-- `JSSG_DOMAIN` : the domain name of your website, for instance `"https://www.example.com"` (used in sitemap file)
-- `JSSG_CONTENT_DIR` : a list of directories where to look for the site content
+- `JFME_DOMAIN` : the domain name of your website, for instance `"https://www.example.com"` (used in sitemap file)
+- `JFME_CONTENT_DIRS` : a list of directories where to look for the site content
 
 ### `Dockerfile` :
-- In the `# Copy source dir` section, add `COPY <content-dir>/ <content-dir>/` for each content directory in `JSSG_CONTENT_DIR`
+- In the `# Copy source dir` section, add `COPY <content-dir>/ <content-dir>/` for each content directory in `JFME_CONTENT_DIRS`
 
 ### `views.py` :
 - In the `get_object` method of `IndexView`, set the `self.kwargs["slug"]` to the slug of your index page which is sent at the root of your site
 
 ## Usage
 
-Each directory defined in `JSSG_CONTENT_DIR` has the following structure :
+Each directory defined in `JFME_CONTENT_DIRS` has the following structure :
 ```
 Content-dir/
     |-- templates/
@@ -105,4 +104,5 @@ See the [Django doc](https://docs.djangoproject.com/en/5.0/howto/static-files/#c
 
 ## Others
 
-This repo is a fork of https://github.com/jtremesay/jssg.git for algoo websites use cases.
+JFM-Engine is a friendly fork of [JSSG](https://github.com/jtremesay/jssg/) made in agreement with the JSSG developer because of different goals. \
+See the [issue #21](https://github.com/jtremesay/jssg/issues/21).
