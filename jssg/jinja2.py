@@ -15,6 +15,7 @@ def url_from_slug(slug) :
             doc = Document.load(f)
             if doc.metadata["slug"] == slug :
                 return "/" / doc.path.relative_to(path).with_suffix('.html').parent / (doc.metadata["slug"] + ".html")
+    return ""
 
 def environment(**options):
     env = Environment(**options)
