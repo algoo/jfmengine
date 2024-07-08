@@ -37,7 +37,7 @@ class PostFeedsView(Feed):
         return post.title
 
     def item_description(self, item: Post):
-        return item.content_md
+        return item.content
 
     def item_link(self, post: Post) -> str:
         return reverse("post", args=(post.slug,))
