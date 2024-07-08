@@ -68,9 +68,6 @@ class Document:
         #             multiline text
         #             easy to read"
         # }}}
-        def convert_case(match_obj):
-            return match_obj.group(2).replace("\n", " ")
-        self.body = re.sub("({{{TO-1-LINE)(((?!TO-1-LINE}}}).)*)(TO-1-LINE}}})", convert_case, self.body, flags=re.DOTALL)
 
         # INFO - D.A. - Original code is below and is returned a markdown-based processed content
         # this works only with unindented HTML templates because markdown interprets indentation
