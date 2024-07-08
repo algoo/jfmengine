@@ -18,53 +18,41 @@ from jssg import views
 from jssg.models import Page, Post
 from jssg import settings 
 
+def get_pages() :
+    return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Page.load_glob(all = True))
 
-def get_pages_in_dir():
-    pages = [p for p in Page.load_glob(all = True)]
-    pages_at_root = sum((map(lambda path : list(path.glob("*.md")), settings.JSSG_PAGES_DIR)), [])
-    return ({"dir": p.dir, "slug": p.slug} for p in filter(lambda p : p.path not in pages_at_root, pages))
+def get_posts() :
+    return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Post.load_glob(all = True))
 
-def get_pages_at_root():
-    pages = [p for p in Page.load_glob()]
-    pages_at_root = sum((map(lambda path : list(path.glob("*.md")), settings.JSSG_PAGES_DIR)), [])
-    return ({"slug": p.slug} for p in filter(lambda p : p.path in pages_at_root, pages))
-
-def get_posts_in_dir():
-    posts = [p for p in Post.load_glob(all = True)]
-    posts_at_root = sum((map(lambda path : list(path.glob("*.md")), settings.JSSG_POSTS_DIR)), [])
-    return ({"dir": p.dir, "slug": p.slug} for p in filter(lambda p : p.path not in posts_at_root, posts))
-
-def get_posts_at_root():
-    posts = [p for p in Post.load_glob(all = True)]
-    posts_at_root = sum((map(lambda path : list(path.glob("*.md")), settings.JSSG_POSTS_DIR)), [])
-    return ({"slug": p.slug} for p in filter(lambda p : p.path in posts_at_root, posts))
-
-print("pages in dir\t: " + str([p for p in get_pages_in_dir()]))
-print("pages at root\t: " + str([p for p in get_pages_at_root()]))
-print("posts in dir\t: " + str([p for p in get_posts_in_dir()]))
-print("posts at root\t: " + str([p for p in get_posts_at_root()]))
+print([p for p in get_pages()])
 
 urlpatterns = [
     distill_path(
         "", views.IndexView.as_view(), name="index", distill_file="index.html"
     ),
     distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
+    distill_re_path(
+        r'^(?!posts/)(?P<slug>[a-zA-Z0-9-]+).html$',
+        views.PageView.as_view(),
+        name="page",
+        distill_func=get_pages,
+    ),
+    distill_re_path(
+        r'^(?!posts/)(?P<dir>[a-zA-Z-/]+)/(?P<slug>[a-zA-Z0-9-]+).html$',
+        views.PageView.as_view(),
+        name="page",
+        distill_func=get_pages,
+    ),
     distill_path(
         "posts/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
-        distill_func=get_posts_at_root,
+        distill_func=get_posts,
     ),
-    distill_re_path(
-        r'^(?P<slug>[a-zA-z0-9-]+).html',
-        views.PageView.as_view(),
-        name="page",
-        distill_func=get_pages_at_root,
-    ),
-    distill_re_path(
-        r'^(?P<dir>[a-zA-z0-9-/]+)/(?P<slug>[a-zA-z0-9-/]+).html',
-        views.PageView.as_view(),
-        name="page",
-        distill_func=get_pages_in_dir,
-    ),
+    distill_path(
+        "posts/<path:dir>/<slug:slug>.html",
+        views.PostView.as_view(),
+        name="post",
+        distill_func=get_posts,
+    )
 ]
