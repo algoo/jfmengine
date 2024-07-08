@@ -90,7 +90,7 @@ class Document:
 
 
         if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "django" :
-            return Template(self.content).render(
+            return Template(self.body).render(
                 Context(
                     {
                         "posts": sorted(
@@ -101,7 +101,7 @@ class Document:
                 )
             )
         else :
-            return engines["jinja2"].from_string(self.content).render(
+            return engines["jinja2"].from_string(self.body).render(
                 {
                     "posts": sorted(
                         Post.load_glob(), key=lambda p: p.timestamp, reverse=True
