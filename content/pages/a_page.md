@@ -1,7 +1,7 @@
 ---
 title Page1
 slug page1
-engine jinja2
+template_engine jinja2
 ---
 {
 

@@ -4,7 +4,7 @@ slug            fr-index
 description     galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
 language        French
 lang            fr
-engine          jinja2
+template_engine jinja2
 
 page_header_h1  le service e-mail éthique et libre facturé à l'usage
 page_header_h2  pour des e-mails standards et interopérables et un service intégralement basé sur des technologies auto-hébergeables

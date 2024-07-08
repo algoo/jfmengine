@@ -4,7 +4,7 @@ description     galae est un service e-mail éthique et libre facturé à l'usag
 slug            generateur-enregistrements-dns
 language        French
 lang            fr
-engine          jinja2
+template_engine jinja2
 
 page_header_h1  Générez les enregistrements DNS de vos domaines
 
