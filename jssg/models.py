@@ -91,16 +91,7 @@ class Document:
         #     extras=["fenced-code-blocks", "tables"],
         # )
 
-        if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "jinja2" :
-            return engines["jinja2"].from_string(self.content).render(
-                {
-                    "posts": sorted(
-                        Post.load_glob(), key=lambda p: p.timestamp, reverse=True
-                    ),
-                    "data":self.data
-                }
-            )
-        else :
+        if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "django" :
             return Template(self.content).render(
                 Context(
                     {
@@ -110,6 +101,15 @@ class Document:
                         "data": self.data
                     }
                 )
+            )
+        else :
+            return engines["jinja2"].from_string(self.content).render(
+                {
+                    "posts": sorted(
+                        Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                    ),
+                    "data":self.data
+                }
             )
 
     @classmethod
