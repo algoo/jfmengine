@@ -44,13 +44,13 @@ class Document:
         :param content: The content (body) of the document
         :param metadata: Associated metadata
         """
-        self.content = content
+        self.body = content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
         self.data = {}
 
     @property
-    def content_md(self) -> str:
+    def content(self) -> str:
         """Render the content as markdown to html.
 
         Note: the content will be processed by the django template engine
@@ -68,9 +68,6 @@ class Document:
         #             multiline text
         #             easy to read"
         # }}}
-        def convert_case(match_obj):
-            return match_obj.group(2).replace("\n", " ")
-        self.content = re.sub("({{{TO-1-LINE)(((?!TO-1-LINE}}}).)*)(TO-1-LINE}}})", convert_case, self.content, flags=re.DOTALL)
 
         # INFO - D.A. - Original code is below and is returned a markdown-based processed content
         # this works only with unindented HTML templates because markdown interprets indentation
@@ -78,7 +75,7 @@ class Document:
         # Expected: allow to process both HTML and markdown content types
         #
         # return markdown2.markdown(
-        #     Template(self.content).render(
+        #     Template(self.body).render(
         #         Context(
         #             {
         #                 "posts": sorted(
@@ -90,6 +87,7 @@ class Document:
         #     ),
         #     extras=["fenced-code-blocks", "tables"],
         # )
+
 
         if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "django" :
             return Template(self.body).render(

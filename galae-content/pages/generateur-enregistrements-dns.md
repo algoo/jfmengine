@@ -1,11 +1,12 @@
 ---
-title generateur-enregistrements-dns
-description galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes e-mails et domaines illimités hébergés en France.
-slug generateur-enregistrements-dns
-language French
-lang fr
+title           generateur-enregistrements-dns
+description     galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes e-mails et domaines illimités hébergés en France.
+slug            generateur-enregistrements-dns
+language        French
+lang            fr
 template_engine jinja2
-header_version genenrdns
+
+page_header_h1  Générez les enregistrements DNS de vos domaines
 
 og:title        galae - le service e-mail éthique et libre facturé à l'usage
 og:description  Cette page vous aide à générer les enregistrements DNS pour vos noms de domaines
@@ -27,6 +28,40 @@ og:locale       fr
     <body>
 
         <section class="testimonials bg-light">
+
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="row justify-content-center text-black text-center mt-4">
+                        <h2 class="col-md-6">
+                        Saisissez votre nom de domaine
+                        <small>
+                            <i class="bi bi-info-square" title="Ne saisissez pas www au début"></i>
+                        </small>
+
+                        <br/>
+                        <form class="form-control-sm" method="POST" enctype="multipart/form-data">
+                            <div>
+                                <div class="input-group">
+                                    <div class="input-group-text"><i class="bi bi-globe"></i></div>
+                                    <input type="text" name="domainName" class="form-control "
+                                          id="domainName" aria-describedby=""
+                                          aria-label="Saisissez votre nom de domaine, sans www"
+                                          placeholder="Saisissez votre nom de domaine, sans www"
+                                          onchange="this.value = getDomainName(); getElementById('galaeAdminLink').setAttribute('href', getGalaeAdminUrl(getDomainName()))"
+                                    >
+                                    <a
+                                          href="#configure-dkim"
+                                          onclick="document.querySelector('input[name=domainName]').value = getDomainName(); getElementById('galaeAdminLink').setAttribute('href', getGalaeAdminUrl(getDomainName()))"
+                                          class="btn btn-primary"
+                                    >Continuer</a>
+                                </div>
+                            </div>
+                        </form>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
             <div class="container">
 
               <div class="row">

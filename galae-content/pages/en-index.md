@@ -1,11 +1,15 @@
 --- METADATA (first) ---
-title   galae - ethical and free pay-per-use e-mail
-slug    en-index
-description galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
-language    French
-lang        en
-version .en
+
+title           galae - ethical and free pay-per-use e-mail
+slug            en-index
+description     galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
+language        French
+lang            en
 template_engine jinja2
+
+page_header_h1  galae - the free, ethical, pay-per-use e-mail service
+page_header_h2  Standard, interoperable e-mails and a service entirely based on self-hosting ready technologies
+
 # open graph metatada
 og:title        galae - ethical and free pay-per-use e-mail
 og:description  galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.

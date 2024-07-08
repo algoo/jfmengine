@@ -1,11 +1,15 @@
 --- METADATA (first) ---
-title   galae - le service e-mail éthique et libre facturé à l'usage
-slug    fr-index
-description galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
-language    French
-lang    fr
+title           galae - le service e-mail éthique et libre facturé à l'usage
+slug            fr-index
+description     galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
+language        French
+lang            fr
 template_engine jinja2
-version .fr
+
+page_header_h1  le service e-mail éthique et libre facturé à l'usage
+page_header_h2  pour des e-mails standards et interopérables et un service intégralement basé sur des technologies auto-hébergeables
+page_header_h3  Le service est désormais ouvert !
+
 # open graph metatada
 og:title        galae - le service e-mail éthique et libre facturé à l'usage
 og:description  galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
