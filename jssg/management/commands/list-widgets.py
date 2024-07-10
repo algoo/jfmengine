@@ -16,12 +16,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options) :
         if options["engine"] != "jinja2" and options["engine"] != "django" and options["engine"] != "" :
-            call_command("listwidgets", "--help")
+            call_command("list-widgets", "--help")
             return
 
         if options["engine"] == "" :
-            call_command("listwidgets", "jinja2")
-            call_command("listwidgets", "django")
+            call_command("list-widgets", "jinja2")
+            call_command("list-widgets", "django")
             return 
 
         n = 0

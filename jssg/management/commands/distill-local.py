@@ -4,6 +4,5 @@ from django.core.management import call_command
 
 class Command(DistilllocalCommand):
     def handle(self, *args, **options):
-        call_command('makewidgets', 'jinja2')
-        call_command('makewidgets', 'django')
+        call_command('make-widgets')
         super(Command, self).handle(*args, **options)
