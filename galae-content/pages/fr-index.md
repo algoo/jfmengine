@@ -26,10 +26,6 @@ og:locale       fr
 --- BODY (last / third) ---
 
 
-{% import "allwidgets.html" as widgets %}
-
-
-
 {{ widgets.page_section_reference_logos(
     REFERENCES = 
     [

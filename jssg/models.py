@@ -44,7 +44,7 @@ class Document:
         :param content: The content (body) of the document
         :param metadata: Associated metadata
         """
-        self.body = content
+        self.body = "{% import 'allwidgets.html' as widgets %}\n" + content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
         self.data = {}
