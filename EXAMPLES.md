@@ -1,5 +1,5 @@
 # Examples of blocks usage :
-## With languqge as version  
+## With language as version  
 For instance, you could have different version of a widget `jinja2/widgets/navbar.html` :
 ```jinja
 {% macro navbar(
