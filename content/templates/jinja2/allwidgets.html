@@ -1,0 +1,301 @@
+{% macro navbar(
+      CTA_LABEL="",
+      CTA_TARGET="",
+      CTA_URL="",
+      CHANGE_LANG_URL="",
+      CHANGE_LANG_FLAG_URL="",
+      CHANGE_LANG_ALT=""
+)
+%}
+
+<!-- Navigation-->
+<nav class="navbar navbar-light bg-light static-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img class="navbar__logo__image" src="{{ static('assets/logo-galae.svg')}}"
+           alt="galae"/>
+      <div class="navbar__logo__label">le service e-mail qui vous veut du bien</div>
+    </a>
+    <div class="navbar__container__right">
+      <a class="btn btn-sm btn-primary" href="{{ CTA_URL }}"
+         target="{{ CTA_TARGET }}">{{ CTA_LABEL }}</a>
+      <a href="{{ url('page', args=[CHANGE_LANG_URL]) }}">
+        <img class="languageFlag" src="{{ static(CHANGE_LANG_FLAG_URL)}}" alt="{{ CHANGE_LANG_ALT }}"/>
+      </a>
+    </div>
+  </div>
+</nav>
+
+{% endmacro %}
+
+
+{% macro page_block_h2_with_ul_content_and_image_left(
+      IMAGE_URL = '',
+      TITLE = '',
+      CONTENT_ITEMS = [],
+      CTA_URL = '',
+      CTA_LABEL = ''
+)
+%}
+
+<div class="row g-0">
+<div class="col-lg-6 text-white showcase-text" style="">
+<div style="height: 100%; width: 100%; background-image: url({{ static( IMAGE_URL)}}); background-size: contain; background-repeat: no-repeat; background-position-y: center; background-position-x: center;">
+</div>
+</div>
+<div class="col-lg-6 my-auto showcase-text">
+<h2>{{ TITLE|safe }}</h2>
+<p class="lead">
+<ul>{% for ITEM in CONTENT_ITEMS %}
+  <li class="lead">{{ ITEM | safe }}</li>{% endfor %}</ul>
+</p>
+<p class="lead text-end"><a href="{{ CTA_URL }}" class="btn btn-primary">{{ CTA_LABEL }}</a></p>
+</div>
+</div>
+
+{% endmacro %}
+{%  macro page_block_h2_with_content_and_primary_secondary_cta(
+      HTMLID="",
+      TITLE="",
+      CONTENT="",
+      MAIN_IMG_URL="",
+      MAIN_IMG_ALT="",
+      SECONDARY_CTA_URL="",
+      SECONDARY_CTA_TARGET="",
+      SECONDARY_CTA_LABEL="",
+      PRIMARY_CTA_URL="",
+      PRIMARY_CTA_TARGET="",
+      PRIMARY_CTA_LABEL="",
+      PRIMARY_CTA_ICON=""
+    )
+%}
+
+<section id="{{ HTMLID }}" class="testimonials bg-light">
+  <div class="container">
+    <h2 class="mb-5">{{ TITLE|safe }}</h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <p class="lead mb-0">
+          {{ CONTENT|safe }}
+        </p>
+        <p class="lead mb-0 text-center">
+          <img
+                  class="testimonials__priceList__img"
+                  src="{{ static(MAIN_IMG_URL) }}"
+                  alt="{{ MAIN_IMG_ALT }}"
+          />
+        </p>
+        <p class="lead mb-0 text-center">
+          <a href="{{ static(SECONDARY_CTA_URL) }}" target="{{ SECONDARY_CTA_TARGET }}"
+             class="btn btn-link btn-lg">
+            {{ SECONDARY_CTA_LABEL }}
+          </a>
+          <a href="{{ PRIMARY_CTA_URL }}" target="{{ PRIMARY_CTA_TARGET }}"
+             class="btn btn-primary btn-lg">
+            {{ PRIMARY_CTA_LABEL }}
+            <i class="{{ PRIMARY_CTA_ICON }}"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endmacro %}
+{% macro page_header(
+      PRIMARY_TITLE="",
+      SECONDARY_TITLE="",
+      THIRD_TITLE=""
+)
+%}
+
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-9">
+                <div class="text-center text-white">
+                    <!-- Page heading-->
+                    <h1 class="mb-5">
+                        {{ PRIMARY_TITLE|safe }}
+                    </h1>
+                    {% if SECONDARY_TITLE %}
+                        <h2>{{ SECONDARY_TITLE|safe }}</h2>
+                    {% endif %}
+                    {% if THIRD_TITLE %}
+                        <h3 class="navbar__logo__label"><i>{{ THIRD_TITLE|safe }}</i></h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% endmacro %}
+{% macro page_section_reference_logos(
+      REFERENCES = []
+   )
+%}
+
+<!-- Icons Grid -->
+<section class="features-icons text-bg-light light text-center ">
+  <div class="container-fluid">
+    <div class="row mb-5">
+      <div class="col-12">
+          <h3>Plus de 200 clients nous font déjà confiance, pourquoi pas vous ?</h3>
+      </div>
+    </div>
+
+    <div class="row" title="ils nous font confiance">
+      <div class="col-lg-12">
+        {% for reference in REFERENCES %}
+          <img class="img-client-reference" src="{{ static(reference.logo_url) }}" alt="ils utilisent le service email galae: {{ reference.name }}"/>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endmacro %}
+{% macro page_block_h2_with_ul_content_and_image_right(
+      IMAGE_URL = '',
+      TITLE = '',
+      CONTENT_ITEMS = [],
+      CTA_URL = '',
+      CTA_LABEL = ''
+)
+%}
+
+<div class="row g-0">
+  <div class="col-lg-6 order-lg-2 text-white showcase-text" style="">
+    <div style="height: 100%; width: 100%; background-image: url({{ static(IMAGE_URL)}}); background-size: contain; background-repeat: no-repeat; background-position-y: center; background-position-x: center;">
+    </div>
+  </div>
+  <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+    <h2>{{ TITLE|safe }}</h2>
+    <p class="lead">
+    <ul>{% for ITEM in CONTENT_ITEMS %}
+      <li class="lead">{{ ITEM | safe }}</li>{% endfor %}</ul>
+    </p>
+    <p class="lead text-end"><a href="{{ CTA_URL }}" class="btn btn-primary">{{ CTA_LABEL }}</a></p>
+  </div>
+</div>
+
+{% endmacro %}
+{% macro testimonials_quotes(
+    PERSONS = []
+)
+%}
+
+<!-- Testimonials-->
+<section class="testimonials text-center bg-light">
+    <div class="container">
+        <h2 class="mb-5">Ce qu'en disent nos clients ...</h2>
+        <div class="row">
+        {% for reference in PERSONS %}
+            <div class="col-lg-4">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="{{ static(reference.img_url)}}" alt="" />
+                    <h5>{{reference.name}}</h5>
+                    <h6>{{reference.job}}</h6>
+                    <p class="font-weight-light mb-0">
+                        «&nbsp;{{reference.testimonial|safe}}&nbsp;»
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endmacro %}
+{% macro testimonials(
+    PERSONS = []
+   )
+%}
+
+<!-- Testimonials-->
+<section class="testimonials text-center bg-dark">
+    <div class="container">
+
+        <div class="row text-left">
+            {% for reference in PERSONS %}
+            <div class="col-md-12 col-sm-12 col-12 col-lg-6 col-xl-4 mb-4">
+                <div class="card testimonial-card">
+                    <div class="card-body">
+                        <img class="img-fluid rounded-circle mb-3" style="max-width: 8em; float:right;" src="{{ static(reference.img_url)}}" alt="" />
+                        <h5 class="card-title">{{ reference.name }}</h5>
+                        <h6 class="card-subtitle mb-2">{{ reference.job }}</h6>
+                        {% for text in reference.testimonial %}
+                        <p class="card-text lead">
+                            {{ text|safe }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="row text-center">
+            <p class="col-12 mt-4">
+                <a href="https://pay.galae.net/" target="_blank" class="btn btn-primary btn-lg">
+                    Je suis convaincu, je veux souscrire maintenant&nbsp;!
+                    <i class="bi-rocket"></i>
+                </a>
+            </p>
+        </div>
+
+    </div>
+</section>
+
+{% endmacro %}
+{% macro page_block_h2_with_content_dark_background_no_cta(
+    HTMLID = "",
+    TITLE = "",
+    CONTENT = ""
+)
+%}
+
+<section id="{{ HTML_ID }}" class="testimonials bg-dark text-white">
+    <div class="container">
+        <h2 class="mb-5">{{ TITLE|safe }}</h2>
+        <div class="row">
+            <div class="col-lg-12">
+                {{ CONTENT|safe }}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endmacro %}
+{% macro page_section_main_cta(
+    HTMLID = "",
+    TITLE = "",
+    SUBTITLE = "",
+    SECONDARY_TITLE = ""
+)
+%}
+
+<!-- Call to Action-->
+<section class="call-to-action text-white text-center" id="{{ HTMLID }}">
+  <div class="container position-relative">
+    <div class="row justify-content-center">
+      <div class="col-xl-6">
+        <h2 class="mb-4">
+          {{ TITLE|safe }}
+        </h2>
+        {{ SUBTITLE|safe }}
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-xl-6">
+        <h3 class="mb-4">
+          {{ SECONDARY_TITLE|safe }}
+        </h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endmacro %}
