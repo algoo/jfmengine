@@ -111,7 +111,7 @@ For each command, the option `-h` give u some help.
 
  `./manage.py listwidgets` to list all widgets found in content directories
 
- `./manage.py makewidgets` to make a file that groups all wisdgets for easier includes. It is called in `runserver` and `distill-local` commands.
+ `./manage.py makewidgets` to make a file that groups all widgets for easier includes. It is called in `runserver` and `distill-local` commands.
 
 
 ## Others
