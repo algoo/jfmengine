@@ -50,45 +50,52 @@ In `base.html`, we can include a navbar which depends of each page language by :
 For all pages, if the page contains the metadata `lang` then the block will be searched as `blocks/<lang>/navbar.html`, and will be `blocks/en/navbar.html` if not found.\
 Else, the `default("")` filter allow to overpass the error and the block will be searched as `blocks/navbar.html`, and will be `blocks/en/navbar.html` if not found.\
 
-## With user levels as version :
-For this example, we have a widget that prints information about user in `jinja2/widgets/profile.html` :
+## With a product as version :
+For this example, we have a widget that prints information about a product in `jinja2/widgets/product.html` :
 ```jinja
-{% macro profile(
-      USER_TYPE = "guest", 
+{% macro product(
+      PRODUCT = {"name": "", "description": "", "price":""}, 
 )
 %}
 <div>
-    <h2> {{ USER_TYPE }} profile </h2>
-    {% if user_type == 'admin' %}
-    <p>Status : Administrator</p>
-    {% else %}
-    <p>Status : Guest user</p>
-    {% endif %}
+    <h2>{{ PODUCT.name }}</h2>
+    <p>{{ PRODUCT.description }}</p>
+    <p>Buy it for {{ PRODUCT.price }}$ !</p>
 </div>
 {% endmacro %}
 ```
-With two version of blocks `jinja2/blocks/admin/profile.html` and `jinja2/blocks/guest/profile.html` :
+With two version of blocks `jinja2/blocks/prod1/product.html` and `jinja2/blocks/prod2/product.html` :
 ```jinja
-{% from "widgets/profile.html" import profile %}
-
-{{ profile(USER_TYPE = "admin") }}
+{% from "widgets/product.html" import product %}
+{{ product(
+    PRODUCT = 
+        {
+            "name": "product1"
+            "description": "..."
+            "price": "12"
+        }
+) }}
 ```
 ```jinja
-{% from "widgets/profile.html" import profile %}
-
-{{ profile() }}
+{% from "widgets/product.html" import product %}
+{{ product(
+    PRODUCT = 
+        {
+            "name": "product2"
+            "description": "..."
+            "price": "36"
+        }
+) }}
 ```
 And finally we can use this blocks with :
 ```jinja
 {% from "blocks/block.html" import block %}
-
 {{ block(
-    NAME = "profile"
-    VERSION = "admin"
+    NAME = "product"
+    VERSION = "prod1"
 )}}
-
 {{ block(
-    NAME = "profile"
-    VERSION = "guest"
+    NAME = "product"
+    VERSION = "prod2"
 )}}
 ```
