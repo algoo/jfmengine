@@ -1,7 +1,7 @@
 ---
 title Page1
 slug page1
-engine jinja2
+template_engine jinja2
 ---
 {
 
@@ -12,4 +12,3 @@ engine jinja2
 <h2>Page 1</h2>
 
 <p>Go to <a href="{{ url_slug('page2') }}">page 2</a> </p>
-

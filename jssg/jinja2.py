@@ -5,6 +5,7 @@ from jinja2 import Environment
 
 from jssg.templatetags.filter_opengraph_metadata import filter_opengraph_metadata
 
+
 from jssg.models import Page
 
 def url_from_slug(slug) :
