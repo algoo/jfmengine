@@ -18,13 +18,8 @@ from jssg import views
 from jssg.models import Page, Post
 from jssg import settings 
 
-def get_pages() :
-    return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Page.load_glob(all = True))
 
-def get_posts() :
-    return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Post.load_glob(all = True))
-
-print([p for p in get_pages()])
+# print([p for p in Page.get_pages()])
 
 urlpatterns = [
     distill_path(
@@ -35,24 +30,24 @@ urlpatterns = [
         r'^(?!posts/)(?P<slug>[a-zA-Z0-9-]+).html$',
         views.PageView.as_view(),
         name="page",
-        distill_func=get_pages,
+        distill_func=Page.get_pages,
     ),
     distill_re_path(
         r'^(?!posts/)(?P<dir>[a-zA-Z-/]+)/(?P<slug>[a-zA-Z0-9-]+).html$',
         views.PageView.as_view(),
         name="page",
-        distill_func=get_pages,
+        distill_func=Page.get_pages,
     ),
     distill_path(
         "posts/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
-        distill_func=get_posts,
+        distill_func=Post.get_posts,
     ),
     distill_path(
         "posts/<path:dir>/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
-        distill_func=get_posts,
+        distill_func=Post.get_posts,
     )
 ]

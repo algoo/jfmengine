@@ -239,10 +239,11 @@ class Page(Document):
         except KeyError:
             self.slug = slugify(self.title)
 
-        p = self.path
-        while (p not in self.BASE_DIR) :
-            p = p.parent
-        self.dir = str(self.path.relative_to(p).parent)
+        self.page_dir = self.path
+        while (self.page_dir not in self.BASE_DIR) :
+            self.page_dir = self.page_dir.parent
+
+        self.dir = str(self.path.relative_to(self.page_dir).parent)
         if self.dir == '.' :
             self.dir = ''
 
@@ -256,6 +257,10 @@ class Page(Document):
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, dir, glob, all)
+    
+    @classmethod
+    def get_pages(cls) :
+        return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Page.load_glob(all = True))
 
 
 class Post(Page):
@@ -272,16 +277,13 @@ class Post(Page):
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
 
-        p = self.path
-        while (p not in self.BASE_DIR) :
-            p = p.parent
-        self.dir = str(self.path.relative_to(p).parent)
-        if self.dir == '.' :
-            self.dir = ''
-
     @classmethod
     def load_glob(
         cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, dir, glob, all)
+    
+    @classmethod
+    def get_posts(cls) :
+        return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Post.load_glob(all = True))

@@ -1,6 +1,6 @@
 --- METADATA (first) ---
 title   galae - le service e-mail éthique et libre facturé à l'usage
-slug    fr-index
+slug    index
 description galae est un service e-mail éthique et libre facturé à l'usage. Toutes nos offres incluent des boîtes emails et domaines illimités hébergés en France.
 language    French
 lang    fr

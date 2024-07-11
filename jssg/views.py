@@ -65,7 +65,7 @@ class IndexView(PageView):
 
     def get_object(self, queryset=None) -> Model:
         self.kwargs["dir"] = "en"
-        self.kwargs["slug"] = "en-index"
+        self.kwargs["slug"] = "index"
         return super().get_object(queryset)
 
 
