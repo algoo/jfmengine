@@ -38,6 +38,7 @@ urlpatterns = [
         name="page",
         distill_func=Page.get_pages,
     ),
+    distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
     distill_path(
         "posts/<slug:slug>.html",
         views.PostView.as_view(),
@@ -49,5 +50,10 @@ urlpatterns = [
         views.PostView.as_view(),
         name="post",
         distill_func=Post.get_posts,
+    ),
+    distill_path(
+        "sitemap.xml",
+        views.SitemapView.as_view(),
+        name = "sitemap"
     )
 ]

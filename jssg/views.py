@@ -22,7 +22,7 @@ from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed
 from django.views.generic import DetailView
 
-from jssg.models import Page, Post
+from jssg.models import Page, Post, Sitemap
 
 
 class PostFeedsView(Feed):
@@ -37,7 +37,7 @@ class PostFeedsView(Feed):
         return post.title
 
     def item_description(self, item: Post):
-        return item.content_md
+        return item.content
 
     def item_link(self, post: Post) -> str:
         return reverse("post", args=(post.slug,))
@@ -64,11 +64,18 @@ class IndexView(PageView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        self.kwargs["dir"] = "en"
-        self.kwargs["slug"] = "index"
+        self.kwargs["slug"] = "en-index"
         return super().get_object(queryset)
 
 
 class PostView(PageView):
     model = Post
     template_name = "post.html"
+
+
+class SitemapView(DetailView) :
+    model = Sitemap
+    template_name = "sitemap.html"
+
+    def get_object(self, queryset=None) -> Model:
+        return self.model()

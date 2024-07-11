@@ -25,6 +25,7 @@ from django.conf import settings
 from django.template import Context, Template, engines
 from django.utils.text import slugify
 
+from django.core.management.commands.runserver import Command as runserver
 
 class Document:
     """A document.
@@ -35,7 +36,7 @@ class Document:
     """
 
     # Default dir to search document
-    BASE_DIR = settings.JSSG_CONTENT_DIR
+    BASE_DIR = settings.JFME_CONTENT_DIRS
 
     def __init__(self, content: str, **metadata: Mapping[str, str]) -> None:
         """Create a new document.
@@ -43,13 +44,13 @@ class Document:
         :param content: The content (body) of the document
         :param metadata: Associated metadata
         """
-        self.content = content
+        self.body = content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
         self.data = {}
 
     @property
-    def content_md(self) -> str:
+    def content(self) -> str:
         """Render the content as markdown to html.
 
         Note: the content will be processed by the django template engine
@@ -67,9 +68,6 @@ class Document:
         #             multiline text
         #             easy to read"
         # }}}
-        def convert_case(match_obj):
-            return match_obj.group(2).replace("\n", " ")
-        self.content = re.sub("({{{TO-1-LINE)(((?!TO-1-LINE}}}).)*)(TO-1-LINE}}})", convert_case, self.content, flags=re.DOTALL)
 
         # INFO - D.A. - Original code is below and is returned a markdown-based processed content
         # this works only with unindented HTML templates because markdown interprets indentation
@@ -77,7 +75,7 @@ class Document:
         # Expected: allow to process both HTML and markdown content types
         #
         # return markdown2.markdown(
-        #     Template(self.content).render(
+        #     Template(self.body).render(
         #         Context(
         #             {
         #                 "posts": sorted(
@@ -90,17 +88,9 @@ class Document:
         #     extras=["fenced-code-blocks", "tables"],
         # )
 
-        if "engine" in self.metadata.keys() and self.metadata["engine"] == "jinja2" :
-            return engines["jinja2"].from_string(self.content).render(
-                {
-                    "posts": sorted(
-                        Post.load_glob(), key=lambda p: p.timestamp, reverse=True
-                    ),
-                    "data":self.data
-                }
-            )
-        else :
-            return Template(self.content).render(
+
+        if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "django" :
+            return Template(self.body).render(
                 Context(
                     {
                         "posts": sorted(
@@ -109,6 +99,15 @@ class Document:
                         "data": self.data
                     }
                 )
+            )
+        else :
+            return engines["jinja2"].from_string(self.body).render(
+                {
+                    "posts": sorted(
+                        Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                    ),
+                    "data":self.data
+                }
             )
 
     @classmethod
@@ -217,14 +216,14 @@ class Document:
                 files += (p / dir).rglob(glob)
             else :
                 files += (p / dir).glob(glob)
-        print(files)
+        # print(files)
         return map(cls.load, files)
 
 
 class Page(Document):
     """A webpage, with a title and some content."""
 
-    BASE_DIR = settings.JSSG_PAGES_DIR
+    BASE_DIR = settings.JFME_PAGES_DIRS
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new page.
@@ -266,7 +265,7 @@ class Page(Document):
 class Post(Page):
     """A webblog post."""
 
-    BASE_DIR = settings.JSSG_POSTS_DIR
+    BASE_DIR = settings.JFME_POSTS_DIRS
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new post.
@@ -287,3 +286,9 @@ class Post(Page):
     @classmethod
     def get_posts(cls) :
         return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Post.load_glob(all = True))
+
+class Sitemap :
+    BASE_DIR = settings.JFME_PAGES_DIRS + settings.JFME_POSTS_DIRS
+    domain = settings.JFME_DOMAIN
+    pages_slugs = [p["slug"] for p in Page.get_pages()]
+    posts_slugs = [p["slug"] for p in Post.get_posts()]

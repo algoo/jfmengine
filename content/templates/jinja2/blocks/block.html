@@ -3,8 +3,8 @@
 
     {% if VERSION != "" %}
         {% include [
-            "blocks/" + NAME + "." + VERSION + ".html",
-            "blocks/" + NAME.split('.')[0] + '.' + VERSION + '.' + NAME.split('.')[-1],
+            "blocks/" + VERSION + '/' + NAME + ".html",
+            "blocks/" + VERSION + '/' + NAME ,
             "blocks/" + DEFAULT_NAME + ".html", 
             "blocks/" + DEFAULT_NAME
         ] %}
