@@ -26,17 +26,7 @@ og:locale       fr
 --- BODY (last / third) ---
 
 
-{% from "widgets/page_block_h2_with_ul_content_and_image_left.html" import page_block_h2_with_ul_content_and_image_left %}
-{% from "widgets/page_block_h2_with_ul_content_and_image_right.html" import page_block_h2_with_ul_content_and_image_right %}
-{% from "widgets/page_section_reference_logos.html" import page_section_reference_logos %}
-{% from "widgets/page_block_h2_with_content_and_primary_secondary_cta.html" import page_block_h2_with_content_and_primary_secondary_cta%}
-{% from "widgets/testimonials_quotes.html" import testimonials_quotes%}
-{% from "widgets/page_section_main_cta.html" import page_section_main_cta%}
-{% from "widgets/page_block_h2_with_content_dark_background_no_cta.html" import page_block_h2_with_content_dark_background_no_cta%}
-
-
-
-{{ page_section_reference_logos(
+{{ widgets.page_section_reference_logos(
     REFERENCES = 
     [
         {'name': 'oslandia', 'logo_url': 'assets/img/references/oslandia.webp'},
@@ -80,7 +70,7 @@ og:locale       fr
     <div class="container-fluid p-0">
 
 
-{{ page_block_h2_with_ul_content_and_image_right( 
+{{ widgets.page_block_h2_with_ul_content_and_image_right( 
     TITLE = 
     "
         Des e-mails <span class='galae-color'>délivrés</span>,
@@ -99,7 +89,7 @@ og:locale       fr
 ) }}
 
 
-{{ page_block_h2_with_ul_content_and_image_left(
+{{ widgets.page_block_h2_with_ul_content_and_image_left(
     TITLE = "Vos données en <span class='galae-color'>sécurité</span>",
     IMAGE_URL = "assets/img/undraw_relaxation_re_ohkx.svg",
     CONTENT_ITEMS =
@@ -114,7 +104,7 @@ og:locale       fr
 ) }}
 
 
-{{ page_block_h2_with_ul_content_and_image_right( 
+{{ widgets.page_block_h2_with_ul_content_and_image_right( 
     TITLE = "Vous êtes <span class='galae-color'>autonomes</span>, accompagnés et souverains.",
     IMAGE_URL = "assets/img/undraw_experts_re_i40h.svg",
     CONTENT_ITEMS =
@@ -134,7 +124,7 @@ og:locale       fr
 
 
 
-{{ page_block_h2_with_content_and_primary_secondary_cta(
+{{ widgets.page_block_h2_with_content_and_primary_secondary_cta(
     HTMLID = "pricing",
     TITLE = "Offres et tarifs",
     CONTENT = "L'offre galae repose sur les 4 offres suivantes :",
@@ -151,7 +141,7 @@ og:locale       fr
 
 
 
-{{ testimonials_quotes(
+{{ widgets.testimonials_quotes(
     PERSONS =
     [
         { "name": "Dominique Hébert", "job": "Directeur du développement Educ'AT", "testimonial": "Je peux créer autant d'adresses email et d'alias que je veux.", "img_url": "assets/img/testimonials/educ-at--dominique-hebert.webp" },
@@ -163,7 +153,7 @@ og:locale       fr
 
 
 
-{{ page_block_h2_with_content_dark_background_no_cta( 
+{{ widgets.page_block_h2_with_content_dark_background_no_cta( 
     TITLE = "Pourquoi j'ai décidé de créer le service <span class=\"galae-color\">galae</span> ?",
     CONTENT = 
     "
@@ -216,7 +206,7 @@ og:locale       fr
 
 
 
-{{ page_section_main_cta(
+{{ widgets.page_section_main_cta(
     HTMLID = "signup",
     TITLE = "Convaincus que vous avez besoin d'un email éthique facturé à l'usage&nbsp;?",
     SUBTITLE =

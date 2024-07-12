@@ -58,12 +58,12 @@ JFME_STATIC_DIRS = [path / "static" for path in JFME_CONTENT_DIRS]
 # Application definition
 
 INSTALLED_APPS = [
+    "jssg",
     "django.contrib.contenttypes",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django_distill",
     "django_vite_plugin",
-    "jssg",
 ]
 
 MIDDLEWARE = [
