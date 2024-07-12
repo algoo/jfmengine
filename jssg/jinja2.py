@@ -53,34 +53,35 @@ def url_for_slug(slug) :
 def url_for_slug_path(url_path) :
     """
     @param url_path: the url of the page to search (absolute path)
-    @return: the string of the url corresponding to the page
+    @return: the string of the slug url corresponding to the page
     @error: raise an exception if the url is a dead link
 
-    >>> url_for_slug_path('/en/index.html') # the page exists
+    >>> url_for_slug_path('/en/index') # the page exists
     /en/index.html
 
-    >>> url_for_slug_path('/en/index-removed.html') # the page does not exist
+    >>> url_for_slug_path('/en/index-removed') # the page does not exist
     Traceback (most recent call last):
     ...
-    Exception: page for '/en/index-removed.html' url not found (dead link)
+    Exception: page for '/en/index-removed' url not found (dead link)
 
     >>> url_for_slug_path('folder/index')
     Traceback (most recent call last):
       ...
-    Exception: url 'folder/index' is not valid ; correct urls are /<dir>/<slug>.html or /<slug.html>
+    Exception: url 'folder/index' is not valid ; correct urls are /<dir>/<slug> or /<slug>
 
     """
     # Valid url are /<dir>/<slug>.html or /<slug>.html
     # Example: if url_path is "/tmp/folder/subfolder/thefile.html", then slug will be "thefile" and the dir will be "tmp/folder/subfolder"
+    # Note : the dir does not start with '/' since the url parsed in url.py do not either
     try :
-        _, dir, slug = re.findall(r"(^|^/([a-zA-Z0-9-/]+))/([a-zA-Z0-9-]+)\.html", url_path)[0]
+        _, dir, slug = re.findall(r"(^|^/([a-zA-Z0-9/-]+))/([a-zA-Z0-9-]+)$", url_path)[0]
     except :
-        raise Exception("url '%s' is not valid ; correct urls are /<dir>/<slug>.html or /<slug>.html" % url_path)
+        raise Exception("url '%s' is not valid ; correct urls are /<dir>/<slug> or /<slug>" % url_path)
 
     # Verify that the page exists
     for page in Page.load_glob(all=True) :
         if page.slug == slug and page.rel_folder_path == dir :
-            return url_path
+            return url_path + ".html"
 
     raise Exception("page for '%s' url not found (dead link)" % url_path)
 
