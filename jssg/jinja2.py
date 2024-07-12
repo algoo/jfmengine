@@ -1,6 +1,6 @@
 from django.templatetags.static import static
 from django.urls import reverse
-
+from django_jinja_markdown.templatetags.md import markdown
 from jinja2 import Environment
 
 from jssg.templatetags.filter_opengraph_metadata import filter_opengraph_metadata
@@ -14,6 +14,7 @@ def environment(**options):
         {
             "static": static,
             "url": reverse,
+            "markdown": markdown
         }
     )
     env.filters.update(
