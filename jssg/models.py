@@ -238,13 +238,14 @@ class Page(Document):
         except KeyError:
             self.slug = slugify(self.title)
 
-        self.page_dir = self.path
-        while (self.page_dir not in self.BASE_DIR) :
-            self.page_dir = self.page_dir.parent
+        self.content_page_dir = self.path
+        while (self.content_page_dir not in self.BASE_DIR) :
+            self.content_page_dir = self.content_page_dir.parent
 
-        self.dir = str(self.path.relative_to(self.page_dir).parent)
-        if self.dir == '.' :
-            self.dir = ''
+        # page folder path relative to its content_page_dir
+        self.rel_folder_path = str(self.path.relative_to(self.content_page_dir).parent)
+        if self.rel_folder_path == '.' :
+            self.rel_folder_path = ''
 
     @classmethod
     def load_page_with_slug(cls, slug: str, dir : str) -> "Page":
@@ -259,7 +260,7 @@ class Page(Document):
     
     @classmethod
     def get_pages(cls) :
-        return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Page.load_glob(all = True))
+        return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Page.load_glob(all = True))
 
 
 class Post(Page):
@@ -285,7 +286,7 @@ class Post(Page):
     
     @classmethod
     def get_posts(cls) :
-        return ({"slug": p.slug} if p.dir == '' else {"dir": p.dir, "slug" : p.slug} for p in Post.load_glob(all = True))
+        return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Post.load_glob(all = True))
 
 class Sitemap :
     BASE_DIR = settings.JFME_PAGES_DIRS + settings.JFME_POSTS_DIRS

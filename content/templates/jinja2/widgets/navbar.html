@@ -19,7 +19,7 @@
     <div class="navbar__container__right">
       <a class="btn btn-sm btn-primary" href="{{ CTA_URL }}"
          target="{{ CTA_TARGET }}">{{ CTA_LABEL }}</a>
-      <a href="{{ url_abs(CHANGE_LANG_URL) }}">
+      <a href="{{ url_for_slug_path(CHANGE_LANG_URL) }}">
         <img class="languageFlag" src="{{ static(CHANGE_LANG_FLAG_URL)}}" alt="{{ CHANGE_LANG_ALT }}"/>
       </a>
     </div>
