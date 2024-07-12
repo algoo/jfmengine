@@ -111,7 +111,7 @@ For each command, the option `-h` give u some help.
 
  `./manage.py list-widgets` to list all widgets found in content directories
 
- `./manage.py make-widgets` to make a file that groups all jinja2 widgets macros for easier includes. It is called by `runserver` and `distill-local` commands. \
+ `./manage.py make-widgets` to make a file that groups all jinja2 widgets macros for easier includes. It is automatically called by `runserver` and `distill-local` commands. \
  See an example in `EXAMPLE.md`
 
 

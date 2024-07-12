@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.conf import settings
+from re import findall
 
 class Command(BaseCommand):
     help = "List all the widgets found in content templates."
@@ -27,9 +28,13 @@ class Command(BaseCommand):
         n = 0
         for template_dir in settings.JFME_TEMPLATES_DIRS :
             for widget in (template_dir / options["engine"] / "widgets").rglob("*") :
-                if widget.is_file() :
-                    self.stdout.write(str(widget.relative_to(settings.BASE_DIR)))
-                    n += 1
+                with open(widget, "r") as w :
+                    self.stdout.write("In %s : " % str(widget))
+                    i = 0
+                    for macro in findall(r"{%[\s]*macro[\s]*(.*)\(", w.read()) :
+                        self.stdout.write("\tmacro '%s()'" % macro)
+                        i += 1
+                    n += i
 
         if n > 1 :
             self.stdout.write(
