@@ -51,8 +51,11 @@ class PageView(DetailView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        print(self.kwargs["slug"])
-        model = self.model.load_page_with_slug(self.kwargs["slug"])
+        if "dir" not in self.kwargs.keys() :
+            self.kwargs["dir"] = ""
+        print("dir : " + self.kwargs["dir"])
+        print("slug : " + self.kwargs["slug"])
+        model = self.model.load_page_with_slug(self.kwargs["slug"], self.kwargs["dir"])
         return model
 
 
