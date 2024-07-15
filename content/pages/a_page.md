@@ -24,9 +24,10 @@ This is markdown.
 </article>
 
 
-{{ page_header(markdown('
+{{ page_header(
+    markdown('
 test
-#test
-####test
-
-')) }}
+**test**
+`test`
+    ')
+) }}
