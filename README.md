@@ -102,6 +102,32 @@ This directory is for the static content, like images, CSS and JavaScript files 
 It is accessible in templates by the Jinja or Django `static` function. \
 See the [Django doc](https://docs.djangoproject.com/en/5.0/howto/static-files/#configuring-static-files) for static files, or the [Jinja2 version](https://docs.djangoproject.com/en/5.0/topics/templates/#module-django.template.backends.django).
 
+### Blocks or widgets
+Widgets are reusable templates used to factor some content in pages. Widgets will be searched in the templates directories, in `<django|jinja2>/widgets/`
+
+Blocks are parts of content that can have multiple versions.
+They have no parameter as they use widgets when necessary.
+It is possible to use the macro `block(NAME, [VERSION], [DEFAULT_NAME])`, to include a bloc and specify its version. In this case, the block will be searched in the templates directories, in `<django|jinja2>/blocks/<block-version>/` .
+
+The `VERSION` and `DEFAULT_NAME` arguments of `block()` are optionnal.\
+If no `VERSION` is given, the block will be searched directly in `blocks/`.
+
+For `VERSION`, you can use page metadata, jinja variables, or just strings.
+
+For examples, see `EXAMPLES.md`.
+
+## CLI
+For each command, the option `-h` give u some help.
+
+ `./manage.py runserver` to run the dev server, see [Dev](#dev) for usage
+
+ `./manage.py distill-local` to make the static website, see [Prod](#prod) for usage
+
+ `./manage.py list-widgets` to list all widgets found in content directories
+
+ `./manage.py make-widgets` to make a file that groups all jinja2 widgets macros for easier includes. It is automatically called by `runserver` and `distill-local` commands. \
+ See an example in `EXAMPLE.md`
+
 ## Others
 
 JFM-Engine is a friendly fork of [JSSG](https://github.com/jtremesay/jssg/) made in agreement with the JSSG developer because of different goals. \

@@ -44,7 +44,7 @@ class Document:
         :param content: The content (body) of the document
         :param metadata: Associated metadata
         """
-        self.body = content
+        self.body = "{% import 'allwidgets.html' as widgets %}\n" + content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
         self.data = {}
@@ -196,7 +196,7 @@ class Document:
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all=False
     ) -> Iterator["Document"]:
         """Load multiple document.
 
@@ -212,7 +212,10 @@ class Document:
         
         files = []
         for p in path :
-            files += p.glob(glob)
+            if all :
+                files += (p / dir).rglob(glob)
+            else :
+                files += (p / dir).glob(glob)
         # print(files)
         return map(cls.load, files)
 
@@ -235,20 +238,29 @@ class Page(Document):
         except KeyError:
             self.slug = slugify(self.title)
 
+        self.content_page_dir = self.path
+        while (self.content_page_dir not in self.BASE_DIR) :
+            self.content_page_dir = self.content_page_dir.parent
+
+        # page folder path relative to its content_page_dir
+        self.rel_folder_path = str(self.path.relative_to(self.content_page_dir).parent)
+        if self.rel_folder_path == '.' :
+            self.rel_folder_path = ''
+
     @classmethod
-    def load_page_with_slug(cls, slug: str) -> "Page":
-        return next(filter(lambda p: p.slug == slug, cls.load_glob()))
+    def load_page_with_slug(cls, slug: str, dir : str) -> "Page":
+        return next(filter(lambda p: p.slug == slug, cls.load_glob(dir = dir)))
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
-        return super().load_glob(path, glob)
+        return super().load_glob(path, dir, glob, all)
     
     @classmethod
-    def get_pages(cls):
-        return ({"slug": p.slug} for p in Page.load_glob())
+    def get_pages(cls) :
+        return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Page.load_glob(all = True))
 
 
 class Post(Page):
@@ -267,14 +279,14 @@ class Post(Page):
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, glob: str = "*.md"
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
-        return super().load_glob(path, glob)
-
+        return super().load_glob(path, dir, glob, all)
+    
     @classmethod
-    def get_posts(cls):
-        return ({"slug": p.slug} for p in Post.load_glob())
+    def get_posts(cls) :
+        return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Post.load_glob(all = True))
 
 class Sitemap :
     BASE_DIR = settings.JFME_PAGES_DIRS + settings.JFME_POSTS_DIRS

@@ -16,14 +16,24 @@ from django_distill import distill_path, distill_re_path
 
 from jssg import views
 from jssg.models import Page, Post
+from jssg import settings 
 
+
+# print([p for p in Page.get_pages()])
 
 urlpatterns = [
     distill_path(
         "", views.IndexView.as_view(), name="index", distill_file="index.html"
     ),
-    distill_path(
-        "pages/<slug:slug>.html",
+    distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
+    distill_re_path(
+        r'^(?!posts/)(?P<slug>[a-zA-Z0-9-]+).html$',
+        views.PageView.as_view(),
+        name="page",
+        distill_func=Page.get_pages,
+    ),
+    distill_re_path(
+        r'^(?!posts/)(?P<dir>[a-zA-Z-/]+)/(?P<slug>[a-zA-Z0-9-]+).html$',
         views.PageView.as_view(),
         name="page",
         distill_func=Page.get_pages,
@@ -31,6 +41,12 @@ urlpatterns = [
     distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
     distill_path(
         "posts/<slug:slug>.html",
+        views.PostView.as_view(),
+        name="post",
+        distill_func=Post.get_posts,
+    ),
+    distill_path(
+        "posts/<path:dir>/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
         distill_func=Post.get_posts,
