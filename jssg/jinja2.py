@@ -91,7 +91,7 @@ def environment(**options):
         {
             "static": static,
             "url": reverse,
-            "markdown": markdown
+            "markdown": markdown,
             "url_for_slug": url_for_slug,
             "url_for_slug_path" : url_for_slug_path
         }
