@@ -293,3 +293,34 @@ class Sitemap :
     domain = settings.JFME_DOMAIN
     pages_slugs = [p["slug"] for p in Page.get_pages()]
     posts_slugs = [p["slug"] for p in Post.get_posts()]
+
+class PostList :
+    metadata = {}
+    category = ""
+
+    def __init__(self, category = "") -> None:
+        self.category = category
+
+    @classmethod
+    def load_post_list_with_category(cls, category) :
+        return cls(category)
+
+    @property
+    def categories(self) :
+        cat = set()
+        for post in Post.load_glob(all = True) :
+            cat.add(post.metadata["category"])
+        return list(cat)
+
+    @classmethod
+    def get_categories(cls) :
+        return [{"category": category} for category in cls().categories]
+    
+    @property
+    def posts(self) :
+        posts = sorted(Post.load_glob(), key=lambda p: p.timestamp, reverse=True)
+        if self.category == "" :
+            return posts
+        else :
+            return filter(lambda p: p.metadata["category"] == self.category, posts)
+    

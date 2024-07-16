@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+<nav class='navbar navbar-light bg-light static-top'>
+<a>Catégories :</a>
+<a href='/posts/'>Tout</a>
+{% for category in object.categories %}
+    <a href='/posts/category/{{category}}.html'>{{ category }}</a>
+{% endfor %}
+</nav>
+</div>
+
+{% for post in object.posts %}
+    <a href='/posts/{{post.slug}}.html'>{{ post.timestamp.strftime("%d/%m/%Y") }} : {{ post.title }} : {{ post.metadata.abstract }}</a> <br>
+{% endfor %}
+
+{% endblock %}
