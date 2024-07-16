@@ -1,6 +1,6 @@
 ---
 title   R&D et Veille techno - Petit point sur nos projets internes
-date    1970-02-01T00:00+00:00
+date    2024-07-11T08:33:06+00:00
 category Technologie
 abstract Un petit tour d'horizon des projets sur lesquels nos équipes techniques travaillent actuellement ...
 
@@ -9,6 +9,8 @@ abstract Un petit tour d'horizon des projets sur lesquels nos équipes technique
     
 }
 ---
+
+{%markdown%}
 L'été est là, le rythme ralentit, c'est l'occasion de parler un peu R&D
 
 Petit tour d'horizon des projets sur lesquels nous travaillons actuellement :
@@ -66,3 +68,4 @@ On ne s'arrête pas pendant l'été mais on réduit drastiquement notre présenc
 Passez toutes et tous de bonnes vacances 🌅
 
 Rendez-vous début septembre pour de nouvelles aventures libres et souveraines ! 🚀
+{%endmarkdown%}

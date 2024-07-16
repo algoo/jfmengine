@@ -276,6 +276,7 @@ class Post(Page):
         """
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
+        self.metadata["category"] = slugify(self.metadata["category"])
 
     @classmethod
     def load_glob(
