@@ -276,7 +276,10 @@ class Post(Page):
         """
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
-        self.metadata["category"] = slugify(self.metadata["category"])
+        if "category" in self.metadata :
+            self.metadata["category"] = slugify(self.metadata["category"])
+        else :
+            self.metadata["category"] = ""
 
     @classmethod
     def load_glob(
@@ -310,8 +313,9 @@ class PostList :
     def categories(self) :
         cat = set()
         for post in Post.load_glob(all = True) :
-            cat.add(post.metadata["category"])
-        return list(cat)
+            if post.metadata["category"] != "" :
+                cat.add(post.metadata["category"])
+        return cat
 
     @classmethod
     def get_categories(cls) :
