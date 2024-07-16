@@ -59,6 +59,7 @@ JFME_STATIC_DIRS = [path / "static" for path in JFME_CONTENT_DIRS]
 
 INSTALLED_APPS = [
     "jssg",
+    "django_jinja_markdown",
     "django.contrib.contenttypes",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
@@ -80,7 +81,8 @@ TEMPLATES = [
         "DIRS": [path / "jinja2" for path in JFME_TEMPLATES_DIRS],
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "jssg.jinja2.environment"
+            "environment": "jssg.jinja2.environment",
+            "extensions": ["django_jinja_markdown.extensions.MarkdownExtension"]
         },
     },
     {
