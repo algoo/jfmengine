@@ -3,7 +3,7 @@ title   R&D et Veille techno - Petit point sur nos projets internes
 date    2024-07-11T08:33:06+00:00
 category Technologie
 abstract Un petit tour d'horizon des projets sur lesquels nos équipes techniques travaillent actuellement ...
-
+author Damien ACCORSI
 ---
 {
     

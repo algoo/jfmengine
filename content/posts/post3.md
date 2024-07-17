@@ -3,6 +3,7 @@ title   Venez échanger sur les sujets de collaboration d'équipe et e-mail aux 
 date    2024-05-20T16:20:03+00:00
 category Univers du libre
 abstract Algoo sera présente et très active aux JDLL 2024 : stand, ateliers et conférence !
+author Damien ACCORSI
 ---
 {
     

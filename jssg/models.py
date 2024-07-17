@@ -299,7 +299,7 @@ class Sitemap :
     posts_slugs = [p["slug"] for p in Post.get_posts()]
 
 class PostList :
-    metadata = {}
+    metadata = {"page_header_h1":"Posts"}
     category = ""
 
     def __init__(self, category = "") -> None:

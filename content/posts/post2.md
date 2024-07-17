@@ -3,6 +3,7 @@ title   Microsoft deviendrait-il un spyware avec la fonctionnalité Recall ?
 date    2024-05-22T12:36:09+00:00
 category Technologie
 abstract Le 20 mai 2024, Microsoft annonce la fonctionnalité Recall qui va "aider les utilisateurs à trouver leurs informations" en s'appuyant sur l'IA ...
+author Damien ACCORSI
 ---
 {
     
