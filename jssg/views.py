@@ -22,7 +22,7 @@ from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed
 from django.views.generic import DetailView
 
-from jssg.models import Page, Post, Sitemap
+from jssg.models import Page, Post, Sitemap, PostList
 
 
 class PostFeedsView(Feed):
@@ -79,3 +79,12 @@ class SitemapView(DetailView) :
 
     def get_object(self, queryset=None) -> Model:
         return self.model()
+    
+class PostListView(DetailView):
+    template_name = "post-list.html"
+
+    def get_object(self, queryset=None) -> Model:
+        if "category" not in self.kwargs.keys() :
+            self.kwargs["category"] = ""
+        print(self.kwargs["category"])
+        return PostList.load_post_list_with_category(self.kwargs["category"], self.kwargs["page"])
