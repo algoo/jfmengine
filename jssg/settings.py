@@ -52,6 +52,7 @@ JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]
 JFME_STATIC_DIRS = [path / "static" for path in JFME_CONTENT_DIRS]
+JFME_NUMBER_OF_POSTS_BY_PAGE = 3
 
 
 

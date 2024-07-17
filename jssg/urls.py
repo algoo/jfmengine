@@ -20,7 +20,7 @@ from jssg import settings
 
 
 # print([p for p in Page.get_pages()])
-# print([p for p in PostList.get_categories()])
+# print([p for p in PostList.get_categories_and_pages()])
 
 urlpatterns = [
     distill_path(
@@ -41,25 +41,25 @@ urlpatterns = [
 
     distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
     distill_path(
-        "posts/",
+        "posts/page<int:page>.html",
         views.PostListView.as_view(),
         name = "post-index",
-        distill_file = "posts/index.html"
+        distill_func = PostList.get_pages
     ),
     distill_path(
-        "posts/category/<slug:category>.html",
+        "posts/category/<slug:category>/page<int:page>.html",
         views.PostListView.as_view(),
         name = "post-category",
-        distill_func = PostList.get_categories
+        distill_func = PostList.get_categories_and_pages
     ),
     distill_path(
-        "posts/<slug:slug>.html",
+        "posts/articles/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
         distill_func=Post.get_posts,
     ),
     distill_path(
-        "posts/<path:dir>/<slug:slug>.html",
+        "posts/articles/<path:dir>/<slug:slug>.html",
         views.PostView.as_view(),
         name="post",
         distill_func=Post.get_posts,

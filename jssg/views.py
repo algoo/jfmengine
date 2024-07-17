@@ -87,4 +87,4 @@ class PostListView(DetailView):
         if "category" not in self.kwargs.keys() :
             self.kwargs["category"] = ""
         print(self.kwargs["category"])
-        return PostList.load_post_list_with_category(self.kwargs["category"])
+        return PostList.load_post_list_with_category(self.kwargs["category"], self.kwargs["page"])

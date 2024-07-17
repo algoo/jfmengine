@@ -27,6 +27,8 @@ from django.utils.text import slugify
 
 from django.core.management.commands.runserver import Command as runserver
 
+from math import ceil
+
 class Document:
     """A document.
 
@@ -302,12 +304,18 @@ class PostList :
     metadata = {"page_header_h1":"Posts"}
     category = ""
 
-    def __init__(self, category = "") -> None:
+    def __init__(self, category = "", page = 1) -> None:
         self.category = category
+        self.page = page
+        self.posts_by_page = settings.JFME_NUMBER_OF_POSTS_BY_PAGE
+        if self.category == "" :
+            self.nb_pages = ceil(len(list(Post.load_glob(all=True))) / self.posts_by_page) # number of posts / number of posts by page
+        else :
+            self.nb_pages = ceil(len(list(filter(lambda p: p.metadata["category"] == self.category, Post.load_glob(all=True)))) / self.posts_by_page) # number of posts of the category / number of posts by page
 
     @classmethod
-    def load_post_list_with_category(cls, category) :
-        return cls(category)
+    def load_post_list_with_category(cls, category, page) :
+        return cls(category, page)
 
     @property
     def categories(self) :
@@ -315,17 +323,25 @@ class PostList :
         for post in Post.load_glob(all = True) :
             if post.metadata["category"] != "" :
                 cat.add(post.metadata["category"])
-        return cat
+        return sorted(cat)
 
     @classmethod
-    def get_categories(cls) :
-        return [{"category": category} for category in cls().categories]
+    def get_categories_and_pages(cls) :
+        t = []
+        for category in cls().categories :
+            t += [{"category": category, "page":page} for page in range(1, cls(category).nb_pages + 1)]
+        return t
+        
+    
+    @classmethod
+    def get_pages(cls) :
+        return [{"page": page} for page in range(1, cls().nb_pages+1)]
     
     @property
     def posts(self) :
-        posts = sorted(Post.load_glob(), key=lambda p: p.timestamp, reverse=True)
+        posts = sorted(Post.load_glob(all=True), key=lambda p: p.timestamp, reverse=True)
         if self.category == "" :
-            return posts
+            return posts[self.posts_by_page*(self.page-1):self.posts_by_page*(self.page)]
         else :
-            return filter(lambda p: p.metadata["category"] == self.category, posts)
+            return list(filter(lambda p: p.metadata["category"] == self.category, posts))[self.posts_by_page*(self.page-1):self.posts_by_page*(self.page)]
     
