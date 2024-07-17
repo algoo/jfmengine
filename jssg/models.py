@@ -365,7 +365,9 @@ class PostList :
             t += [{"category": category, "page":page} for page in range(1, cls(category).nb_pages + 1)]
         return t
         
-    
+    def get_postlists(cls) :
+        return cls.get_categories_and_pages() + cls.get_pages()
+
     @classmethod
     def get_pages(cls) :
         return [{"page": page} for page in range(1, cls().nb_pages+1)]
