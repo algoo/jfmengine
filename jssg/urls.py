@@ -19,7 +19,7 @@ from jssg.models import Page, Post, PostList
 from jssg import settings 
 
 from django.contrib.sitemaps.views import sitemap
-from jssg.sitemaps import PageSitemap, PostSitemap
+from jssg.sitemaps import PageSitemap, PostSitemap, PostListSitemap, ConstantUrlSitemap
 
 # print([p for p in Page.get_pages()])
 # print([p for p in PostList.get_categories_and_pages()])
@@ -70,7 +70,7 @@ urlpatterns = [
     distill_path(
         "sitemap.xml",
         sitemap,
-        {"sitemaps": {"page": PageSitemap, "posts": PostSitemap}},
+        {"sitemaps": {"constant-url": ConstantUrlSitemap, "page": PageSitemap, "posts": PostSitemap, "postlist":PostListSitemap}},
         name="django.contrib.sitemaps.views.sitemap",
     )
 ]
