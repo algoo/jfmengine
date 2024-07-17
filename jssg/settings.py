@@ -46,7 +46,7 @@ runserver.default_port = '8000'
 runserver.default_addr = '127.0.0.1'
 
 # JSSG
-JFME_DOMAIN = "https://www.galae.net"
+JFME_DOMAIN = "www.galae.net"
 JFME_CONTENT_DIRS = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]
 JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
@@ -58,12 +58,17 @@ JFME_NUMBER_OF_POSTS_BY_PAGE = 3
 JFME_CONTENT_REQUIRED_METADATA = ["title", "slug", "lang", "description"]
 
 
+#Django sites and sitemap app
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
     "jssg",
     "django_jinja_markdown",
     "django.contrib.contenttypes",
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django_distill",

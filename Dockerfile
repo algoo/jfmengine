@@ -37,6 +37,7 @@ COPY common-content/ common-content/
 COPY galae-content/ galae-content/
 
 # Build
+RUN ./manage.py migrate
 RUN npm run build \
     && ./manage.py distill-local --collectstatic --force dist
 
