@@ -53,6 +53,7 @@ JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]
 JFME_STATIC_DIRS = [path / "static" for path in JFME_CONTENT_DIRS]
 JFME_NUMBER_OF_POSTS_BY_PAGE = 3
+JFME_SITEMAP_LASTMOD_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z" # %Y:YYYY, %m:MM, %d:DD, %z:+/-HHMM
 
 #Django sites and sitemap app
 SITE_ID = 1

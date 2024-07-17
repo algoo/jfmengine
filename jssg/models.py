@@ -226,6 +226,7 @@ class Page(Document):
     """A webpage, with a title and some content."""
 
     BASE_DIR = settings.JFME_PAGES_DIRS
+    lastmod_format = settings.JFME_SITEMAP_LASTMOD_DATETIME_FORMAT
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new page.
