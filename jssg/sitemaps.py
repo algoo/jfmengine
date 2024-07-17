@@ -3,8 +3,10 @@ from django.contrib.sitemaps import Sitemap
 from django.contrib.sites.models import Site
 from jssg.models import Page, Post, PostList
 from django.conf import settings
+from datetime import datetime
 
 class MySitemap(Sitemap) :
+    #Overriding get_url() to specify the domain name
     def get_urls(self, site=None, **kwargs):
         site = Site(domain=settings.JFME_DOMAIN, name=settings.JFME_DOMAIN)
         return super(MySitemap, self).get_urls(site=site, **kwargs)
@@ -23,6 +25,8 @@ class PageSitemap(MySitemap) :
             return "/" + page.rel_folder_path + "/" + page.slug + ".html"
         else :
             return "/" + page.slug + ".html"
+    def lastmod(self, post) :
+        return datetime.fromtimestamp(post.path.lstat().st_mtime)
         
 class PostSitemap(MySitemap) :
     def items(self) :
@@ -32,6 +36,8 @@ class PostSitemap(MySitemap) :
             return "/posts/article/" + post.rel_folder_path + "/" + post.slug + ".html"
         else :
             return "/posts/articles/" + post.slug + ".html"
+    def lastmod(self, post) :
+        return datetime.fromtimestamp(post.path.lstat().st_mtime)
         
 class PostListSitemap(MySitemap) :
     def items(self) :
