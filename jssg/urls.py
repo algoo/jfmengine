@@ -18,6 +18,8 @@ from jssg import views
 from jssg.models import Page, Post
 from jssg import settings 
 
+from django.contrib.sitemaps.views import sitemap
+from jssg.sitemaps import PageSitemap, PostSitemap
 
 # print([p for p in Page.get_pages()])
 
@@ -53,7 +55,8 @@ urlpatterns = [
     ),
     distill_path(
         "sitemap.xml",
-        views.SitemapView.as_view(),
-        name = "sitemap"
+        sitemap,
+        {"sitemaps": {"page": PageSitemap, "posts": PostSitemap}},
+        name="django.contrib.sitemaps.views.sitemap",
     )
 ]
