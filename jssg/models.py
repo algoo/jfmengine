@@ -295,12 +295,6 @@ class Post(Page):
     def get_posts(cls) :
         return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Post.load_glob(all = True))
 
-class Sitemap :
-    BASE_DIR = settings.JFME_PAGES_DIRS + settings.JFME_POSTS_DIRS
-    domain = settings.JFME_DOMAIN
-    pages_slugs = [p["slug"] for p in Page.get_pages()]
-    posts_slugs = [p["slug"] for p in Post.get_posts()]
-
 class PostList :
     metadata = {"page_header_h1":"Posts"}
     category = ""
