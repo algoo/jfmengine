@@ -15,7 +15,6 @@ class Command(BaseCommand):
             for widget in (template_dir / "jinja2" / "widgets").rglob("*") :
                 if widget.is_file() :
                     with open(widget, "r") as w :
-                        # print(findall(r"{% macro.*", w.read(), DOTALL))
                         file_content = w.read()
                         for macro in Environment().parse(file_content).find_all(Macro) :
                             n += 1
