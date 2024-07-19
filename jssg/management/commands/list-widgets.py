@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.conf import settings
-from re import findall
 from jssg.jinja2 import Environment
 from jinja2.nodes import Macro
 

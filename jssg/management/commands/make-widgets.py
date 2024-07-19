@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
-from django.core.management import call_command
 from django.conf import settings
-from re import findall
+from jinja2 import Environment
+from jinja2.nodes import Macro
 
 class Command(BaseCommand):
     help = "Make a file which contains all widgets macros for easier import in templates and pages."
@@ -15,9 +15,11 @@ class Command(BaseCommand):
             for widget in (template_dir / "jinja2" / "widgets").rglob("*") :
                 if widget.is_file() :
                     with open(widget, "r") as w :
-                        for macro in findall(r"{%[\s]*macro[\s\S]*%}[\s\S]*{%[\s]*endmacro[\s]*%}", w.read()) :
-                            buf += macro + "\n"
+                        # print(findall(r"{% macro.*", w.read(), DOTALL))
+                        file_content = w.read()
+                        for macro in Environment().parse(file_content).find_all(Macro) :
                             n += 1
+                        buf += file_content + "\n"
 
         if n == 0 :
             self.stdout.write(
