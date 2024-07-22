@@ -128,6 +128,8 @@ For each command, the option `-h` give u some help.
  `./manage.py make-widgets` to make a file that groups all jinja2 widgets macros for easier includes. It is automatically called by `runserver` and `distill-local` commands. \
  See an example in `EXAMPLE.md`
 
+ `./manage.py check-metadata` to check if metadata specified in `JFME_CONTENT_REQUIRED_METADATA` are set in pages.
+
 ## Others
 
 JFM-Engine is a friendly fork of [JSSG](https://github.com/jtremesay/jssg/) made in agreement with the JSSG developer because of different goals. \
