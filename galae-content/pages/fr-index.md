@@ -26,7 +26,7 @@ og:locale       fr
 --- BODY (last / third) ---
 
 
-{{ widgets.page_section_reference_logos(
+{{ page_section_reference_logos.page_section_reference_logos(
     REFERENCES = 
     [
         {'name': 'oslandia', 'logo_url': 'assets/img/references/oslandia.webp'},
@@ -70,7 +70,7 @@ og:locale       fr
     <div class="container-fluid p-0">
 
 
-{{ widgets.page_block_h2_with_ul_content_and_image_right( 
+{{ page_block_h2_with_ul_content_and_image_right.page_block_h2_with_ul_content_and_image_right( 
     TITLE = 
     "
         Des e-mails <span class='galae-color'>délivrés</span>,
@@ -89,7 +89,7 @@ og:locale       fr
 ) }}
 
 
-{{ widgets.page_block_h2_with_ul_content_and_image_left(
+{{ page_block_h2_with_ul_content_and_image_left.page_block_h2_with_ul_content_and_image_left(
     TITLE = "Vos données en <span class='galae-color'>sécurité</span>",
     IMAGE_URL = "assets/img/undraw_relaxation_re_ohkx.svg",
     CONTENT_ITEMS =
@@ -104,7 +104,7 @@ og:locale       fr
 ) }}
 
 
-{{ widgets.page_block_h2_with_ul_content_and_image_right( 
+{{ page_block_h2_with_ul_content_and_image_right.page_block_h2_with_ul_content_and_image_right( 
     TITLE = "Vous êtes <span class='galae-color'>autonomes</span>, accompagnés et souverains.",
     IMAGE_URL = "assets/img/undraw_experts_re_i40h.svg",
     CONTENT_ITEMS =
@@ -124,7 +124,7 @@ og:locale       fr
 
 
 
-{{ widgets.page_block_h2_with_content_and_primary_secondary_cta(
+{{ page_block_h2_with_content_and_primary_secondary_cta.page_block_h2_with_content_and_primary_secondary_cta(
     HTMLID = "pricing",
     TITLE = "Offres et tarifs",
     CONTENT = "L'offre galae repose sur les 4 offres suivantes :",
@@ -141,7 +141,7 @@ og:locale       fr
 
 
 
-{{ widgets.testimonials_quotes(
+{{ testimonials_quotes.testimonials_quotes(
     PERSONS =
     [
         { "name": "Dominique Hébert", "job": "Directeur du développement Educ'AT", "testimonial": "Je peux créer autant d'adresses email et d'alias que je veux.", "img_url": "assets/img/testimonials/educ-at--dominique-hebert.webp" },
@@ -153,7 +153,7 @@ og:locale       fr
 
 
 
-{{ widgets.page_block_h2_with_content_dark_background_no_cta( 
+{{ page_block_h2_with_content_dark_background_no_cta.page_block_h2_with_content_dark_background_no_cta( 
     TITLE = "Pourquoi j'ai décidé de créer le service <span class=\"galae-color\">galae</span> ?",
     CONTENT = 
     "
@@ -206,7 +206,7 @@ og:locale       fr
 
 
 
-{{ widgets.page_section_main_cta(
+{{ page_section_main_cta.page_section_main_cta(
     HTMLID = "signup",
     TITLE = "Convaincus que vous avez besoin d'un email éthique facturé à l'usage&nbsp;?",
     SUBTITLE =

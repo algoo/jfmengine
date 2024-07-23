@@ -44,7 +44,7 @@ class Document:
         :param content: The content (body) of the document
         :param metadata: Associated metadata
         """
-        self.body = "{% import 'allwidgets.html' as widgets %}\n" + content
+        self.body = self.make_imports() + content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
         self.data = {}
@@ -218,6 +218,15 @@ class Document:
                 files += (p / dir).glob(glob)
         # print(files)
         return map(cls.load, files)
+    
+    @classmethod
+    def make_imports(cls) :
+        import_str = ""
+        for template_dir in settings.JFME_TEMPLATES_DIRS :
+            for widget in (template_dir / "jinja2" / "widgets").rglob("*") :
+                if widget.is_file() :
+                    import_str += "{% " + "import '{}' as {}".format(widget.relative_to(template_dir / "jinja2"), widget.stem) + " %}\n"
+        return import_str
 
 
 class Page(Document):

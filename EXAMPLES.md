@@ -101,16 +101,26 @@ And finally we can use this blocks with :
 ```
 
 # Exemple for automatic widget inclusion
+Let's assume we have 3 macros widgets : `navbar()` in `widgets/menu.html`, `header()` and `footer()` in `widgets/page.html`.
 
-First you can verify that all widgets are found with the `listwidget` command.\
-Then the `makewidget` command will create a file `content/templates/<engine>/allwidgets.html`, that groups all the widgets found, and is automatically imported as `widgets` in all pages.\
+First you can verify that all widgets are found with the `listwidget` command :
+```shell
+$ ./manage.py list-widgets
+0 django widget found
 
-The line `{% import 'allwidgets.html' as widgets %}` is added at the beginning of each `Body` section of pages.
+content/templates/jinja2/widgets/menu.html
+	navbar()
+content/templates/jinja2/widgets/page.html
+	footer()
+    header()
+2 jinja2 widget files found (3 macros)
+```
+All the listed widgets are automatically imported in all pages and can be accessed by : `<filename>.<macroname>()`\
+The lines `{% import '<widget-file-path>' as <widget-file-name> %}` is added at the beginning of each `Body` section of pages.
 
-For instance, if we have 3 widgets : `navbar.html`, `header.html` and `footer.html` we can use them in pages :
-
+We can use our widgets in pages with :
 ```jinja
-{{ widgets.navbar(...) }}
-{{ widgets.header(...) }}
-{{ widgets.footer(...) }}
+{{ menu.navbar(...) }}
+{{ page.header(...) }}
+{{ page.footer(...) }}
 ```
