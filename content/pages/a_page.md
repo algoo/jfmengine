@@ -15,11 +15,15 @@ template_engine jinja2
 
 <p>Go to <a href="{{ url('page', args=['page2']) }}">page 2</a> </p>
 
+
 <article>
 {% markdown %}
 ```
-This is markdown.
+This is markdown :
 ```
+test
+**test**
+`test`
 {% endmarkdown %}
 </article>
 
