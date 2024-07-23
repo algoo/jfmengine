@@ -46,13 +46,16 @@ class Command(BaseCommand):
         elif options["jinja2"] :
             nb_file_found = 0
             nb_macro_found = 0
+            visited = []
             for template_dir in settings.JFME_TEMPLATES_DIRS :
                 for widget in (template_dir / "jinja2" / "widgets").rglob("*") :
+                    rel_widget_path = widget.relative_to(template_dir.parent.parent)
                     if widget.is_file() :
                         with open(widget, "r") as w :
-                            self.stdout.write("%s" % str(widget.relative_to(template_dir.parent.parent)))
+                            self.stdout.write("%s" % str(rel_widget_path))
                             nb_file_found += 1
                             for macro in Environment().parse(w.read()).find_all(Macro) :
+                                visited.append((widget.stem, macro.name, rel_widget_path))
                                 self.stdout.write("\t%s()" % macro.name)
                                 nb_macro_found += 1
 
@@ -65,6 +68,17 @@ class Command(BaseCommand):
                     "macro" if nb_file_found <= 1 else "macros"
                 )
             ))
+            couple_visited = [(x[0], x[1]) for x in visited]
+            duplicates = set([t for t in couple_visited if couple_visited.count(t) > 1]) # get the (widget.stem, macro.name) doublons
+            for duplicate in duplicates :
+                self.stdout.write(self.style.WARNING(
+                    "Warning : macro '%s' in a file named '%s' found more than once, could be ambiguous ; found in :" % (duplicate[0], duplicate[1])
+                ))
+                paths = [x[2] for x in filter(lambda t : (t[0], t[1]) == duplicate, visited)] # get the paths corresponding to (widget.stem, macro.name)
+                for p in paths :
+                    self.stdout.write(self.style.WARNING(
+                        "\t- %s" % p
+                    ))
         
         else :
             call_command("list-widgets", "-django")
