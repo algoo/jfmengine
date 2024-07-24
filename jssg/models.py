@@ -221,11 +221,14 @@ class Document:
     
     @classmethod
     def make_imports(cls) :
+        if "template_engine" in cls.metadata.keys() and cls.metadata["template_engine"] == "django" :
+            return ""
+        
         import_str = ""
         for template_dir in settings.JFME_TEMPLATES_DIRS :
-            for widget in (template_dir / "jinja2" / "widgets").rglob("*") :
-                if widget.is_file() :
-                    import_str += "{% " + "import '{}' as {}".format(widget.relative_to(template_dir / "jinja2"), widget.stem) + " %}\n"
+            for widget_file in (template_dir / "jinja2" / "widgets").rglob("*") :
+                if widget_file.is_file() :
+                    import_str += "{% " + "import '{}' as {}".format(widget_file.relative_to(template_dir / "jinja2"), widget_file.stem) + " %}\n"
         return import_str
 
 
