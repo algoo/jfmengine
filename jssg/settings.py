@@ -56,7 +56,8 @@ JFME_DEFAULT_METADATA_DICT = {"slug": "index", }                        # The or
 JFME_DEFAULT_METADATA_FILEPATH = BASE_DIR / "jssg" / "default_metadata.txt" # If a metadata is specified more than once, the last included is retained
 JFME_NUMBER_OF_POSTS_BY_PAGE = 3
 JFME_CONTENT_REQUIRED_METADATA = ["title", "slug", "lang", "description"]
-JFME_SITEMAP_LASTMOD_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z" # %Y:YYYY, %m:MM, %d:DD, %z:+/-HHMM
+JFME_SITEMAP_LASTMOD_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z" # strftime format, see https://docs.python.org/fr/3.6/library/datetime.html#strftime-and-strptime-behavior, see https://www.sitemaps.org/protocol.html#lastmoddef for allowed datetime formats
+
 
 #Django sites and sitemap app
 SITE_ID = 1
