@@ -127,10 +127,7 @@ For each command, the option `-h` give u some help.
 
  `./manage.py distill-local` to make the static website, see [Prod](#prod) for usage
 
- `./manage.py list-widgets` to list all widgets found in content directories
-
- `./manage.py make-widgets` to make a file that groups all jinja2 widgets macros for easier includes. It is automatically called by `runserver` and `distill-local` commands. \
- See an example in `EXAMPLE.md`
+ `./manage.py list-widgets` to list all widgets found in content directories. See an example in `EXAMPLES.md`.
 
  `./manage.py format-html <action>` to minify or beautify the html content (`<action>` being `minify` or `beautify`)
 

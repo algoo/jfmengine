@@ -54,7 +54,7 @@ class Document:
         :param content: The content (body) of the document
         :param metadata: Associated metadata
         """
-        self.body = "{% import 'allwidgets.html' as widgets %}\n" + content
+        self.body = content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
         self.data = {}
@@ -110,7 +110,7 @@ class Document:
                 )
             )
         else :
-            return engines["jinja2"].from_string(self.body).render(
+            return engines["jinja2"].from_string(self.make_imports() + self.body).render(
                 {
                     "posts": sorted(
                         Post.load_glob(), key=lambda p: p.timestamp, reverse=True
@@ -236,6 +236,16 @@ class Document:
         # print(files)
         return map(cls.load, files)
     
+    @classmethod
+    def make_imports(cls) :
+        
+        import_str = ""
+        for template_dir in settings.JFME_TEMPLATES_DIRS :
+            for widget_file in (template_dir / "jinja2" / "widgets").rglob("*") :
+                if widget_file.is_file() :
+                    import_str += "{% " + "import '{}' as {}".format(widget_file.relative_to(template_dir / "jinja2"), widget_file.stem) + " %}\n"
+        return import_str
+
     @classmethod
     def parse_metadata_line(cls, line) :
         if line.strip() == "":  # ignore empty lines

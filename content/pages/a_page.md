@@ -9,7 +9,7 @@ description
 }
 
 ---
-{% from "widgets/page_header.html" import page_header %}
+{% from "widgets/generic.html" import page_header %}
 
 
 <h2>Page 1</h2>

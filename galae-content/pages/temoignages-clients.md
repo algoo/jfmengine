@@ -12,10 +12,7 @@ page_header_h1  Nos clients témoignent ...
 --- BODY ---
 
 
-{% from "widgets/page_section_reference_logos.html" import page_section_reference_logos %}
-{% from "widgets/testimonials.html" import testimonials %}
-
-{{ page_section_reference_logos(
+{{ generic.page_section_reference_logos(
     REFERENCES = 
     [
         {'name': 'oslandia', 'logo_url': 'assets/img/references/oslandia.webp'},
@@ -53,7 +50,7 @@ page_header_h1  Nos clients témoignent ...
     ]
 ) }}
 
-{{testimonials(
+{{ generic.testimonials(
     PERSONS = 
     [
         {
