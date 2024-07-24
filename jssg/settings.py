@@ -52,8 +52,8 @@ JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]
 JFME_STATIC_DIRS = [path / "static" for path in JFME_CONTENT_DIRS]
-JFME_DEFAULT_METADATA_DICT = {"slug": "index", }                        # The order of include is : JFME_DEFAULT_METADATA_DICT then JFME_DEFAULT_METADATA_PATH then page metadata
-JFME_DEFAULT_METADATA_PATH = BASE_DIR / "jssg" / "default_metadata.txt" # If a metadata is specified more than once, the last included is retained
+JFME_DEFAULT_METADATA_DICT = {"slug": "index", }                        # The order of include is : JFME_DEFAULT_METADATA_DICT then JFME_DEFAULT_METADATA_FILEPATH then page metadata
+JFME_DEFAULT_METADATA_FILEPATH = BASE_DIR / "jssg" / "default_metadata.txt" # If a metadata is specified more than once, the last included is retained
 
 
 # Application definition

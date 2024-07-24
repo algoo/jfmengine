@@ -128,7 +128,7 @@ class Document:
         json_data = ""
         content = StringIO()
 
-        with settings.JFME_DEFAULT_METADATA_PATH.open() as f:
+        with settings.JFME_DEFAULT_METADATA_FILEPATH.open() as f:
             for line in f :
                 try :
                     # Parse a metadata key value pair

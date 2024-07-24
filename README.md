@@ -55,8 +55,8 @@ Otherwise, you have to configure the following settings :
 - `JFME_CONTENT_DIRS` : a list of directories where to look for the site content
 
 Other useful settings :
-- Default metadata : `JFME_DEFAULT_METADATA_DICT` and `JFME_DEFAULT_METADATA_PATH` allow to set default metadata for pages and posts. The first one is a python dictionary and the second one is a Path to a file having the same format as metadata section in pages.
-The order, from less to most priority is : `JFME_DEFAULT_METADATA_DICT` then `JFME_DEFAULT_METADATA_PATH` then page matadata.
+- Default metadata : `JFME_DEFAULT_METADATA_DICT` and `JFME_DEFAULT_METADATA_FILEPATH` allow to set default metadata for pages and posts. The first one is a python dictionary and the second one is a Path to a file having the same format as metadata section in pages.
+The order, from less to most priority is : `JFME_DEFAULT_METADATA_DICT` then `JFME_DEFAULT_METADATA_FILEPATH` then page matadata.
 
 ### `Dockerfile` :
 - In the `# Copy source dir` section, add `COPY <content-dir>/ <content-dir>/` for each content directory in `JFME_CONTENT_DIRS`
