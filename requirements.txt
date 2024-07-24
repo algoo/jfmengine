@@ -1,6 +1,8 @@
-Django==5.0.6
+Django==4.2.9
 django-distill
 django_vite_plugin==3.0.0
 markdown2[all]==2.4.13
 whitenoise==6.7.0
 Jinja2==3.1.4
+beautifulsoup4==4.12.3
+django-jinja-markdown
