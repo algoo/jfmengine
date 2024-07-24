@@ -5,7 +5,8 @@ from pathlib import Path
 
 class MetadataStatus :
     
-    def get_metadata_status_for(page) :
+    @classmethod
+    def get_metadata_status_for(cls, page) :
         metadata_status = MetadataStatus()
         metadata_status.missing = []
         metadata_status.empty = []
