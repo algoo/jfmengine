@@ -259,6 +259,7 @@ class Page(Document):
     """A webpage, with a title and some content."""
 
     BASE_DIR = settings.JFME_PAGES_DIRS
+    lastmod_format = settings.JFME_SITEMAP_LASTMOD_DATETIME_FORMAT
 
     def __init__(self, content: str, **metadata) -> None:
         """Create a new page.
@@ -327,12 +328,6 @@ class Post(Page):
     def get_posts(cls) :
         return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Post.load_glob(all = True))
 
-class Sitemap :
-    BASE_DIR = settings.JFME_PAGES_DIRS + settings.JFME_POSTS_DIRS
-    domain = settings.JFME_DOMAIN
-    pages_slugs = [p["slug"] for p in Page.get_pages()]
-    posts_slugs = [p["slug"] for p in Post.get_posts()]
-
 class PostList :
     metadata = {"page_header_h1":"Posts"}
     category = ""
@@ -365,7 +360,9 @@ class PostList :
             t += [{"category": category, "page":page} for page in range(1, cls(category).nb_pages + 1)]
         return t
         
-    
+    def get_postlists(cls) :
+        return cls.get_categories_and_pages() + cls.get_pages()
+
     @classmethod
     def get_pages(cls) :
         return [{"page": page} for page in range(1, cls().nb_pages+1)]
