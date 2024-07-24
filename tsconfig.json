@@ -29,6 +29,7 @@
       ],
       "@t:jssg/*": [
         "./jssg/templates/jssg/*"
+      ],
       "@s:django_jinja_markdown/*": [
         "./env/lib/python3.9/site-packages/django_jinja_markdown/static/django_jinja_markdown/*"
       ],
