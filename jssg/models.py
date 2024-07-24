@@ -21,11 +21,21 @@ from pathlib import Path
 from typing import Iterator, Mapping, Optional, List
 
 import markdown2
+import re
 from django.conf import settings
 from django.template import Context, Template, engines
 from django.utils.text import slugify
 
 from django.core.management.commands.runserver import Command as runserver
+
+from math import ceil
+
+
+
+class EmptyLine(Exception) :
+    pass
+class CommentLine(Exception) :
+    pass
 
 class Document:
     """A document.
@@ -58,7 +68,6 @@ class Document:
 
         :return: the rendered document
         """
-        import re
         # INFO DA 2024-02-18 - Replace "{{{ }}}" pattern into one-line pattern
         # this is usefull in order to exploit multi-line includes
         # {{{ include "block.html" with
@@ -118,10 +127,21 @@ class Document:
         :return: The loaded document
         """
         _path = path
-        metadata = {}
+        metadata = settings.JFME_DEFAULT_METADATA_DICT.copy()
         data = {}
         json_data = ""
         content = StringIO()
+
+        with settings.JFME_DEFAULT_METADATA_FILEPATH.open() as f:
+            for line in f :
+                try :
+                    # Parse a metadata key value pair
+                    key, value = cls.parse_metadata_line(line)
+                    metadata[key] = value
+                except EmptyLine : # ignore empty lines
+                    continue
+                except CommentLine : # ignore comment lines
+                    continue
 
         with path.open() as f:
             # States:
@@ -145,17 +165,14 @@ class Document:
                         # Metadata end block found
                         state = 2
                     else:
-                        if line.strip() == "":  # ignore empty lines
+                        try :
+                            # Parse a metadata key value pair
+                            key, value = cls.parse_metadata_line(line)
+                            metadata[key] = value
+                        except EmptyLine : # ignore empty lines
                             continue
-                        if line.startswith("#"):  # ignore comment lines
+                        except CommentLine : # ignore comment lines
                             continue
-
-                        # Parse a metadata key value pair
-                        # key, value = map(str.strip, line.split("", maxsplit=1))
-                        import re
-                        key, value = map(str.strip, re.split("[\s]", line, maxsplit=1))
-                        # FIXME  print("KEY {} : {} (line is: {})".format(key, value, line))
-                        metadata[key] = value
                 elif state == 2:
                     if line.rstrip().startswith("---"):
                         # data end block found
@@ -229,6 +246,14 @@ class Document:
                     import_str += "{% " + "import '{}' as {}".format(widget_file.relative_to(template_dir / "jinja2"), widget_file.stem) + " %}\n"
         return import_str
 
+    @classmethod
+    def parse_metadata_line(cls, line) :
+        if line.strip() == "":  # ignore empty lines
+            raise EmptyLine()
+        if line.startswith("#"):  # ignore comment lines
+            raise CommentLine(line)
+        # key, value = map(str.strip, line.split("", maxsplit=1))
+        return map(str.strip, re.split("[\s]", line, maxsplit=1))
 
 class Page(Document):
     """A webpage, with a title and some content."""
@@ -286,6 +311,10 @@ class Post(Page):
         """
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
+        if "category" in self.metadata :
+            self.metadata["category"] = slugify(self.metadata["category"])
+        else :
+            self.metadata["category"] = ""
 
     @classmethod
     def load_glob(
@@ -303,3 +332,49 @@ class Sitemap :
     domain = settings.JFME_DOMAIN
     pages_slugs = [p["slug"] for p in Page.get_pages()]
     posts_slugs = [p["slug"] for p in Post.get_posts()]
+
+class PostList :
+    metadata = {"page_header_h1":"Posts"}
+    category = ""
+
+    def __init__(self, category = "", page = 1) -> None:
+        self.category = category
+        self.page = page
+        self.posts_by_page = settings.JFME_NUMBER_OF_POSTS_BY_PAGE
+        if self.category == "" :
+            self.nb_pages = ceil(len(list(Post.load_glob(all=True))) / self.posts_by_page) # number of posts / number of posts by page
+        else :
+            self.nb_pages = ceil(len(list(filter(lambda p: p.metadata["category"] == self.category, Post.load_glob(all=True)))) / self.posts_by_page) # number of posts of the category / number of posts by page
+
+    @classmethod
+    def load_post_list_with_category(cls, category, page) :
+        return cls(category, page)
+
+    @property
+    def categories(self) :
+        cat = set()
+        for post in Post.load_glob(all = True) :
+            if post.metadata["category"] != "" :
+                cat.add(post.metadata["category"])
+        return sorted(cat)
+
+    @classmethod
+    def get_categories_and_pages(cls) :
+        t = []
+        for category in cls().categories :
+            t += [{"category": category, "page":page} for page in range(1, cls(category).nb_pages + 1)]
+        return t
+        
+    
+    @classmethod
+    def get_pages(cls) :
+        return [{"page": page} for page in range(1, cls().nb_pages+1)]
+    
+    @property
+    def posts(self) :
+        posts = sorted(Post.load_glob(all=True), key=lambda p: p.timestamp, reverse=True)
+        if self.category == "" :
+            return posts[self.posts_by_page*(self.page-1):self.posts_by_page*(self.page)]
+        else :
+            return list(filter(lambda p: p.metadata["category"] == self.category, posts))[self.posts_by_page*(self.page-1):self.posts_by_page*(self.page)]
+    

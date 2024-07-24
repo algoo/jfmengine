@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-Publié le {{ object.timestamp.strftime("%Y-%m-%d") }}.
+Publié le {{ object.timestamp.strftime("%d/%m/%Y") }} à {{ object.timestamp.strftime("%Hh%M") }}.
 
 <h1>{{ object.title }}</h1>
 {{ object.content|safe }}
+<div>
+<a href="/posts/page1.html">Tous les posts</a>
+</div>
 {% endblock %}

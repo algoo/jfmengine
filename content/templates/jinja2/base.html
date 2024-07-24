@@ -3,7 +3,7 @@
 
 
 <!DOCTYPE html>
-<html lang="{{ object.metadata.lang }}">
+<html lang="{{ object.metadata.lang|default("") }}">
 
 
 
@@ -13,7 +13,7 @@
   {% for key, value in object.metadata.items()|filter_opengraph_metadata %}
     <meta property="{{ key }}" content="{{ value }}"/>
   {% endfor %}
-  <title>{{ object.title }}</title>
+  <title>{{ object.title|default("") }}</title>
   <link rel="stylesheet" href="{{ static('pygments/monokai.css') }}">
   <link rel="icon" type="image/x-icon" href="{{ static('assets/galae.ico') }}"/>
   <link href="{{ static('css/styles.css') }}" rel="stylesheet"/>

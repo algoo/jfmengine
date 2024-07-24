@@ -54,6 +54,10 @@ Otherwise, you have to configure the following settings :
 - `JFME_DOMAIN` : the domain name of your website, for instance `"https://www.example.com"` (used in sitemap file)
 - `JFME_CONTENT_DIRS` : a list of directories where to look for the site content
 
+Other useful settings :
+- Default metadata : `JFME_DEFAULT_METADATA_DICT` and `JFME_DEFAULT_METADATA_FILEPATH` allow to set default metadata for pages and posts. The first one is a python dictionary and the second one is a Path to a file having the same format as metadata section in pages.
+The order, from less to most priority is : `JFME_DEFAULT_METADATA_DICT` then `JFME_DEFAULT_METADATA_FILEPATH` then page matadata.
+
 ### `Dockerfile` :
 - In the `# Copy source dir` section, add `COPY <content-dir>/ <content-dir>/` for each content directory in `JFME_CONTENT_DIRS`
 
@@ -123,7 +127,9 @@ For each command, the option `-h` give u some help.
 
  `./manage.py distill-local` to make the static website, see [Prod](#prod) for usage
 
- `./manage.py list-widgets` to list all widgets found in content directories
+ `./manage.py list-widgets` to list all widgets found in content directories. See an example in `EXAMPLES.md`.
+
+ `./manage.py format-html <action>` to minify or beautify the html content (`<action>` being `minify` or `beautify`)
 
 ## Others
 

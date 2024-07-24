@@ -1,0 +1,86 @@
+{% extends "base.html"%}
+{% block content %}
+
+<div class="container">
+<nav class='navbar navbar-light bg-light static-top'>
+<a>Catégories :</a>
+<a href='/posts/page1.html'>Tout</a>
+{% for category in object.categories %}
+    <a href='/posts/category/{{category}}/page1.html'>{{ category|replace('-', ' ')|title }}</a>
+{% endfor %}
+</nav>
+</div>
+
+<div class="row" id="articles">
+{% for post in object.posts %}
+  <div class="col-12 col-lg-4  my-2 blog__article " id="r-d-et-veille-techno-petit-point-sur-nos-projets-internes">
+    <div class="blog__post card rounded-20 " style="max-width: ; min-width: ">
+      <div class="card-body">
+        <div class="card-text" style="height: 400px">
+          <a class="card-link footer-link" href="/posts/articles/{% if post.rel_folder_path != '' %}{{post.rel_folder_path}}/{% endif %}{{post.slug}}.html">
+            <h2 class="blog__post__text__title">{{ post.title }}</h2>
+          </a>
+
+          <div class="blog__post__text__content">
+            <p>{{ post.metadata.abstract }}</p>
+          </div>
+
+          <div class="blog__post__text__bottom">
+            <div class="blog__post__text__bottom__meta">
+              <div class="blog__post__text__bottom__meta__author">
+                <div class="blog__post__text__bottom__meta__author__icon"><i class="fas fa-user"></i></div>
+                <div class="blog__post__text__bottom__meta__author__name">{{post.metadata.author}}</div>
+              </div>
+
+              <div class="blog__post__text__bottom__meta__date">
+                <div class="blog__post__text__bottom__meta__date__icon"><i class="fas fa-calendar"></i></div>
+                <div class="blog__post__text__bottom__meta__date__name">{{ post.timestamp.strftime("%d/%m/%Y") }}</div>
+              </div>
+            </div>
+
+            <div class="blog__post__text__bottom__btn">
+              <a
+                class="btn btn-primary btn-round"
+                href="/posts/articles/{% if post.rel_folder_path != '' %}{{post.rel_folder_path}}/{% endif %}/{{post.slug}}.html"
+              >
+                Lire la suite ...
+              </a>
+            </div>
+          </div>
+          <div class="blog__post__text__meta__category d-none">
+            {{post.metadata.abstract}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+<div>
+{% if object.page > 1 %}
+    {% if object.category != "" %}
+        <a href="/posts/category/{{object.category}}/page{{object.page-1}}.html">Page précédente</a>
+    {% else %}
+        <a href="/posts/page{{object.page-1}}.html">Page précédente</a>
+    {% endif %}
+{% endif %}
+
+{% if object.page < object.nb_pages %}
+    {% if object.category != "" %}
+        <a href="/posts/category/{{object.category}}/page{{object.page+1}}.html">Page suivante</a>
+    {% else %}
+        <a href="/posts/page{{object.page+1}}.html">Page suivante</a>
+    {% endif %}
+{% endif %}
+</div>
+<div>
+Pages :
+{% for page in range(1, object.nb_pages+1) %}
+    {% if object.category != "" %}
+        <a href="/posts/category/{{object.category}}/page{{page}}.html">{{page}}</a>
+    {% else %}
+        <a href="/posts/page{{page}}.html">{{page}}</a>
+    {% endif %}
+{% endfor %}
+</div>
+{% endblock %}
