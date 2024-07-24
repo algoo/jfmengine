@@ -128,7 +128,7 @@ For each command, the option `-h` give u some help.
  `./manage.py make-widgets` to make a file that groups all jinja2 widgets macros for easier includes. It is automatically called by `runserver` and `distill-local` commands. \
  See an example in `EXAMPLE.md`
 
- `./manage.py format-html` to minify or beautify the html content
+ `./manage.py format-html <action>` to minify or beautify the html content (`<action>` being `minify` or `beautify`)
 
 ## Others
 

@@ -18,7 +18,7 @@ class Command(BaseCommand):
             nargs='?',
             type=str,
             default=str(settings.DIST_DIR),
-            help="To specify a particular dist path"
+            help="To specify a particular dist path. Default is: " + str(settings.DIST_DIR)
         )
 
     def handle(self, *args, **options) :
