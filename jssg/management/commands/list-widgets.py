@@ -72,7 +72,7 @@ class Command(BaseCommand):
             duplicates = set([t for t in couple_visited if couple_visited.count(t) > 1]) # get the (widget.stem, macro.name) doublons
             for duplicate in duplicates :
                 self.stdout.write(self.style.WARNING(
-                    "Warning : macro '%s' in a file named '%s' found more than once, could be ambiguous ; found in :" % (duplicate[0], duplicate[1])
+                    "Warning : macro '%s' in a file named '%s' found more than once, could be ambiguous ; found in :" % (duplicate[1], duplicate[0])
                 ))
                 paths = [x[2] for x in filter(lambda t : (t[0], t[1]) == duplicate, visited)] # get the paths corresponding to (widget.stem, macro.name)
                 for p in paths :

@@ -1,0 +1,129 @@
+{%  macro page_block_h2_with_content_and_primary_secondary_cta(
+      HTMLID="",
+      TITLE="",
+      CONTENT="",
+      MAIN_IMG_URL="",
+      MAIN_IMG_ALT="",
+      SECONDARY_CTA_URL="",
+      SECONDARY_CTA_TARGET="",
+      SECONDARY_CTA_LABEL="",
+      PRIMARY_CTA_URL="",
+      PRIMARY_CTA_TARGET="",
+      PRIMARY_CTA_LABEL="",
+      PRIMARY_CTA_ICON=""
+    )
+%}
+
+<section id="{{ HTMLID }}" class="testimonials bg-light">
+  <div class="container">
+    <h2 class="mb-5">{{ TITLE|safe }}</h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <p class="lead mb-0">
+          {{ CONTENT|safe }}
+        </p>
+        <p class="lead mb-0 text-center">
+          <img
+                  class="testimonials__priceList__img"
+                  src="{{ static(MAIN_IMG_URL) }}"
+                  alt="{{ MAIN_IMG_ALT }}"
+          />
+        </p>
+        <p class="lead mb-0 text-center">
+          <a href="{{ static(SECONDARY_CTA_URL) }}" target="{{ SECONDARY_CTA_TARGET }}"
+             class="btn btn-link btn-lg">
+            {{ SECONDARY_CTA_LABEL }}
+          </a>
+          <a href="{{ PRIMARY_CTA_URL }}" target="{{ PRIMARY_CTA_TARGET }}"
+             class="btn btn-primary btn-lg">
+            {{ PRIMARY_CTA_LABEL }}
+            <i class="{{ PRIMARY_CTA_ICON }}"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endmacro %}
+
+
+
+
+{% macro page_block_h2_with_content_dark_background_no_cta(
+  HTMLID = "",
+  TITLE = "",
+  CONTENT = ""
+)
+%}
+
+<section id="{{ HTML_ID }}" class="testimonials bg-dark text-white">
+  <div class="container">
+      <h2 class="mb-5">{{ TITLE|safe }}</h2>
+      <div class="row">
+          <div class="col-lg-12">
+              {{ CONTENT|safe }}
+          </div>
+      </div>
+  </div>
+</section>
+
+{% endmacro %}
+
+
+
+
+{% macro page_block_h2_with_ul_content_and_image_left(
+  IMAGE_URL = '',
+  TITLE = '',
+  CONTENT_ITEMS = [],
+  CTA_URL = '',
+  CTA_LABEL = ''
+)
+%}
+
+<div class="row g-0">
+<div class="col-lg-6 text-white showcase-text" style="">
+<div style="height: 100%; width: 100%; background-image: url({{ static( IMAGE_URL)}}); background-size: contain; background-repeat: no-repeat; background-position-y: center; background-position-x: center;">
+</div>
+</div>
+<div class="col-lg-6 my-auto showcase-text">
+<h2>{{ TITLE|safe }}</h2>
+<p class="lead">
+<ul>{% for ITEM in CONTENT_ITEMS %}
+<li class="lead">{{ ITEM | safe }}</li>{% endfor %}</ul>
+</p>
+<p class="lead text-end"><a href="{{ CTA_URL }}" class="btn btn-primary">{{ CTA_LABEL }}</a></p>
+</div>
+</div>
+
+{% endmacro %}
+
+
+
+
+{% macro page_block_h2_with_ul_content_and_image_right(
+  IMAGE_URL = '',
+  TITLE = '',
+  CONTENT_ITEMS = [],
+  CTA_URL = '',
+  CTA_LABEL = ''
+)
+%}
+
+<div class="row g-0">
+<div class="col-lg-6 order-lg-2 text-white showcase-text" style="">
+<div style="height: 100%; width: 100%; background-image: url({{ static(IMAGE_URL)}}); background-size: contain; background-repeat: no-repeat; background-position-y: center; background-position-x: center;">
+</div>
+</div>
+<div class="col-lg-6 order-lg-1 my-auto showcase-text">
+<h2>{{ TITLE|safe }}</h2>
+<p class="lead">
+<ul>{% for ITEM in CONTENT_ITEMS %}
+  <li class="lead">{{ ITEM | safe }}</li>{% endfor %}</ul>
+</p>
+<p class="lead text-end"><a href="{{ CTA_URL }}" class="btn btn-primary">{{ CTA_LABEL }}</a></p>
+</div>
+</div>
+
+{% endmacro %}

@@ -44,7 +44,7 @@ class Document:
         :param content: The content (body) of the document
         :param metadata: Associated metadata
         """
-        self.body = self.make_imports() + content
+        self.body = content
         self.metadata = dict(metadata)
         self.path = metadata["path"]
         self.data = {}
@@ -101,7 +101,7 @@ class Document:
                 )
             )
         else :
-            return engines["jinja2"].from_string(self.body).render(
+            return engines["jinja2"].from_string(self.make_imports() + self.body).render(
                 {
                     "posts": sorted(
                         Post.load_glob(), key=lambda p: p.timestamp, reverse=True
@@ -221,8 +221,6 @@ class Document:
     
     @classmethod
     def make_imports(cls) :
-        if "template_engine" in cls.metadata.keys() and cls.metadata["template_engine"] == "django" :
-            return ""
         
         import_str = ""
         for template_dir in settings.JFME_TEMPLATES_DIRS :

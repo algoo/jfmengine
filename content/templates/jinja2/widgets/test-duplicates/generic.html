@@ -28,3 +28,33 @@
 
 {% endmacro %}
 
+{% macro page_header(
+  PRIMARY_TITLE="",
+  SECONDARY_TITLE="",
+  THIRD_TITLE=""
+)
+%}
+
+<!-- Masthead-->
+<header class="masthead">
+<div class="container position-relative">
+    <div class="row justify-content-center">
+        <div class="col-xl-9">
+            <div class="text-center text-white">
+                <!-- Page heading-->
+                <h1 class="mb-5">
+                    {{ PRIMARY_TITLE|safe }}
+                </h1>
+                {% if SECONDARY_TITLE %}
+                    <h2>{{ SECONDARY_TITLE|safe }}</h2>
+                {% endif %}
+                {% if THIRD_TITLE %}
+                    <h3 class="navbar__logo__label"><i>{{ THIRD_TITLE|safe }}</i></h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+
+{% endmacro %}
