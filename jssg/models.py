@@ -28,6 +28,11 @@ from django.utils.text import slugify
 
 from django.core.management.commands.runserver import Command as runserver
 
+class EmptyLine(Exception) :
+    pass
+class CommentLine(Exception) :
+    pass
+
 class Document:
     """A document.
 
@@ -125,8 +130,14 @@ class Document:
 
         with settings.JFME_DEFAULT_METADATA_PATH.open() as f:
             for line in f :
-                key, value = map(str.strip, re.split("[\s]", line, maxsplit=1))
-                metadata[key] = value
+                try :
+                    # Parse a metadata key value pair
+                    key, value = cls.parse_metadata_line(line)
+                    metadata[key] = value
+                except EmptyLine : # ignore empty lines
+                    continue
+                except CommentLine : # ignore comment lines
+                    continue
 
         with path.open() as f:
             # States:
@@ -150,16 +161,14 @@ class Document:
                         # Metadata end block found
                         state = 2
                     else:
-                        if line.strip() == "":  # ignore empty lines
+                        try :
+                            # Parse a metadata key value pair
+                            key, value = cls.parse_metadata_line(line)
+                            metadata[key] = value
+                        except EmptyLine : # ignore empty lines
                             continue
-                        if line.startswith("#"):  # ignore comment lines
+                        except CommentLine : # ignore comment lines
                             continue
-
-                        # Parse a metadata key value pair
-                        # key, value = map(str.strip, line.split("", maxsplit=1))
-                        key, value = map(str.strip, re.split("[\s]", line, maxsplit=1))
-                        # FIXME  print("KEY {} : {} (line is: {})".format(key, value, line))
-                        metadata[key] = value
                 elif state == 2:
                     if line.rstrip().startswith("---"):
                         # data end block found
@@ -222,7 +231,15 @@ class Document:
                 files += (p / dir).glob(glob)
         # print(files)
         return map(cls.load, files)
-
+    
+    @classmethod
+    def parse_metadata_line(cls, line) :
+        if line.strip() == "":  # ignore empty lines
+            raise EmptyLine()
+        if line.startswith("#"):  # ignore comment lines
+            raise CommentLine(line)
+        # key, value = map(str.strip, line.split("", maxsplit=1))
+        return map(str.strip, re.split("[\s]", line, maxsplit=1))
 
 class Page(Document):
     """A webpage, with a title and some content."""
