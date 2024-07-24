@@ -24,6 +24,12 @@
       "@/*": [
         "./*"
       ],
+      "@s:jssg/*": [
+        "./jssg/static/jssg/*"
+      ],
+      "@t:jssg/*": [
+        "./jssg/templates/jssg/*"
+      ],
       "@s:django_jinja_markdown/*": [
         "./env/lib/python3.9/site-packages/django_jinja_markdown/static/django_jinja_markdown/*"
       ],
@@ -35,12 +41,6 @@
       ],
       "@t:django_distill/*": [
         "./env/lib/python3.9/site-packages/django_distill/templates/django_distill/*"
-      ],
-      "@s:jssg/*": [
-        "./jssg/static/jssg/*"
-      ],
-      "@t:jssg/*": [
-        "./jssg/templates/jssg/*"
       ]
     }
   },
