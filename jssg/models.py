@@ -335,11 +335,18 @@ class PostList :
     def __init__(self, category = "", page = 1) -> None:
         self.category = category
         self.page = page
-        self.posts_by_page = settings.JFME_NUMBER_OF_POSTS_BY_PAGE
-        if self.category == "" :
-            self.nb_pages = ceil(len(list(Post.load_glob(all=True))) / self.posts_by_page) # number of posts / number of posts by page
+        
+        if category == "" :
+            nb_posts = len(list(Post.load_glob(all = True)))
         else :
-            self.nb_pages = ceil(len(list(filter(lambda p: p.metadata["category"] == self.category, Post.load_glob(all=True)))) / self.posts_by_page) # number of posts of the category / number of posts by page
+            nb_posts = len(list(filter(lambda p: p.metadata["category"] == self.category, Post.load_glob(all=True))))
+
+        if hasattr(settings, "JFME_NUMBER_OF_POSTS_BY_PAGE") :
+            self.posts_by_page = settings.JFME_NUMBER_OF_POSTS_BY_PAGE
+        else :
+            self.posts_by_page = nb_posts
+
+        self.nb_pages = ceil(nb_posts / self.posts_by_page) # number of posts / number of posts by page
 
     @classmethod
     def load_post_list_with_category(cls, category, page) :
