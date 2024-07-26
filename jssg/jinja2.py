@@ -4,6 +4,7 @@ from django_jinja_markdown.templatetags.md import markdown
 from jinja2 import Environment
 
 from jssg.templatetags.filter_opengraph_metadata import filter_opengraph_metadata
+from jssg.templatetags.filter_base64 import base64encode
 
 from jssg.models import Page
 
@@ -98,7 +99,8 @@ def environment(**options):
     )
     env.filters.update(
         {
-            "filter_opengraph_metadata" : filter_opengraph_metadata
+            "filter_opengraph_metadata" : filter_opengraph_metadata,
+            "base64encode" : base64encode
         }
     )
     return env

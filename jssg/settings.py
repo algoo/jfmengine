@@ -47,12 +47,12 @@ runserver.default_addr = '127.0.0.1'
 
 # JSSG
 JFME_DOMAIN = "www.galae.net"
-JFME_CONTENT_DIRS = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]
+JFME_CONTENT_DIRS = [Path("/home/clement/algoofr-jfme/content")] + [BASE_DIR / "content"] + [BASE_DIR / "common-content"] 
 JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]
 JFME_STATIC_DIRS = [path / "static" for path in JFME_CONTENT_DIRS]
-JFME_DEFAULT_METADATA_DICT = {"slug": "index", }                        # The order of include is : JFME_DEFAULT_METADATA_DICT then JFME_DEFAULT_METADATA_FILEPATH then page metadata
+JFME_DEFAULT_METADATA_DICT = {}                        # The order of include is : JFME_DEFAULT_METADATA_DICT then JFME_DEFAULT_METADATA_FILEPATH then page metadata
 JFME_DEFAULT_METADATA_FILEPATH = BASE_DIR / "jssg" / "default_metadata.txt" # If a metadata is specified more than once, the last included is retained
 JFME_NUMBER_OF_POSTS_BY_PAGE = 3
 JFME_CONTENT_REQUIRED_METADATA = ["title", "slug", "lang", "description"]

@@ -64,7 +64,7 @@ class IndexView(PageView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        self.kwargs["slug"] = "en-index"
+        self.kwargs["slug"] = "accueil"
         return super().get_object(queryset)
 
 
