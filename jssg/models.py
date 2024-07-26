@@ -341,7 +341,7 @@ class PostList :
         else :
             nb_posts = len(list(filter(lambda p: p.metadata["category"] == self.category, Post.load_glob(all=True))))
 
-        if hasattr(settings, "JFME_NUMBER_OF_POSTS_BY_PAGE") :
+        if settings.JFME_NUMBER_OF_POSTS_BY_PAGE > 0 :
             self.posts_by_page = settings.JFME_NUMBER_OF_POSTS_BY_PAGE
         else :
             self.posts_by_page = nb_posts
