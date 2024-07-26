@@ -41,7 +41,7 @@
             <div class="blog__post__text__bottom__btn">
               <a
                 class="btn btn-primary btn-round"
-                href="/posts/articles/{% if post.rel_folder_path != '' %}{{post.rel_folder_path}}/{% endif %}/{{post.slug}}.html"
+                href="/posts/articles/{% if post.rel_folder_path != '' %}{{post.rel_folder_path}}/{% endif %}{{post.slug}}.html"
               >
                 Lire la suite ...
               </a>
