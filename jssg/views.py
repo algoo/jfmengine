@@ -53,8 +53,8 @@ class PageView(DetailView):
     def get_object(self, queryset=None) -> Model:
         if "dir" not in self.kwargs.keys() :
             self.kwargs["dir"] = ""
-        print("dir : " + self.kwargs["dir"])
-        print("slug : " + self.kwargs["slug"])
+        # print("dir : " + self.kwargs["dir"])
+        # print("slug : " + self.kwargs["slug"])
         model = self.model.load_page_with_slug(self.kwargs["slug"], self.kwargs["dir"])
         return model
 
@@ -79,5 +79,5 @@ class PostListView(DetailView):
     def get_object(self, queryset=None) -> Model:
         if "category" not in self.kwargs.keys() :
             self.kwargs["category"] = ""
-        print(self.kwargs["category"])
+        # print(self.kwargs["category"])
         return PostList.load_post_list_with_category(self.kwargs["category"], self.kwargs["page"])
