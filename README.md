@@ -57,6 +57,7 @@ Otherwise, you have to configure the following settings :
 Other useful settings :
 - Default metadata : `JFME_DEFAULT_METADATA_DICT` and `JFME_DEFAULT_METADATA_FILEPATH` allow to set default metadata for pages and posts. The first one is a python dictionary and the second one is a Path to a file having the same format as metadata section in pages.
 The order, from less to most priority is : `JFME_DEFAULT_METADATA_DICT` then `JFME_DEFAULT_METADATA_FILEPATH` then page matadata.
+- Posts pagination : `JFME_NUMBER_OF_POSTS_BY_PAGE` give the maximum number of posts in a posts list page. If set to 0 or -1, all posts will be in the first page.
 
 ### `Dockerfile` :
 - In the `# Copy source dir` section, add `COPY <content-dir>/ <content-dir>/` for each content directory in `JFME_CONTENT_DIRS`
