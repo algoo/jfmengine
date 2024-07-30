@@ -56,31 +56,36 @@
   </div>
 {% endfor %}
 </div>
-<div>
-{% if object.page > 1 %}
-    {% if object.category != "" %}
-        <a href="/posts/category/{{object.category}}/page{{object.page-1}}.html">Page précédente</a>
-    {% else %}
-        <a href="/posts/page{{object.page-1}}.html">Page précédente</a>
-    {% endif %}
+
+{% if object.nb_pages > 1 %}
+  <div>
+  {% if object.page > 1 %}
+      {% if object.category != "" %}
+          <a href="/posts/category/{{object.category}}/page{{object.page-1}}.html">Page précédente</a>
+      {% else %}
+          <a href="/posts/page{{object.page-1}}.html">Page précédente</a>
+      {% endif %}
+  {% endif %}
+
+  {% if object.page < object.nb_pages %}
+      {% if object.category != "" %}
+          <a href="/posts/category/{{object.category}}/page{{object.page+1}}.html">Page suivante</a>
+      {% else %}
+          <a href="/posts/page{{object.page+1}}.html">Page suivante</a>
+      {% endif %}
+  {% endif %}
+  </div>
+
+  <div>
+  Pages :
+  {% for page in range(1, object.nb_pages+1) %}
+      {% if object.category != "" %}
+          <a href="/posts/category/{{object.category}}/page{{page}}.html">{{page}}</a>
+      {% else %}
+          <a href="/posts/page{{page}}.html">{{page}}</a>
+      {% endif %}
+  {% endfor %}
+  </div>
 {% endif %}
 
-{% if object.page < object.nb_pages %}
-    {% if object.category != "" %}
-        <a href="/posts/category/{{object.category}}/page{{object.page+1}}.html">Page suivante</a>
-    {% else %}
-        <a href="/posts/page{{object.page+1}}.html">Page suivante</a>
-    {% endif %}
-{% endif %}
-</div>
-<div>
-Pages :
-{% for page in range(1, object.nb_pages+1) %}
-    {% if object.category != "" %}
-        <a href="/posts/category/{{object.category}}/page{{page}}.html">{{page}}</a>
-    {% else %}
-        <a href="/posts/page{{page}}.html">{{page}}</a>
-    {% endif %}
-{% endfor %}
-</div>
 {% endblock %}
