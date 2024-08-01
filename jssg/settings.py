@@ -47,7 +47,7 @@ runserver.default_addr = '127.0.0.1'
 
 # JSSG
 JFME_DOMAIN = "www.galae.net"
-JFME_CONTENT_DIRS = [Path("/home/clement/algoofr-jfme/content")] + [BASE_DIR / "content"] + [BASE_DIR / "common-content"] 
+JFME_CONTENT_DIRS = [Path("/home/clement/websites/algoofr-jfme/content")] + [BASE_DIR / "content"]
 JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]
