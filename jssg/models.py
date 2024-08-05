@@ -346,7 +346,8 @@ class PostList :
         else :
             self.posts_by_page = nb_posts
 
-        self.nb_pages = ceil(nb_posts / self.posts_by_page) # number of posts / number of posts by page
+        if self.posts_by_page > 0:
+            self.nb_pages = ceil(nb_posts / self.posts_by_page) # number of posts / number of posts by page
 
     @classmethod
     def load_post_list_with_category(cls, category, page) :
