@@ -40,33 +40,6 @@ urlpatterns = [
         name="page",
         distill_func=Page.get_pages,
     ),
-
-    distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
-    distill_path(
-        "posts/page<int:page>.html",
-        views.PostListView.as_view(),
-        name = "post-index",
-        distill_func = PostList.get_pages
-    ),
-    distill_path(
-        "posts/category/<slug:category>/page<int:page>.html",
-        views.PostListView.as_view(),
-        name = "post-category",
-        distill_func = PostList.get_categories_and_pages
-    ),
-    distill_path(
-        "posts/articles/<slug:slug>.html",
-        views.PostView.as_view(),
-        name="post",
-        distill_func=Post.get_posts,
-    ),
-    distill_path(
-        "posts/articles/<path:dir>/<slug:slug>.html",
-        views.PostView.as_view(),
-        name="post",
-        distill_func=Post.get_posts,
-    ),
-    
     distill_path(
         "sitemap.xml",
         sitemap,
@@ -77,3 +50,37 @@ urlpatterns = [
         name="django.contrib.sitemaps.views.sitemap",
     )
 ]
+
+if len(list(Post.get_posts())) > 0 :
+    urlpatterns += [
+        distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
+        distill_path(
+            "posts/page<int:page>.html",
+            views.PostListView.as_view(),
+            name = "post-index",
+            distill_func = PostList.get_pages
+        ),
+        distill_path(
+            "posts/articles/<slug:slug>.html",
+            views.PostView.as_view(),
+            name="post",
+            distill_func=Post.get_posts,
+        ),
+        distill_path(
+            "posts/articles/<path:dir>/<slug:slug>.html",
+            views.PostView.as_view(),
+            name="post",
+            distill_func=Post.get_posts,
+        ),
+    ]
+
+if len(PostList().categories) > 0 :
+    urlpatterns += [
+        distill_path(
+            "posts/category/<slug:category>/page<int:page>.html",
+            views.PostListView.as_view(),
+            name = "post-category",
+            distill_func = PostList.get_categories_and_pages
+        ),
+
+    ]
