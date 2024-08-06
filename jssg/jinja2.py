@@ -107,22 +107,58 @@ def environment(**options):
         }
     )
 
-    for templatetag in settings.JFME_ADDITIONAL_JINJA2_TEMPLATETAGS :
-        module_name, function_name = templatetag.rsplit('.', 1)
+    for templatetag in settings.JFME_ADDITIONAL_JINJA2_FUNCTIONS :
+        module_name, function_name = settings.JFME_ADDITIONAL_JINJA2_FUNCTIONS[templatetag].rsplit('.', 1)
         try :
             module = importlib.import_module(module_name)
             function = getattr(module, function_name)
-            env.globals.update(
-                {
-                    function_name: function
-                }
-            )
         except(Exception) :
             command = BaseCommand()
             command.stdout.write(
                 command.style.ERROR(
-                    "Error: JFME_ADDITIONAL_JINJA2_TEMPLATETAGS: couldn't import " + templatetag
+                    "Error: JFME_ADDITIONAL_JINJA2_FUNCTIONS: couldn't import '" + settings.JFME_ADDITIONAL_JINJA2_FUNCTIONS[templatetag] +"'"
                 )
             )
+        else :
+            if templatetag not in env.globals :
+                env.globals.update(
+                    {
+                        templatetag: function
+                    }
+                )
+            else :
+                command = BaseCommand()
+                command.stdout.write(
+                    command.style.ERROR(
+                        "Error: JFME_ADDITIONAL_JINJA2_FUNCTIONS: '" + templatetag + "' function already exists"
+                    )
+                )
+
+    for templatetag in settings.JFME_ADDITIONAL_JINJA2_FILTERS :
+        module_name, function_name = settings.JFME_ADDITIONAL_JINJA2_FILTERS[templatetag].rsplit('.', 1)
+        try :
+            module = importlib.import_module(module_name)
+            function = getattr(module, function_name)
+        except(Exception) :
+            command = BaseCommand()
+            command.stdout.write(
+                command.style.ERROR(
+                    "Error: JFME_ADDITIONAL_JINJA2_FILTERS: couldn't import '" + settings.JFME_ADDITIONAL_JINJA2_FILTERS[templatetag] +"'"
+                )
+            )
+        else :
+            if templatetag not in env.filters :
+                env.filters.update(
+                    {
+                        templatetag: function
+                    }
+                )
+            else :
+                command = BaseCommand()
+                command.stdout.write(
+                    command.style.ERROR(
+                        "Error: JFME_ADDITIONAL_JINJA2_FILTERS: '" + templatetag + "' filter already exists"
+                    )
+                )
 
     return env
