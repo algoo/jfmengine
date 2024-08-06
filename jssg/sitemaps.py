@@ -13,7 +13,10 @@ class MySitemap(Sitemap) :
 
 class ConstantUrlSitemap(MySitemap) :
     def items(self) :
-        return ["/", "/atom.xml", "/sitemap.xml"]
+        if len(list(Post.load_glob(all = True))) > 0 :
+            return ["/", "/atom.xml", "/sitemap.xml"]
+        else : 
+            return ["/", "/sitemap.xml"]
     def location(self, url) -> str:
         return url
 

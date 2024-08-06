@@ -373,8 +373,11 @@ class PostList :
 
     @classmethod
     def get_pages(cls) :
-        return [{"page": page} for page in range(1, cls().nb_pages+1)]
-    
+        if len(list(Post.load_glob(all = True))) > 0 :
+            return [{"page": page} for page in range(1, cls().nb_pages+1)]
+        else : 
+            return []
+
     @property
     def posts(self) :
         posts = sorted(Post.load_glob(all=True), key=lambda p: p.timestamp, reverse=True)
