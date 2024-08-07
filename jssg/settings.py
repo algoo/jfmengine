@@ -57,8 +57,9 @@ JFME_DEFAULT_METADATA_FILEPATH = BASE_DIR / "jssg" / "default_metadata.txt" # If
 JFME_NUMBER_OF_POSTS_BY_PAGE = 3 # no pagination of posts if set to 0 or -1
 JFME_CONTENT_REQUIRED_METADATA = ["title", "slug", "lang", "description"]
 JFME_SITEMAP_LASTMOD_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z" # strftime format, see https://docs.python.org/fr/3.6/library/datetime.html#strftime-and-strptime-behavior, see https://www.sitemaps.org/protocol.html#lastmoddef for allowed datetime formats
-
-
+JFME_INDEX_PAGE = "fr-index"
+JFME_ADDITIONAL_JINJA2_FUNCTIONS = {}
+JFME_ADDITIONAL_JINJA2_FILTERS = {}
 #Django sites and sitemap app
 SITE_ID = 1
 

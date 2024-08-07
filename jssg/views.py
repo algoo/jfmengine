@@ -23,6 +23,7 @@ from django.utils.feedgenerator import Atom1Feed
 from django.views.generic import DetailView
 
 from jssg.models import Page, Post, PostList
+from django.conf import settings
 
 
 class PostFeedsView(Feed):
@@ -64,7 +65,10 @@ class IndexView(PageView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        self.kwargs["slug"] = "en-index"
+        if len(settings.JFME_INDEX_PAGE.rsplit('/', 1)) > 1 :
+            self.kwargs['dir'], self.kwargs['slug'] = settings.JFME_INDEX_PAGE.rsplit('/', 1)
+        else :
+            self.kwargs['dir'], self.kwargs['slug'] = "", settings.JFME_INDEX_PAGE.rsplit('/', 1)[0]
         return super().get_object(queryset)
 
 

@@ -53,17 +53,20 @@ For django settings, see https://docs.djangoproject.com/en/5.0/ref/settings/
 Otherwise, you have to configure the following settings :
 - `JFME_DOMAIN` : the domain name of your website, for instance `"https://www.example.com"` (used in sitemap file)
 - `JFME_CONTENT_DIRS` : a list of directories where to look for the site content
+- `JFME_PAGE_INDEX` : the page that will be printed at url `"/"`, for instance `"fr/index/accueil"` will be the page in `pages/fr/index/` with the slug `accueil`
 
 Other useful settings :
 - Default metadata : `JFME_DEFAULT_METADATA_DICT` and `JFME_DEFAULT_METADATA_FILEPATH` allow to set default metadata for pages and posts. The first one is a python dictionary and the second one is a Path to a file having the same format as metadata section in pages.
 The order, from less to most priority is : `JFME_DEFAULT_METADATA_DICT` then `JFME_DEFAULT_METADATA_FILEPATH` then page matadata.
 - Posts pagination : `JFME_NUMBER_OF_POSTS_BY_PAGE` give the maximum number of posts in a posts list page. If set to 0 or -1, all posts will be in the first page.
+- `JFME_ADDITIONAL_JINJA2_FUNCTIONS` : a dict of function name as key and string of python module as value, to add Jinja2 functions. \
+For instance `{"base64encode": "jssg.templatetags.base_64.base64encode", "md_readtime": "readtime.of_markdown"}` will add :
+    -  the `base64encode` function in `jssg/templatetags/base_64.py`
+    - `of_markdown` function of `readtime` module as `md_readtime` Jinja2 function
+- `JFME_ADDITIONAL_JINJA2_FILTERS` same as `JFME_ADDITIONAL_JINJA2_FUNCTIONS`, but for Jinja2 filters
 
 ### `Dockerfile` :
 - In the `# Copy source dir` section, add `COPY <content-dir>/ <content-dir>/` for each content directory in `JFME_CONTENT_DIRS`
-
-### `views.py` :
-- In the `get_object` method of `IndexView`, set the `self.kwargs["slug"]` to the slug of your index page which is sent at the root of your site
 
 ## Usage
 
