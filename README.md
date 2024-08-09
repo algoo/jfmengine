@@ -55,7 +55,8 @@ For django settings, see https://docs.djangoproject.com/en/5.0/ref/settings/
 
 #### Otherwise, you have to configure the following settings :
 - `JFME_DOMAIN` : the domain name of your website, for instance `"https://www.example.com"` (used in sitemap file)
-- `JFME_CONTENT_DIRS` : a list of directories where to look for the site content
+- `JFME_CONTENT_DIRS` : a list of directories where to look for the site content. Add yours to the list `[BASE_DIR / "content"]`. \
+Example : `JFME_CONTENT_DIRS = [BASE_DIR / "content"] + [Path("/home/me/my-content")]`
 - `JFME_PAGE_INDEX` : the page that will be printed at url `"/"`, for instance `"fr/index/accueil"` will be the page in `pages/fr/index/` with the slug `accueil`
 
 #### Other useful settings :
@@ -85,10 +86,6 @@ Content-dir/
     |   |-- jinja2/
     |       |-- blocks/
     |       |-- widgets/
-    |       |-- base.html
-    |       |-- page.html
-    |       |-- post.html
-    |       |-- sitemap.html
     |-- pages/
     |-- posts/
     |-- static/
