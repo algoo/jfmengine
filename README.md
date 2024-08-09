@@ -27,6 +27,7 @@ $ DJANGO_DEBUG=true npm run dev
 ```shell
 $ DJANGO_DEBUG=true ./manage.py runserver
 ```
+Then you can acess the dev server at `localhost:8000`.
 
 ## Prod
 
@@ -36,6 +37,7 @@ Note: if you use `direnv`, the environment variable `DJANGO_DEBUG` is set to `tr
 $ npm run build
 $ ./manage.py distill-local --collectstatic --force dist
 ```
+Then the static site will be available in `dist/`.
 
 Or, if you prefer docker:
 
@@ -44,6 +46,7 @@ $ sudo docker build -t jssg .
 $ sudo docker network create traefik_public
 $ sudo docker compose up
 ```
+With docker the server is accessible at `localhost:8003`
 
 ## Config
 
