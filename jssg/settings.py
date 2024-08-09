@@ -41,11 +41,11 @@ SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 
-ALLOWED_HOSTS = ["exemple.org", "localhost"]
+ALLOWED_HOSTS = ["example.org", "localhost"]
 
 # JSSG
 JFME_DOMAIN = "www.exemple.com"
-JFME_CONTENT_DIRS = [BASE_DIR / "exemple-content"] + [BASE_DIR / "content"]
+JFME_CONTENT_DIRS = [BASE_DIR / "example-content"] + [BASE_DIR / "content"]
 JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]

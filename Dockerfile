@@ -33,6 +33,7 @@ RUN pip install -Ur requirements.txt \
 COPY manage.py tsconfig.json vite.config.ts ./
 COPY jssg/ jssg/
 COPY content/ content/
+COPY example-content/ example-content/
 
 # Build
 RUN ./manage.py migrate
