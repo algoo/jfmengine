@@ -33,8 +33,6 @@ RUN pip install -Ur requirements.txt \
 COPY manage.py tsconfig.json vite.config.ts ./
 COPY jssg/ jssg/
 COPY content/ content/
-COPY common-content/ common-content/
-COPY galae-content/ galae-content/
 
 # Build
 RUN ./manage.py migrate
