@@ -1,0 +1,33 @@
+{% macro header(
+    PRIMARY_TITLE = "",
+    SECONDARY_TITLE = "",
+    THIRD_TITLE = ""
+) %}
+
+{% if PRIMARY_TITLE or SECONDARY_TITLE or THIRD_TITLE %}
+<div class="box">
+    {% if PRIMARY_TITLE %}
+    <h1>{{ PRIMARY_TITLE }}</h1>
+    {% endif %}
+    {% if SECONDARY_TITLE %}
+    <h2>{{ SECONDARY_TITLE }}</h2>
+    {% endif %}
+    {% if THIRD_TITLE %}
+    <h3>{{ THIRD_TITLE }}</h3>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endmacro %}
+
+
+
+{% macro image(
+    IMAGE_PATH = ""
+) %}
+
+<div>
+    <img src="{{ IMAGE_PATH }}" alt="Image not found"/>
+</div>
+
+{% endmacro %}

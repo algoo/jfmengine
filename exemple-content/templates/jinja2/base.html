@@ -1,0 +1,59 @@
+{% from "blocks/block.html" import block %}
+{% from "widgets/page_widgets.html" import header %}
+
+
+<!DOCTYPE html>
+<html lang="{{ object.metadata.lang|default("") }}">
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  {% for key, value in object.metadata.items()|filter_opengraph_metadata %}
+  <meta property="{{ key }}" content="{{ value }}"/>
+  {% endfor %}
+  <title>{{ object.title|default("") }}</title>
+  <link href="{{ static('css/styles.css') }}" rel="stylesheet"/>
+</head>
+
+
+
+<body>
+
+<div class="container">
+{{ block(
+      NAME = "navbar",
+      VERSION = object.metadata.lang|default(""),
+      DEFAULT_NAME = "en/navbar"
+)}}
+</div>
+
+<header>
+  <div class="container">
+  {{ header(
+      PRIMARY_TITLE = object.metadata.page_header_h1|default(""),
+      SECONDARY_TITLE = object.metadata.page_header_h2|default(""),
+      THIRD_TITLE = object.metadata.page_header_h3|default("")
+  ) }}
+  </div>
+</header>
+
+<main>
+  <div class="container">
+  {% block content %}
+  {% endblock %}
+  </div>
+</main>
+
+<div class="container">
+{{ block(
+  NAME = "footer"
+) }}
+</div>
+
+</body>
+
+
+
+</html>

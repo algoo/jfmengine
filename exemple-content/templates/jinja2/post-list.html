@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div>
+<div class="box">
     <nav>
         <a>Categories :</a>
         <a href='/posts/page1.html'>Tout</a>
@@ -12,9 +12,9 @@
     </nav>
 </div>
 
-<div>
+<div class="posts">
     {% for post in object.posts %}
-    <div style="max-width: ; min-width: ">
+    <div class="post-card" style="max-width: ; min-width: ">
         <a href="/posts/articles/{% if post.rel_folder_path != '' %}{{post.rel_folder_path}}/{% endif %}{{post.slug}}.html">
           <h2>{{ post.title }}</h2>
         </a>
@@ -39,9 +39,6 @@
                   Lire la suite ...
                 </a>
             </div>
-        </div>
-        <div>
-          {{post.metadata.abstract}}
         </div>
     </div>
     {% endfor %}

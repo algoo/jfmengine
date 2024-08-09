@@ -44,8 +44,8 @@ DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 ALLOWED_HOSTS = ["exemple.org", "localhost"]
 
 # JSSG
-JFME_DOMAIN = "www.galae.net"
-JFME_CONTENT_DIRS = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]
+JFME_DOMAIN = "www.exemple.com"
+JFME_CONTENT_DIRS = [BASE_DIR / "exemple-content"] + [BASE_DIR / "content"]
 JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]
@@ -55,9 +55,10 @@ JFME_DEFAULT_METADATA_FILEPATH = BASE_DIR / "jssg" / "default_metadata.txt" # If
 JFME_NUMBER_OF_POSTS_BY_PAGE = 3 # no pagination of posts if set to 0 or -1
 JFME_CONTENT_REQUIRED_METADATA = ["title", "slug", "lang", "description"]
 JFME_SITEMAP_LASTMOD_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z" # strftime format, see https://docs.python.org/fr/3.6/library/datetime.html#strftime-and-strptime-behavior, see https://www.sitemaps.org/protocol.html#lastmoddef for allowed datetime formats
-JFME_INDEX_PAGE = "fr-index"
+JFME_INDEX_PAGE = "en/home"
 JFME_ADDITIONAL_JINJA2_FUNCTIONS = {}
 JFME_ADDITIONAL_JINJA2_FILTERS = {}
+
 #Django sites and sitemap app
 SITE_ID = 1
 
