@@ -42,8 +42,6 @@ SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0
 DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 
 ALLOWED_HOSTS = ["exemple.org", "localhost"]
-runserver.default_port = '8000'
-runserver.default_addr = '127.0.0.1'
 
 # JSSG
 JFME_DOMAIN = "www.galae.net"
@@ -169,7 +167,3 @@ if not DEBUG and not VITE_MANIFEST_FILE.exists():
 DJANGO_VITE_PLUGIN = {
     "MANIFEST": VITE_MANIFEST_FILE,
 }
-
-import re
-from django.template import base
-base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
