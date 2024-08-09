@@ -233,7 +233,6 @@ class Document:
                 files += (p / dir).rglob(glob)
             else :
                 files += (p / dir).glob(glob)
-        # print(files)
         return map(cls.load, files)
     
     @classmethod

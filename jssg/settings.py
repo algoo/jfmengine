@@ -41,13 +41,11 @@ SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
 
-ALLOWED_HOSTS = ["exemple.org", "localhost"]
-runserver.default_port = '8000'
-runserver.default_addr = '127.0.0.1'
+ALLOWED_HOSTS = ["example.org", "localhost"]
 
 # JSSG
-JFME_DOMAIN = "www.galae.net"
-JFME_CONTENT_DIRS = [BASE_DIR / "content"] + [BASE_DIR / "galae-content"] + [BASE_DIR / "common-content"]
+JFME_DOMAIN = "www.exemple.com"
+JFME_CONTENT_DIRS = [BASE_DIR / "example-content"] + [BASE_DIR / "content"]
 JFME_PAGES_DIRS = [path / "pages" for path in JFME_CONTENT_DIRS]
 JFME_POSTS_DIRS = [path / "posts" for path in JFME_CONTENT_DIRS]
 JFME_TEMPLATES_DIRS = [path / "templates" for path in JFME_CONTENT_DIRS]
@@ -57,9 +55,10 @@ JFME_DEFAULT_METADATA_FILEPATH = BASE_DIR / "jssg" / "default_metadata.txt" # If
 JFME_NUMBER_OF_POSTS_BY_PAGE = 3 # no pagination of posts if set to 0 or -1
 JFME_CONTENT_REQUIRED_METADATA = ["title", "slug", "lang", "description"]
 JFME_SITEMAP_LASTMOD_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z" # strftime format, see https://docs.python.org/fr/3.6/library/datetime.html#strftime-and-strptime-behavior, see https://www.sitemaps.org/protocol.html#lastmoddef for allowed datetime formats
-JFME_INDEX_PAGE = "fr-index"
+JFME_INDEX_PAGE = "en/home"
 JFME_ADDITIONAL_JINJA2_FUNCTIONS = {}
 JFME_ADDITIONAL_JINJA2_FILTERS = {}
+
 #Django sites and sitemap app
 SITE_ID = 1
 
@@ -169,7 +168,3 @@ if not DEBUG and not VITE_MANIFEST_FILE.exists():
 DJANGO_VITE_PLUGIN = {
     "MANIFEST": VITE_MANIFEST_FILE,
 }
-
-import re
-from django.template import base
-base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)

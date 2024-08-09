@@ -21,9 +21,6 @@ from jssg import settings
 from django.contrib.sitemaps.views import sitemap
 from jssg.sitemaps import PageSitemap, PostSitemap, PostListSitemap, ConstantUrlSitemap
 
-# print([p for p in Page.get_pages()])
-# print([p for p in PostList.get_categories_and_pages()])
-
 urlpatterns = [
     distill_path(
         "", views.IndexView.as_view(), name="index", distill_file="index.html"
