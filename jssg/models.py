@@ -96,6 +96,9 @@ class Document:
         #     ),
         #     extras=["fenced-code-blocks", "tables"],
         # )
+        #
+        # TODO - D.A. - 2024-09-09: implement in jinja2.py module
+        # the possibility to import extra markdown extensions like 'fenced-code-blocks', etc
 
 
         if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "django" :
@@ -110,6 +113,9 @@ class Document:
                 )
             )
         else :
+            # TODO - D.A. - 2024-09-09 - Log markdown extensions for user usage
+            # for mdext in engines["jinja2"].env.markdowner.registeredExtensions:
+            #    print("Extension: ", mdext)
             return engines["jinja2"].from_string(self.make_imports() + self.body).render(
                 {
                     "posts": sorted(
@@ -213,7 +219,7 @@ class Document:
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all=False
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.html", all=False
     ) -> Iterator["Document"]:
         """Load multiple document.
 
@@ -284,11 +290,16 @@ class Page(Document):
 
     @classmethod
     def load_page_with_slug(cls, slug: str, dir : str) -> "Page":
+        # for page in list(cls.load_glob(dir=dir)):
+        #     print("Search for SLUG {slug} in {dir}, compare with page {pageslug}".format(slug=slug, dir=dir, pageslug=page.slug))
+        #     if page.slug == slug:
+        #        return page
+
         return next(filter(lambda p: p.slug == slug, cls.load_glob(dir = dir)))
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
+        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.html", all = False
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, dir, glob, all)
