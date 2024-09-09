@@ -28,6 +28,10 @@ def environment(**options):
         }
     )
 
+    # HACK - 2024-08-28 - D.A. - We remove the "nl" extension because
+    # it inserts <br/> tags on every end of line.
+    env.markdowner.inlinePatterns.deregister('nl')
+
     for templatetag in settings.JFME_ADDITIONAL_JINJA2_FUNCTIONS :
         module_name, function_name = settings.JFME_ADDITIONAL_JINJA2_FUNCTIONS[templatetag].rsplit('.', 1)
         try :
