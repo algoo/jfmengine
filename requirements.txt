@@ -6,3 +6,4 @@ whitenoise==6.7.0
 Jinja2==3.1.4
 beautifulsoup4==4.12.3
 django-jinja-markdown
+minify_html==0.15.0
