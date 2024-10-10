@@ -5,8 +5,8 @@ Today, it's a django app that can generate a static website with Vite & Typescri
 ## Bootstrap
 
 ```shell
-$ git clone https://github.com/algoo/jssg.git
-$ cd jssg
+$ git clone https://github.com/algoo/jfmengine.git
+$ cd jfmengine
 $ python3.12 -m venv env/
 $ source env/bin/activate
 $ direnv allow
