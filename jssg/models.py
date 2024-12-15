@@ -31,11 +31,13 @@ from django.core.management.commands.runserver import Command as runserver
 from math import ceil
 
 
+class EmptyLine(Exception):
+    pass
 
-class EmptyLine(Exception) :
+
+class CommentLine(Exception):
     pass
-class CommentLine(Exception) :
-    pass
+
 
 class Document:
     """A document.
@@ -100,8 +102,8 @@ class Document:
         # TODO - D.A. - 2024-09-09: implement in jinja2.py module
         # the possibility to import extra markdown extensions like 'fenced-code-blocks', etc
 
-
-        if "template_engine" in self.metadata.keys() and self.metadata["template_engine"] == "django" :
+        if "template_engine" in self.metadata.keys() and self.metadata[
+            "template_engine"] == "django":
             return Template(self.body).render(
                 Context(
                     {
@@ -112,7 +114,7 @@ class Document:
                     }
                 )
             )
-        else :
+        else:
             # TODO - D.A. - 2024-09-09 - Log markdown extensions for user usage
             # for mdext in engines["jinja2"].env.markdowner.registeredExtensions:
             #    print("Extension: ", mdext)
@@ -121,9 +123,44 @@ class Document:
                     "posts": sorted(
                         Post.load_glob(), key=lambda p: p.timestamp, reverse=True
                     ),
-                    "data":self.data
+                    "data": self.data
                 }
             )
+
+    @classmethod
+    def process_metadata_substitutions(cls, metadata: dict) -> dict:
+        """
+        when the metadata loading step is finished, then we are looking for substitutions.
+        Substitutions are parts of metadata values like ((metadata_name)). The expected behavior
+        is to replace this parts with the associated metadata if it exists.
+
+        Note: the behavior is not recursive, so you should not use theses patterns in metadata which
+        are intended to be used as a substitution. This is mostly a convenient behavior in order to
+        avoid data duplication.
+
+        For example, if pages are organised in folders associated to the language, eg "en" for pages
+        in English, then the lang metadata would be set to ((dir)).
+
+        A good usecase is to setup global metadata, like website_url, for example, then you can
+        reuse it in other metadata like if it was a variable.
+        """
+        import re
+        from copy import deepcopy
+        substitued_metadata = deepcopy(metadata)
+
+        searchable_patterns = [(f"(({key}))", key) for key in metadata.keys() if key != "path"]
+        for key, value in substitued_metadata.items():
+            if key == "path":
+                continue  # do not process specific metadata
+            print(f"processing substitution for {key} -> {value}")
+            new_value = value
+            for (pattern, pattern_key) in searchable_patterns:
+                new_value = new_value.replace(pattern, metadata[pattern_key])
+            if new_value != value:
+                substitued_metadata[key] = new_value
+                print(
+                    f"Replace metadata[{key}]: value from [{metadata[key]}] to [{substitued_metadata[key]}]")
+        return substitued_metadata
 
     @classmethod
     def load(cls, path: Path) -> "Document":
@@ -139,14 +176,14 @@ class Document:
         content = StringIO()
 
         with settings.JFME_DEFAULT_METADATA_FILEPATH.open() as f:
-            for line in f :
-                try :
+            for line in f:
+                try:
                     # Parse a metadata key value pair
                     key, value = cls.parse_metadata_line(line)
                     metadata[key] = value
-                except EmptyLine : # ignore empty lines
+                except EmptyLine:  # ignore empty lines
                     continue
-                except CommentLine : # ignore comment lines
+                except CommentLine:  # ignore comment lines
                     continue
 
         with path.open() as f:
@@ -171,29 +208,27 @@ class Document:
                         # Metadata end block found
                         state = 2
                     else:
-                        try :
+                        try:
                             # Parse a metadata key value pair
                             key, value = cls.parse_metadata_line(line)
                             metadata[key] = value
-                        except EmptyLine : # ignore empty lines
+                        except EmptyLine:  # ignore empty lines
                             continue
-                        except CommentLine : # ignore comment lines
+                        except CommentLine:  # ignore comment lines
                             continue
                 elif state == 2:
                     if line.rstrip().startswith("---"):
                         # data end block found
                         # FIXME print("json reading finished: {}".format(json_data))
-                        data = json.loads(json_data)
+                        # data = json.loads(json_data)
                         state = 3
                     else:
-                        if line.strip() == "":
-                            continue  # remove empty lines
-                        if line.startswith("#"):
-                            continue  # remove comment lines
-
-                        # FIXME print("json data: append {}".format(line))
-                        json_data += line
-
+                        try:
+                            json_data += cls.parse_json_data_line(line)
+                        except EmptyLine:  # ignore empty lines
+                            continue
+                        except CommentLine:  # ignore comment lines
+                            continue
                 else:
                     # Read the content
                     content.write(line)
@@ -209,9 +244,9 @@ class Document:
                 f"Document {path.resolve()}'s meta-data block doesn't have an end"
             )
 
+        metadata = cls.process_metadata_substitutions(metadata)
         metadata["path"] = path
-        metadata["json"] = json_data
-        metadata["data"] = data
+        metadata["data"] = json.loads(json_data)
 
         obj = cls(content=content.getvalue(), **metadata)
         obj.data = data
@@ -219,7 +254,7 @@ class Document:
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.html", all=False
+            cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.html", all=False
     ) -> Iterator["Document"]:
         """Load multiple document.
 
@@ -232,33 +267,45 @@ class Document:
 
         if path is None:
             raise RuntimeError("No path and no self.BASE_DIR defined")
-        
+
         files = []
-        for p in path :
-            if all :
+        for p in path:
+            if all:
                 files += (p / dir).rglob(glob)
-            else :
+            else:
                 files += (p / dir).glob(glob)
         return map(cls.load, files)
-    
+
     @classmethod
-    def make_imports(cls) :
-        
+    def make_imports(cls):
+
         import_str = ""
-        for template_dir in settings.JFME_TEMPLATES_DIRS :
-            for widget_file in (template_dir / "jinja2" / "widgets").rglob("*") :
-                if widget_file.is_file() :
-                    import_str += "{% " + "import '{}' as {}".format(widget_file.relative_to(template_dir / "jinja2"), widget_file.stem) + " %}\n"
+        for template_dir in settings.JFME_TEMPLATES_DIRS:
+            for widget_file in (template_dir / "jinja2" / "widgets").rglob("*"):
+                if widget_file.is_file():
+                    import_str += "{% " + "import '{}' as {}".format(
+                        widget_file.relative_to(template_dir / "jinja2"),
+                        widget_file.stem) + " %}\n"
         return import_str
 
     @classmethod
-    def parse_metadata_line(cls, line) :
+    def parse_metadata_line(cls, line):
         if line.strip() == "":  # ignore empty lines
             raise EmptyLine()
         if line.startswith("#"):  # ignore comment lines
             raise CommentLine(line)
         # key, value = map(str.strip, line.split("", maxsplit=1))
         return map(str.strip, re.split("[\s]", line, maxsplit=1))
+
+    @classmethod
+    def parse_json_data_line(cls, line: str):
+        # TODO - D.A. - 2024-12-15 use an efficient json5 parser
+        if line.strip() == "":  # ignore empty lines
+            raise EmptyLine()
+        if line.strip().startswith("#"):  # ignore comment lines, even if indented
+            raise CommentLine(line)
+        return line
+
 
 class Page(Document):
     """A webpage, with a title and some content."""
@@ -280,33 +327,36 @@ class Page(Document):
             self.slug = slugify(self.title)
 
         self.content_page_dir = self.path
-        while (self.content_page_dir not in self.BASE_DIR) :
+        while (self.content_page_dir not in self.BASE_DIR):
             self.content_page_dir = self.content_page_dir.parent
 
         # page folder path relative to its content_page_dir
         self.rel_folder_path = str(self.path.relative_to(self.content_page_dir).parent)
-        if self.rel_folder_path == '.' :
+        if self.rel_folder_path == '.':
             self.rel_folder_path = ''
 
     @classmethod
-    def load_page_with_slug(cls, slug: str, dir : str) -> "Page":
+    def load_page_with_slug(cls, slug: str, dir: str) -> "Page":
         # for page in list(cls.load_glob(dir=dir)):
         #     print("Search for SLUG {slug} in {dir}, compare with page {pageslug}".format(slug=slug, dir=dir, pageslug=page.slug))
         #     if page.slug == slug:
         #        return page
 
-        return next(filter(lambda p: p.slug == slug, cls.load_glob(dir = dir)))
+        return next(filter(lambda p: p.slug == slug, cls.load_glob(dir=dir)))
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.html", all = False
+            cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.html", all=False
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, dir, glob, all)
-    
+
     @classmethod
-    def get_pages(cls) :
-        return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Page.load_glob(all = True))
+    def get_pages(cls):
+        return (
+            {"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path,
+                                                              "slug": p.slug}
+            for p in Page.load_glob(all=True))
 
 
 class Post(Page):
@@ -322,77 +372,84 @@ class Post(Page):
         """
         super().__init__(content, **metadata)
         self.timestamp = datetime.datetime.fromisoformat(metadata["date"])
-        if "category" in self.metadata :
+        if "category" in self.metadata:
             self.metadata["category"] = slugify(self.metadata["category"])
-        else :
+        else:
             self.metadata["category"] = ""
 
     @classmethod
     def load_glob(
-        cls, path: Optional[List[Path]] = None, dir = "", glob: str = "*.md", all = False
+            cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.md", all=False
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, dir, glob, all)
-    
-    @classmethod
-    def get_posts(cls) :
-        return ({"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path, "slug" : p.slug} for p in Post.load_glob(all = True))
 
-class PostList :
-    metadata = {"page_header_h1":"Posts"}
+    @classmethod
+    def get_posts(cls):
+        return (
+            {"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path,
+                                                              "slug": p.slug}
+            for p in Post.load_glob(all=True))
+
+
+class PostList:
+    metadata = {"page_header_h1": "Posts"}
     category = ""
 
-    def __init__(self, category = "", page = 1) -> None:
+    def __init__(self, category="", page=1) -> None:
         self.category = category
         self.page = page
-        
-        if category == "" :
-            nb_posts = len(list(Post.load_glob(all = True)))
-        else :
-            nb_posts = len(list(filter(lambda p: p.metadata["category"] == self.category, Post.load_glob(all=True))))
 
-        if settings.JFME_NUMBER_OF_POSTS_BY_PAGE > 0 :
+        if category == "":
+            nb_posts = len(list(Post.load_glob(all=True)))
+        else:
+            nb_posts = len(list(filter(lambda p: p.metadata["category"] == self.category,
+                                       Post.load_glob(all=True))))
+
+        if settings.JFME_NUMBER_OF_POSTS_BY_PAGE > 0:
             self.posts_by_page = settings.JFME_NUMBER_OF_POSTS_BY_PAGE
-        else :
+        else:
             self.posts_by_page = nb_posts
 
         if self.posts_by_page > 0:
-            self.nb_pages = ceil(nb_posts / self.posts_by_page) # number of posts / number of posts by page
+            self.nb_pages = ceil(
+                nb_posts / self.posts_by_page)  # number of posts / number of posts by page
 
     @classmethod
-    def load_post_list_with_category(cls, category, page) :
+    def load_post_list_with_category(cls, category, page):
         return cls(category, page)
 
     @property
-    def categories(self) :
+    def categories(self):
         cat = set()
-        for post in Post.load_glob(all = True) :
-            if post.metadata["category"] != "" :
+        for post in Post.load_glob(all=True):
+            if post.metadata["category"] != "":
                 cat.add(post.metadata["category"])
         return sorted(cat)
 
     @classmethod
-    def get_categories_and_pages(cls) :
+    def get_categories_and_pages(cls):
         t = []
-        for category in cls().categories :
-            t += [{"category": category, "page":page} for page in range(1, cls(category).nb_pages + 1)]
+        for category in cls().categories:
+            t += [{"category": category, "page": page} for page in
+                  range(1, cls(category).nb_pages + 1)]
         return t
-        
-    def get_postlists(cls) :
+
+    def get_postlists(cls):
         return cls.get_categories_and_pages() + cls.get_pages()
 
     @classmethod
-    def get_pages(cls) :
-        if len(list(Post.load_glob(all = True))) > 0 :
-            return [{"page": page} for page in range(1, cls().nb_pages+1)]
-        else : 
+    def get_pages(cls):
+        if len(list(Post.load_glob(all=True))) > 0:
+            return [{"page": page} for page in range(1, cls().nb_pages + 1)]
+        else:
             return []
 
     @property
-    def posts(self) :
+    def posts(self):
         posts = sorted(Post.load_glob(all=True), key=lambda p: p.timestamp, reverse=True)
-        if self.category == "" :
-            return posts[self.posts_by_page*(self.page-1):self.posts_by_page*(self.page)]
-        else :
-            return list(filter(lambda p: p.metadata["category"] == self.category, posts))[self.posts_by_page*(self.page-1):self.posts_by_page*(self.page)]
-    
+        if self.category == "":
+            return posts[self.posts_by_page * (self.page - 1):self.posts_by_page * (self.page)]
+        else:
+            return list(filter(lambda p: p.metadata["category"] == self.category, posts))[
+                   self.posts_by_page * (self.page - 1):self.posts_by_page * (self.page)]
