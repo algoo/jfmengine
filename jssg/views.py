@@ -13,17 +13,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Any, List
+from typing import List
 
+from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed
 from django.views.generic import DetailView
 
 from jssg.models import Page, Post, PostList
-from django.conf import settings
 
 
 class PostFeedsView(Feed):
@@ -52,7 +51,7 @@ class PageView(DetailView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        if "dir" not in self.kwargs.keys() :
+        if "dir" not in self.kwargs.keys():
             self.kwargs["dir"] = ""
         model = self.model.load_page_with_slug(self.kwargs["slug"], self.kwargs["dir"])
         return model
@@ -63,10 +62,15 @@ class IndexView(PageView):
     template_name = "page.html"
 
     def get_object(self, queryset=None) -> Model:
-        if len(settings.JFME_INDEX_PAGE.rsplit('/', 1)) > 1 :
-            self.kwargs['dir'], self.kwargs['slug'] = settings.JFME_INDEX_PAGE.rsplit('/', 1)
-        else :
-            self.kwargs['dir'], self.kwargs['slug'] = "", settings.JFME_INDEX_PAGE.rsplit('/', 1)[0]
+        if len(settings.JFME_INDEX_PAGE.rsplit("/", 1)) > 1:
+            self.kwargs["dir"], self.kwargs["slug"] = settings.JFME_INDEX_PAGE.rsplit(
+                "/", 1
+            )
+        else:
+            self.kwargs["dir"], self.kwargs["slug"] = (
+                "",
+                settings.JFME_INDEX_PAGE.rsplit("/", 1)[0],
+            )
         return super().get_object(queryset)
 
 
@@ -74,11 +78,13 @@ class PostView(PageView):
     model = Post
     template_name = "post.html"
 
-    
+
 class PostListView(DetailView):
     template_name = "post-list.html"
 
     def get_object(self, queryset=None) -> Model:
-        if "category" not in self.kwargs.keys() :
+        if "category" not in self.kwargs.keys():
             self.kwargs["category"] = ""
-        return PostList.load_post_list_with_category(self.kwargs["category"], self.kwargs["page"])
+        return PostList.load_post_list_with_category(
+            self.kwargs["category"], self.kwargs["page"]
+        )

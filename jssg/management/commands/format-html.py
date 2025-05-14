@@ -1,9 +1,10 @@
 import os
-from django.core.management.base import BaseCommand
 from pathlib import Path
+
+import minify_html
 from bs4 import BeautifulSoup
 from django.conf import settings
-import minify_html
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
@@ -14,17 +15,18 @@ class Command(BaseCommand):
             "mode",
             choices=["beautify", "minify"],
             type=str,
-            help="Beautify or minify the html files"
+            help="Beautify or minify the html files",
         ),
         parser.add_argument(
             "distpath",
-            nargs='?',
+            nargs="?",
             type=str,
             default=str(settings.DIST_DIR),
-            help="To specify a particular dist path. Default is: " + str(settings.DIST_DIR)
+            help="To specify a particular dist path. Default is: "
+            + str(settings.DIST_DIR),
         )
 
-    def handle(self, *args, **options) :
+    def handle(self, *args, **options):
         if options["mode"] == "minify":
             for path in Path(options["distpath"]).rglob("*.html"):
                 self.__minify_file(path)
@@ -32,7 +34,9 @@ class Command(BaseCommand):
             for path in Path(options["distpath"]).rglob("*.html"):
                 self.__beautify_file(path)
 
-    def __minify_file(self, file_path: Path, display_downsize_ratio: bool=True) -> None:
+    def __minify_file(
+        self, file_path: Path, display_downsize_ratio: bool = True
+    ) -> None:
         size_before = os.stat(file_path).st_size
         with open(file_path, "r+") as file:
             minified = minify_html.minify(
@@ -53,13 +57,15 @@ class Command(BaseCommand):
             message = f"[-{1 - size_after / size_before:.1%}] {file_path}"  # shows -xx.x% ration
             print(message)
 
-    def __beautify_file(self, file_path: Path, display_upsize_ratio: bool=True) -> None:
+    def __beautify_file(
+        self, file_path: Path, display_upsize_ratio: bool = True
+    ) -> None:
         """
         beautify a HTML file
         """
         size_before = os.stat(file_path).st_size
         with open(file_path, "r+") as file:
-            soup = BeautifulSoup(file.read(), 'html.parser')
+            soup = BeautifulSoup(file.read(), "html.parser")
             file.seek(0)
             file.write(soup.prettify())
             file.truncate()
