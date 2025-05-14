@@ -23,7 +23,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-from django.core.management.commands.runserver import Command as runserver
 
 from os import environ
 from pathlib import Path
@@ -40,8 +39,12 @@ SECRET_KEY = "django-insecure-+lnz3sdad49!x)zq6fg_fah1qdw-01!7y!8)dahyw7hxjgnl$0
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DJANGO_DEBUG", "false") == "true"
-
-ALLOWED_HOSTS = ["example.org", "localhost"]
+DEBUG = False
+if environ.get("DJANGO_DEBUG"):
+    DEBUG = True
+ALLOWED_HOSTS = ["exemple.org", "localhost"]
+# runserver.default_port = '8000'
+# runserver.default_addr = '127.0.0.1'
 
 # JSSG
 JFME_DOMAIN = "www.exemple.com"
@@ -91,7 +94,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "environment": "jssg.jinja2.environment",
-            "extensions": ["django_jinja_markdown.extensions.MarkdownExtension"]
+            "extensions": ["jssg.jinja2.JFMEMarkdownExtension"]
         },
     },
     {
@@ -168,3 +171,4 @@ if not DEBUG and not VITE_MANIFEST_FILE.exists():
 DJANGO_VITE_PLUGIN = {
     "MANIFEST": VITE_MANIFEST_FILE,
 }
+
