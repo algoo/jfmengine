@@ -11,6 +11,22 @@ from django.conf import settings
 
 import importlib
 
+
+
+from django_jinja_markdown.extensions import MarkdownExtension
+
+class JFMEMarkdownExtension(MarkdownExtension):
+    def _markdown_support(self, caller):
+        """
+        Parse template with markdown.
+
+        :param caller:  - caller of method;
+        :return:        - parsed template.
+        """
+        from textwrap import dedent  # this import should be in the file head, of course
+        return self.environment.markdowner.convert(dedent(caller())).strip()
+
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update(
