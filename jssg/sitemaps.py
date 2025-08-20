@@ -9,6 +9,7 @@ class MySitemap(Sitemap) :
     #Overriding get_url() to specify the domain name
     def get_urls(self, site=None, **kwargs):
         site = Site(domain=settings.JFME_DOMAIN, name=settings.JFME_DOMAIN)
+        self.protocol = "https"
         return super(MySitemap, self).get_urls(site=site, **kwargs)
 
 class ConstantUrlSitemap(MySitemap) :

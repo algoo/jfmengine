@@ -41,7 +41,12 @@ urlpatterns = [
         "sitemap.xml",
         sitemap,
         {
-            "sitemaps": {"constant-url": ConstantUrlSitemap, "page": PageSitemap, "posts": PostSitemap, "postlist":PostListSitemap}, 
+            "sitemaps": {
+                "constant-url": ConstantUrlSitemap,
+                "page": PageSitemap,
+                "posts": PostSitemap,
+                "postlist":PostListSitemap
+            },
             "template_name":"sitemap.html"
         },
         name="django.contrib.sitemaps.views.sitemap",
