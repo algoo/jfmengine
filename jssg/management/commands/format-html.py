@@ -28,6 +28,10 @@ class Command(BaseCommand):
         if options["mode"] == "minify":
             for path in Path(options["distpath"]).rglob("*.html"):
                 self.__minify_file(path)
+            for path in Path(options["distpath"]).rglob("*.js"):
+                self.__minify_file(path)
+            for path in Path(options["distpath"]).rglob("*.css"):
+                self.__minify_file(path)
         else:
             for path in Path(options["distpath"]).rglob("*.html"):
                 self.__beautify_file(path)
