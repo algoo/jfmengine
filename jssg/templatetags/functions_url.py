@@ -42,7 +42,7 @@ def url_for_slug(slug) :
         raise Exception("slug '%s' not found" % slug)
     return url
 
-def url_for_slug_path(url_path) :
+def url_for_slug_path(url_path: str) -> str:
     """
     @param url_path: the url of the page to search (absolute path)
     @return: the string of the slug url corresponding to the page
