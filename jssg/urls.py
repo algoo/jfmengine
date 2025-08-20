@@ -16,7 +16,7 @@ from django_distill import distill_path, distill_re_path
 
 from jssg import views
 from jssg.models import Page, Post, PostList
-from jssg import settings 
+from jssg import settings
 
 from django.contrib.sitemaps.views import sitemap
 from jssg.sitemaps import PageSitemap, PostSitemap, PostListSitemap, ConstantUrlSitemap
@@ -26,13 +26,13 @@ urlpatterns = [
         "", views.IndexView.as_view(), name="index", distill_file="index.html"
     ),
     distill_re_path(
-        r'^(?!posts/)(?P<slug>[a-zA-Z0-9-]+).html$',
+        r"^(?!posts/)(?P<slug>[a-zA-Z0-9-]+).html$",
         views.PageView.as_view(),
         name="page",
         distill_func=Page.get_pages,
     ),
     distill_re_path(
-        r'^(?!posts/)(?P<dir>[a-zA-Z-/]+)/(?P<slug>[a-zA-Z0-9-]+).html$',
+        r"^(?!posts/)(?P<dir>[a-zA-Z-/]+)/(?P<slug>[a-zA-Z0-9-]+).html$",
         views.PageView.as_view(),
         name="page",
         distill_func=Page.get_pages,
@@ -45,22 +45,22 @@ urlpatterns = [
                 "constant-url": ConstantUrlSitemap,
                 "page": PageSitemap,
                 "posts": PostSitemap,
-                "postlist":PostListSitemap
+                "postlist": PostListSitemap,
             },
-            "template_name":"sitemap.html"
+            "template_name": "sitemap.html",
         },
         name="django.contrib.sitemaps.views.sitemap",
-    )
+    ),
 ]
 
-if len(list(Post.get_posts())) > 0 :
+if len(list(Post.get_posts())) > 0:
     urlpatterns += [
         distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
         distill_path(
             "posts/page<int:page>.html",
             views.PostListView.as_view(),
-            name = "post-index",
-            distill_func = PostList.get_pages
+            name="post-index",
+            distill_func=PostList.get_pages,
         ),
         distill_path(
             "posts/articles/<slug:slug>.html",
@@ -76,13 +76,12 @@ if len(list(Post.get_posts())) > 0 :
         ),
     ]
 
-if len(PostList().categories) > 0 :
+if len(PostList().categories) > 0:
     urlpatterns += [
         distill_path(
             "posts/category/<slug:category>/page<int:page>.html",
             views.PostListView.as_view(),
-            name = "post-category",
-            distill_func = PostList.get_categories_and_pages
+            name="post-category",
+            distill_func=PostList.get_categories_and_pages,
         ),
-
     ]

@@ -1,7 +1,8 @@
 import re
 from jssg.models import Page
 
-def url_for_slug(slug) :
+
+def url_for_slug(slug):
     """
     @param slug: the slug of the page to search
     @return: the string of the url corresponding to the page
@@ -25,22 +26,28 @@ def url_for_slug(slug) :
     url = ""
     pages_with_slug = []
 
-    for page in Page.load_glob(all=True) :
-        if page.slug == slug : # the page exists
-            if pages_with_slug == [] : # the slug has not been found yet
-                if page.rel_folder_path != '' :
+    for page in Page.load_glob(all=True):
+        if page.slug == slug:  # the page exists
+            if pages_with_slug == []:  # the slug has not been found yet
+                if page.rel_folder_path != "":
                     url = "/" + page.rel_folder_path + "/" + page.slug + ".html"
-                else :
+                else:
                     url = "/" + page.slug + ".html"
-            else : # the slug already exists
+            else:  # the slug already exists
                 url = ""
-            pages_with_slug.append(str(page.path.relative_to(page.content_page_dir.parent)))
+            pages_with_slug.append(
+                str(page.path.relative_to(page.content_page_dir.parent))
+            )
 
-    if url == "" and pages_with_slug != [] :
-        raise Exception("slug '%s' is not unique, found in : [%s] ; use url_for_slug_path()" % (slug, ", ".join(pages_with_slug)))
-    elif url == "" :
+    if url == "" and pages_with_slug != []:
+        raise Exception(
+            "slug '%s' is not unique, found in : [%s] ; use url_for_slug_path()"
+            % (slug, ", ".join(pages_with_slug))
+        )
+    elif url == "":
         raise Exception("slug '%s' not found" % slug)
     return url
+
 
 def url_for_slug_path(url_path: str) -> str:
     """
@@ -65,14 +72,19 @@ def url_for_slug_path(url_path: str) -> str:
     # Valid url are /<dir>/<slug>.html or /<slug>.html
     # Example: if url_path is "/tmp/folder/subfolder/thefile.html", then slug will be "thefile" and the dir will be "tmp/folder/subfolder"
     # Note : the dir does not start with '/' since the url parsed in url.py do not either
-    try :
-        _, dir, slug = re.findall(r"(^|^/([a-zA-Z0-9/-]+))/([a-zA-Z0-9-]+)$", url_path)[0]
-    except :
-        raise Exception("url '%s' is not valid ; correct urls are /<dir>/<slug> or /<slug>" % url_path)
+    try:
+        _, dir, slug = re.findall(r"(^|^/([a-zA-Z0-9/-]+))/([a-zA-Z0-9-]+)$", url_path)[
+            0
+        ]
+    except:
+        raise Exception(
+            "url '%s' is not valid ; correct urls are /<dir>/<slug> or /<slug>"
+            % url_path
+        )
 
     # Verify that the page exists
-    for page in Page.load_glob(all=True) :
-        if page.slug == slug and page.rel_folder_path == dir :
+    for page in Page.load_glob(all=True):
+        if page.slug == slug and page.rel_folder_path == dir:
             return url_path + ".html"
 
     raise Exception("page for '%s' url not found (dead link)" % url_path)

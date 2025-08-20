@@ -102,15 +102,17 @@ class Document:
         # TODO - D.A. - 2024-09-09: implement in jinja2.py module
         # the possibility to import extra markdown extensions like 'fenced-code-blocks', etc
 
-        if "template_engine" in self.metadata.keys() and self.metadata[
-            "template_engine"] == "django":
+        if (
+            "template_engine" in self.metadata.keys()
+            and self.metadata["template_engine"] == "django"
+        ):
             return Template(self.body).render(
                 Context(
                     {
                         "posts": sorted(
                             Post.load_glob(), key=lambda p: p.timestamp, reverse=True
                         ),
-                        "data": self.data
+                        "data": self.data,
                     }
                 )
             )
@@ -118,13 +120,17 @@ class Document:
             # TODO - D.A. - 2024-09-09 - Log markdown extensions for user usage
             # for mdext in engines["jinja2"].env.markdowner.registeredExtensions:
             #    print("Extension: ", mdext)
-            return engines["jinja2"].from_string(self.make_imports() + self.body).render(
-                {
-                    "posts": sorted(
-                        Post.load_glob(), key=lambda p: p.timestamp, reverse=True
-                    ),
-                    "data": self.data
-                }
+            return (
+                engines["jinja2"]
+                .from_string(self.make_imports() + self.body)
+                .render(
+                    {
+                        "posts": sorted(
+                            Post.load_glob(), key=lambda p: p.timestamp, reverse=True
+                        ),
+                        "data": self.data,
+                    }
+                )
             )
 
     @classmethod
@@ -137,7 +143,7 @@ class Document:
 
         print("METADATA")
         for key in metadata:
-            print(f'{key} -> {metadata[key]}')
+            print(f"{key} -> {metadata[key]}")
 
         import re
         from copy import deepcopy
@@ -153,18 +159,29 @@ class Document:
             print(f"Substitution iteration {iteration}")
 
             # Create a hashable representation of current state
-            current_state = tuple(sorted((k, v) for k, v in substituted_metadata.items()
-                                         if isinstance(v, str) and k != "path"))
+            current_state = tuple(
+                sorted(
+                    (k, v)
+                    for k, v in substituted_metadata.items()
+                    if isinstance(v, str) and k != "path"
+                )
+            )
 
             if current_state in seen_states:
-                print("Cycle detected in substitutions. Stopping to prevent infinite loop.")
+                print(
+                    "Cycle detected in substitutions. Stopping to prevent infinite loop."
+                )
                 break
 
             seen_states.add(current_state)
             changes_made = False
 
             # Get current searchable patterns
-            searchable_patterns = [(f"(({key}))", key) for key in substituted_metadata.keys() if key != "path"]
+            searchable_patterns = [
+                (f"(({key}))", key)
+                for key in substituted_metadata.keys()
+                if key != "path"
+            ]
 
             for key, value in list(substituted_metadata.items()):
                 if key == "path" or not isinstance(value, str):
@@ -175,16 +192,20 @@ class Document:
                 new_value = value
 
                 # Apply all possible substitutions to this value
-                for (pattern, pattern_key) in searchable_patterns:
+                for pattern, pattern_key in searchable_patterns:
                     if pattern in new_value and pattern_key in substituted_metadata:
                         if isinstance(substituted_metadata[pattern_key], str):
-                            new_value = new_value.replace(pattern, substituted_metadata[pattern_key])
+                            new_value = new_value.replace(
+                                pattern, substituted_metadata[pattern_key]
+                            )
 
                 # Check if this value changed
                 if new_value != original_value:
                     substituted_metadata[key] = new_value
                     changes_made = True
-                    print(f"Replace metadata[{key}]: value from [{original_value}] to [{new_value}]")
+                    print(
+                        f"Replace metadata[{key}]: value from [{original_value}] to [{new_value}]"
+                    )
 
             # If no changes were made, we're done
             if not changes_made:
@@ -285,7 +306,7 @@ class Document:
 
     @classmethod
     def load_glob(
-            cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.html", all=False
+        cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.html", all=False
     ) -> Iterator["Document"]:
         """Load multiple document.
 
@@ -314,9 +335,14 @@ class Document:
         for template_dir in settings.JFME_TEMPLATES_DIRS:
             for widget_file in (template_dir / "jinja2" / "widgets").rglob("*"):
                 if widget_file.is_file():
-                    import_str += "{% " + "import '{}' as {}".format(
-                        widget_file.relative_to(template_dir / "jinja2"),
-                        widget_file.stem) + " %}\n"
+                    import_str += (
+                        "{% "
+                        + "import '{}' as {}".format(
+                            widget_file.relative_to(template_dir / "jinja2"),
+                            widget_file.stem,
+                        )
+                        + " %}\n"
+                    )
         return import_str
 
     @classmethod
@@ -358,13 +384,13 @@ class Page(Document):
             self.slug = slugify(self.title)
 
         self.content_page_dir = self.path
-        while (self.content_page_dir not in self.BASE_DIR):
+        while self.content_page_dir not in self.BASE_DIR:
             self.content_page_dir = self.content_page_dir.parent
 
         # page folder path relative to its content_page_dir
         self.rel_folder_path = str(self.path.relative_to(self.content_page_dir).parent)
-        if self.rel_folder_path == '.':
-            self.rel_folder_path = ''
+        if self.rel_folder_path == ".":
+            self.rel_folder_path = ""
 
     @classmethod
     def load_page_with_slug(cls, slug: str, dir: str) -> "Page":
@@ -377,7 +403,7 @@ class Page(Document):
 
     @classmethod
     def load_glob(
-            cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.html", all=False
+        cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.html", all=False
     ) -> Iterator["Page"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, dir, glob, all)
@@ -385,9 +411,13 @@ class Page(Document):
     @classmethod
     def get_pages(cls):
         return (
-            {"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path,
-                                                              "slug": p.slug}
-            for p in Page.load_glob(all=True))
+            (
+                {"slug": p.slug}
+                if p.rel_folder_path == ""
+                else {"dir": p.rel_folder_path, "slug": p.slug}
+            )
+            for p in Page.load_glob(all=True)
+        )
 
 
 class Post(Page):
@@ -410,7 +440,7 @@ class Post(Page):
 
     @classmethod
     def load_glob(
-            cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.md", all=False
+        cls, path: Optional[List[Path]] = None, dir="", glob: str = "*.md", all=False
     ) -> Iterator["Post"]:
         """Overridden only to make the static typing happy."""
         return super().load_glob(path, dir, glob, all)
@@ -418,9 +448,13 @@ class Post(Page):
     @classmethod
     def get_posts(cls):
         return (
-            {"slug": p.slug} if p.rel_folder_path == '' else {"dir": p.rel_folder_path,
-                                                              "slug": p.slug}
-            for p in Post.load_glob(all=True))
+            (
+                {"slug": p.slug}
+                if p.rel_folder_path == ""
+                else {"dir": p.rel_folder_path, "slug": p.slug}
+            )
+            for p in Post.load_glob(all=True)
+        )
 
 
 class PostList:
@@ -434,8 +468,14 @@ class PostList:
         if category == "":
             nb_posts = len(list(Post.load_glob(all=True)))
         else:
-            nb_posts = len(list(filter(lambda p: p.metadata["category"] == self.category,
-                                       Post.load_glob(all=True))))
+            nb_posts = len(
+                list(
+                    filter(
+                        lambda p: p.metadata["category"] == self.category,
+                        Post.load_glob(all=True),
+                    )
+                )
+            )
 
         if settings.JFME_NUMBER_OF_POSTS_BY_PAGE > 0:
             self.posts_by_page = settings.JFME_NUMBER_OF_POSTS_BY_PAGE
@@ -444,7 +484,8 @@ class PostList:
 
         if self.posts_by_page > 0:
             self.nb_pages = ceil(
-                nb_posts / self.posts_by_page)  # number of posts / number of posts by page
+                nb_posts / self.posts_by_page
+            )  # number of posts / number of posts by page
 
     @classmethod
     def load_post_list_with_category(cls, category, page):
@@ -462,8 +503,10 @@ class PostList:
     def get_categories_and_pages(cls):
         t = []
         for category in cls().categories:
-            t += [{"category": category, "page": page} for page in
-                  range(1, cls(category).nb_pages + 1)]
+            t += [
+                {"category": category, "page": page}
+                for page in range(1, cls(category).nb_pages + 1)
+            ]
         return t
 
     def get_postlists(cls):
@@ -478,9 +521,14 @@ class PostList:
 
     @property
     def posts(self):
-        posts = sorted(Post.load_glob(all=True), key=lambda p: p.timestamp, reverse=True)
+        posts = sorted(
+            Post.load_glob(all=True), key=lambda p: p.timestamp, reverse=True
+        )
         if self.category == "":
-            return posts[self.posts_by_page * (self.page - 1):self.posts_by_page * (self.page)]
+            return posts[
+                self.posts_by_page * (self.page - 1) : self.posts_by_page * (self.page)
+            ]
         else:
-            return list(filter(lambda p: p.metadata["category"] == self.category, posts))[
-                   self.posts_by_page * (self.page - 1):self.posts_by_page * (self.page)]
+            return list(
+                filter(lambda p: p.metadata["category"] == self.category, posts)
+            )[self.posts_by_page * (self.page - 1) : self.posts_by_page * (self.page)]
