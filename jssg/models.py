@@ -130,37 +130,68 @@ class Document:
     @classmethod
     def process_metadata_substitutions(cls, metadata: dict) -> dict:
         """
-        when the metadata loading step is finished, then we are looking for substitutions.
-        Substitutions are parts of metadata values like ((metadata_name)). The expected behavior
-        is to replace this parts with the associated metadata if it exists.
-
-        Note: the behavior is not recursive, so you should not use theses patterns in metadata which
-        are intended to be used as a substitution. This is mostly a convenient behavior in order to
-        avoid data duplication.
-
-        For example, if pages are organised in folders associated to the language, eg "en" for pages
-        in English, then the lang metadata would be set to ((dir)).
-
-        A good usecase is to setup global metadata, like website_url, for example, then you can
-        reuse it in other metadata like if it was a variable.
+        Alternative implementation with explicit cycle detection instead of max iterations.
+        This version tracks the state of the metadata at each iteration and stops if it
+        detects that we've returned to a previous state (indicating a cycle).
         """
+
+        print("METADATA")
+        for key in metadata:
+            print(f'{key} -> {metadata[key]}')
+
         import re
         from copy import deepcopy
-        substitued_metadata = deepcopy(metadata)
 
-        searchable_patterns = [(f"(({key}))", key) for key in metadata.keys() if key != "path"]
-        for key, value in substitued_metadata.items():
-            if key == "path":
-                continue  # do not process specific metadata
-            print(f"processing substitution for {key} -> {value}")
-            new_value = value
-            for (pattern, pattern_key) in searchable_patterns:
-                new_value = new_value.replace(pattern, metadata[pattern_key])
-            if new_value != value:
-                substitued_metadata[key] = new_value
-                print(
-                    f"Replace metadata[{key}]: value from [{metadata[key]}] to [{substitued_metadata[key]}]")
-        return substitued_metadata
+        substituted_metadata = deepcopy(metadata)
+
+        # Keep track of previous states to detect cycles
+        seen_states = set()
+        iteration = 0
+
+        while True:
+            iteration += 1
+            print(f"Substitution iteration {iteration}")
+
+            # Create a hashable representation of current state
+            current_state = tuple(sorted((k, v) for k, v in substituted_metadata.items()
+                                         if isinstance(v, str) and k != "path"))
+
+            if current_state in seen_states:
+                print("Cycle detected in substitutions. Stopping to prevent infinite loop.")
+                break
+
+            seen_states.add(current_state)
+            changes_made = False
+
+            # Get current searchable patterns
+            searchable_patterns = [(f"(({key}))", key) for key in substituted_metadata.keys() if key != "path"]
+
+            for key, value in list(substituted_metadata.items()):
+                if key == "path" or not isinstance(value, str):
+                    continue
+
+                print(f"processing substitution for {key} -> {value}")
+                original_value = value
+                new_value = value
+
+                # Apply all possible substitutions to this value
+                for (pattern, pattern_key) in searchable_patterns:
+                    if pattern in new_value and pattern_key in substituted_metadata:
+                        if isinstance(substituted_metadata[pattern_key], str):
+                            new_value = new_value.replace(pattern, substituted_metadata[pattern_key])
+
+                # Check if this value changed
+                if new_value != original_value:
+                    substituted_metadata[key] = new_value
+                    changes_made = True
+                    print(f"Replace metadata[{key}]: value from [{original_value}] to [{new_value}]")
+
+            # If no changes were made, we're done
+            if not changes_made:
+                break
+
+        print(f"Substitution completed after {iteration} iterations")
+        return substituted_metadata
 
     @classmethod
     def load(cls, path: Path) -> "Document":
