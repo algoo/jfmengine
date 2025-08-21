@@ -43,6 +43,7 @@ class Command(BaseCommand):
     ) -> None:
         size_before = os.stat(file_path).st_size
         with open(file_path, "r+") as file:
+            # INFO - 2025-08-21 - D.A. - see API https://github.com/wilsonzlin/minify-html/blob/master/minify-html/src/cfg/mod.rs
             minified = minify_html.minify(
                 file.read(),
                 do_not_minify_doctype=True,
