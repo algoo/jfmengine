@@ -61,6 +61,10 @@ JFME_SITEMAP_LASTMOD_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z" # strftime format, 
 JFME_INDEX_PAGE = "en/home"
 JFME_ADDITIONAL_JINJA2_FUNCTIONS = {}
 JFME_ADDITIONAL_JINJA2_FILTERS = {}
+# list of files to exclude from sitemap build.
+# Example: ["/en/index.html"] would exclude the /en/index.html file from pages to be included in generated sitemap.xml
+# This (also) allows to avoid double canonical pages because / and /en/index.html may be both primary page (and we need a / canonical page)
+JFME_SITEMAP_EXCLUDED_LOCATIONS = []
 
 #Django sites and sitemap app
 SITE_ID = 1

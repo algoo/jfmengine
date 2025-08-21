@@ -14,9 +14,28 @@ class MySitemap(Sitemap):
         self.protocol = "https"
         return super(MySitemap, self).get_urls(site=site, **kwargs)
 
+    def items(self):
+        """
+        All child classes must NOT implement this method.
+        instead, they must implement the _jssg_sitemap_items() method
+        """
+        from django.conf import settings
+        items = []
+        found_items = self._jssg_sitemap_items()
+        # Exclude items if their location is found in locations to exclude
+        items = [item for item in found_items if self.location(item) not in settings.JFME_SITEMAP_EXCLUDED_LOCATIONS]
+
+        return items
+
+    def _jssg_sitemap_items(self):
+        """
+        This method must be implemented by child classes.
+        """
+        raise NotImplementedError()
+
 
 class ConstantUrlSitemap(MySitemap):
-    def items(self):
+    def _jssg_sitemap_items(self):
         if len(list(Post.load_glob(all=True))) > 0:
             return ["/", "/atom.xml", "/sitemap.xml"]
         else:
@@ -27,7 +46,7 @@ class ConstantUrlSitemap(MySitemap):
 
 
 class PageSitemap(MySitemap):
-    def items(self):
+    def _jssg_sitemap_items(self):
         return list(Page.load_glob(all=True))
 
     def location(self, page) -> str:
@@ -41,7 +60,7 @@ class PageSitemap(MySitemap):
 
 
 class PostSitemap(MySitemap):
-    def items(self):
+    def _jssg_sitemap_items(self):
         return list(Post.load_glob(all=True))
 
     def location(self, post) -> str:
@@ -55,7 +74,7 @@ class PostSitemap(MySitemap):
 
 
 class PostListSitemap(MySitemap):
-    def items(self):
+    def _jssg_sitemap_items(self):
         return PostList().get_postlists()
 
     def location(self, postlist) -> str:
