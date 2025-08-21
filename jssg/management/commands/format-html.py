@@ -46,9 +46,17 @@ class Command(BaseCommand):
             minified = minify_html.minify(
                 file.read(),
                 do_not_minify_doctype=True,
+                # For minify-html 0.16.xxx --- minify_doctype=False,
                 ensure_spec_compliant_unquoted_attribute_values=True,
+                # For minify-html 0.16.xxx --- allow_noncompliant_unquoted_attribute_values=True,
                 keep_closing_tags=True,
                 keep_spaces_between_attributes=True,
+                # For minify-html 0.16.xxx --- allow_removing_spaces_between_attributes=False,
+                keep_comments=False,
+                keep_html_and_head_opening_tags=True,
+                keep_input_type_text_attr=True,
+                preserve_brace_template_syntax=True,
+                preserve_chevron_percent_template_syntax=True,
                 minify_css=True,
                 minify_js=True,
             )
