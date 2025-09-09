@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from django.conf import settings
 from django.contrib.sitemaps import Sitemap
@@ -55,8 +55,8 @@ class PageSitemap(MySitemap):
         else:
             return "/" + page.slug + ".html"
 
-    def lastmod(self, post):
-        return datetime.fromtimestamp(post.path.lstat().st_mtime)
+    def lastmod(self, post) -> datetime:
+        return datetime.fromtimestamp(post.path.lstat().st_mtime, tz=timezone.utc)
 
 
 class PostSitemap(MySitemap):
@@ -69,8 +69,8 @@ class PostSitemap(MySitemap):
         else:
             return "/posts/articles/" + post.slug + ".html"
 
-    def lastmod(self, post):
-        return datetime.fromtimestamp(post.path.lstat().st_mtime)
+    def lastmod(self, post) -> datetime:
+        return datetime.fromtimestamp(post.path.lstat().st_mtime, tz=timezone.utc)
 
 
 class PostListSitemap(MySitemap):
