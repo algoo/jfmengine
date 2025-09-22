@@ -12,12 +12,13 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
-
+from pathlib import Path
 from typing import List
 
 from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.db.models.base import Model as Model
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed
 from django.views.generic import DetailView
@@ -88,3 +89,20 @@ class PostListView(DetailView):
         return PostList.load_post_list_with_category(
             self.kwargs["category"], self.kwargs["page"]
         )
+
+def jfme_seo_helper(request):
+
+    pages = []
+    for page in Page.load_glob(
+            path=list(map(lambda p: Path(p).absolute(), settings.JFME_PAGES_DIRS)),
+            all=True,
+    ):
+        og_image = page.metadata["og:image"]
+        og_image = og_image.replace("https://" + settings.JFME_DOMAIN, "")
+        og_image = og_image.replace("http://" + settings.JFME_DOMAIN, "")
+        page.metadata["og:image_local_url"] = og_image  # HACK - D.A. - 2025-09-22 - Allow to show local images
+        pages.append(page)
+
+    # TODO - 2025-09-22 - D.A. - Also add blog articles to SEO helper page
+
+    return render(request, "seo_page_list.html", {"pages": pages})

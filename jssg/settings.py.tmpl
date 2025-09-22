@@ -94,8 +94,8 @@ ROOT_URLCONF = "jssg.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [path / "jinja2" for path in JFME_TEMPLATES_DIRS],
-        "APP_DIRS": True,
+        "DIRS": ["jssg/templates"] + [path / "jinja2" for path in JFME_TEMPLATES_DIRS],
+        "APP_DIRS": False,
         "OPTIONS": {
             "environment": "jssg.jinja2.environment",
             "extensions": ["jssg.jinja2.JFMEMarkdownExtension"]
@@ -104,7 +104,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [path / "django" for path in JFME_TEMPLATES_DIRS],
-        "APP_DIRS": True,
+        "APP_DIRS": False,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",

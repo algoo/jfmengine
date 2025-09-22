@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 from django_distill import distill_path, distill_re_path
+from django.urls import path
 
 from jssg import views
 from jssg.models import Page, Post, PostList
@@ -85,3 +86,8 @@ if len(PostList().categories) > 0:
             distill_func=PostList.get_categories_and_pages,
         ),
     ]
+
+urlpatterns += [
+    path("jfme/seo_helper", views.jfme_seo_helper, name="jfme_seo_helper"),
+]
+
