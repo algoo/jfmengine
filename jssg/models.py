@@ -136,11 +136,27 @@ class Document:
     @classmethod
     def process_metadata_substitutions(cls, metadata: dict) -> dict:
         """
-        Alternative implementation with explicit cycle detection instead of max iterations.
-        This version tracks the state of the metadata at each iteration and stops if it
-        detects that we've returned to a previous state (indicating a cycle).
-        """
+        process substitutions in all metadata values.
+        metadata are key/value pairs representing page or blog entry metadata.
+        They may be static strings or dynamically referencign other metadata.
+        They can also be composed of strings + other metadata values.
 
+        Example:
+        - lang         en
+        - twitter:lang ((lang))
+        - title        Product: ((og:title))
+        - og:title     This is the title of the page
+        - og:locale    ((twitter:lang))
+
+        After substitutions, this will result in the following metadata:
+        - lang         en
+        - twitter:lang en
+        - title        Product: This is the title of the page
+        - og:title     This is the title of the page
+        - og:locale    en
+
+        The algorithm supports recursive substitutions and avoid infinite loops through cycle detection.
+        """
         print("METADATA")
         for key in metadata:
             print(f"{key} -> {metadata[key]}")
@@ -153,6 +169,8 @@ class Document:
         # Keep track of previous states to detect cycles
         seen_states = set()
         iteration = 0
+
+        substitution_pattern = re.compile(r'\(\(([^)]+)\)\)')  # match ((metadata_name)) patterns in metadata values
 
         while True:
             iteration += 1
@@ -176,13 +194,6 @@ class Document:
             seen_states.add(current_state)
             changes_made = False
 
-            # Get current searchable patterns
-            searchable_patterns = [
-                (f"(({key}))", key)
-                for key in substituted_metadata.keys()
-                if key != "path"
-            ]
-
             for key, value in list(substituted_metadata.items()):
                 if key == "path" or not isinstance(value, str):
                     continue
@@ -191,13 +202,25 @@ class Document:
                 original_value = value
                 new_value = value
 
-                # Apply all possible substitutions to this value
-                for pattern, pattern_key in searchable_patterns:
-                    if pattern in new_value and pattern_key in substituted_metadata:
-                        if isinstance(substituted_metadata[pattern_key], str):
-                            new_value = new_value.replace(
-                                pattern, substituted_metadata[pattern_key]
-                            )
+                # Find all substitution patterns in the current value
+                matches = substitution_pattern.findall(new_value)
+
+                if matches:
+                    print(f"  Found substitution patterns: {matches}")
+
+                    # Apply substitutions for each found pattern
+                    for metadata_name in matches:
+                        pattern_to_replace = f"(({metadata_name}))"
+
+                        # Check if the referenced metadata exists and is a string
+                        if (metadata_name in substituted_metadata and
+                                isinstance(substituted_metadata[metadata_name], str)):
+
+                            replacement_value = substituted_metadata[metadata_name]
+                            new_value = new_value.replace(pattern_to_replace, replacement_value)
+                            print(f"    Replacing {pattern_to_replace} with '{replacement_value}'")
+                        else:
+                            print(f"    Warning: Referenced metadata '{metadata_name}' not found or not a string")
 
                 # Check if this value changed
                 if new_value != original_value:
@@ -209,6 +232,7 @@ class Document:
 
             # If no changes were made, we're done
             if not changes_made:
+                print("No more changes to make, substitution complete")
                 break
 
         print(f"Substitution completed after {iteration} iterations")

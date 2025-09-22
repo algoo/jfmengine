@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JFME SEO helper</title>
+    <style>
+        body { font-family: sans-serif;}
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #CCC; padding: 0.25em;}
+        tr:hover { filter: brightness(95%); }
+        .header { background-color: #fafafa; }
+        .metadata { background-color: #ffffd8;
+        }
+        .opengraph { background-color: #e4f6ff; }
+        kbd {background-color: #ddd; padding: 0.1em; border: 1px solid #AAA; border-radius: 0.25em;}
+
+    </style>
+</head>
+<body>
+    <h1>JFME SEO helper</h1>
+    <table>
+        <tr>
+            <th class="header" rowspan="2">
+                Page
+            </th>
+            <th class="header" rowspan="2">
+                Lang
+            </th>
+            <th class="metadata" colspan="3">
+                Metadata
+            </th>
+            <th class="opengraph" colspan="4">
+                Opengraph
+            </th>
+        </tr>
+        <tr>
+            <th class="metadata">Title</th>
+            <th class="metadata">Description</th>
+            <th class="metadata">Keywords</th>
+            <th class="opengraph">Site</th>
+            <th class="opengraph">Image</th>
+            <th class="opengraph">Title</th>
+            <th class="opengraph">Description</th>
+        </tr>
+        {% for page in pages %}
+            <tr>
+                <td class="header">{{ page.path }}</td>
+                <td class="header" {% if page.metadata.lang != page.metadata["og:locale"] %}style="background-color: rgba(251,207,207,0.99);" title="Page language and Opengraph locale are different: [{{ page.metadata.lang }}] vs [{{ page.metadata["og:locale"] }}]."{% endif %}>{{ page.metadata.lang }}</td>
+                <td class="metadata" {% if page.metadata.title|length >= 70 %}style="background-color: rgba(251,207,207,0.99);" title="Title should be less than 70. Currently: {{ page.metadata.title|length }}"{% endif %}>
+                    <kbd style="float: right;" title="Length: {{ page.metadata.title|length }}. Recommended: <70">{{ page.metadata.title|length }}</kbd>
+                    {{ page.metadata.title }}
+                </td>
+                <td class="metadata" {% if page.metadata.description|length >= 160 %}style="background-color: rgba(251,207,207,0.99);" title="Description should be less than 160. Currently: {{ page.metadata.description|length }}"{% endif %}>
+                    <kbd style="float: right;" title="Length: {{ page.metadata.description|length }}. Recommended: <160">{{ page.metadata.description|length }}</kbd>
+                    {{ page.metadata.description }}
+                </td>
+                <td class="metadata">{{ page.metadata["keywords"] }}</td>
+                <td class="opengraph">{{ page.metadata["og:site_name"] }}</td>
+                <td class="opengraph">
+                    <img src="{{ page.metadata["og:image_local_url"] }}"
+                         title="og:image value: {{ page.metadata["og:image"] }}"
+                         style="max-width: 4em; max-height: 3em;"
+                    />
+                </td>
+                <td class="opengraph">{{ page.metadata["og:title"] }}</td>
+                <td class="opengraph">{{ page.metadata["og:description"] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
