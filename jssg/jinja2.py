@@ -2,6 +2,7 @@ import importlib
 from textwrap import dedent
 
 from django.conf import settings
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.management.base import BaseCommand
 from django.templatetags.static import static
 from django.urls import reverse
@@ -24,11 +25,29 @@ class JFMEMarkdownExtension(MarkdownExtension):
         return self.environment.markdowner.convert(dedent(caller())).strip()
 
 
+def static_with_hash(path):
+    """
+    Get the URL for a static file using the manifest hash
+    This is the equivalent of static for django templates except that it is ready
+    to use in jinja. The default static function of jinja2 does not compute hashed name
+    """
+    if hasattr(staticfiles_storage, 'stored_name'):
+        try:
+            hashed_name = staticfiles_storage.stored_name(path)
+            return staticfiles_storage.url(hashed_name)
+        except ValueError:
+            # File not in manifest, return unhashed URL
+            return staticfiles_storage.url(path)
+    else:
+        # Non-manifest storage (dev mode), just return the URL
+        return staticfiles_storage.url(path)
+
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update(
         {
-            "static": static,
+            "static": static_with_hash,  # instead of staticfiles_storage.url or even static
             "url": reverse,
             "markdown": markdown,
             "url_for_slug": url_for_slug,
