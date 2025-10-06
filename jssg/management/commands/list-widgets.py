@@ -2,8 +2,7 @@ from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from jinja2.nodes import Macro
-
-from jssg.jinja2 import Environment
+from django.template import engines
 
 
 class Command(BaseCommand):
@@ -46,6 +45,10 @@ class Command(BaseCommand):
             nb_file_found = 0
             nb_macro_found = 0
             visited = []
+
+            jinja_engine = engines['jinja2']
+            jinja2_env = jinja_engine.env
+
             for template_dir in settings.JFME_TEMPLATES_DIRS:
                 for widget in (template_dir / "jinja2" / "widgets").rglob("*"):
                     rel_widget_path = widget.relative_to(template_dir.parent.parent)
@@ -53,24 +56,25 @@ class Command(BaseCommand):
                         with open(widget, "r") as w:
                             self.stdout.write("%s" % str(rel_widget_path))
                             nb_file_found += 1
-                            for macro in Environment().parse(w.read()).find_all(Macro):
+
+                            for macro in jinja2_env.parse(w.read()).find_all(Macro):
                                 visited.append(
                                     (widget.stem, macro.name, rel_widget_path)
                                 )
                                 self.stdout.write("\t%s()" % macro.name)
                                 nb_macro_found += 1
-
             self.stdout.write(
                 self.style.HTTP_INFO(
-                    "%d jinja2 widget %s found (%d %s)"
+                    "%d jinja2 %s found in %d %s."
                     % (
-                        nb_file_found,
-                        "file" if nb_file_found <= 1 else "files",
                         nb_macro_found,
                         "macro" if nb_file_found <= 1 else "macros",
+                        nb_file_found,
+                        "file" if nb_file_found <= 1 else "files",
                     )
                 )
             )
+
             couple_visited = [(x[0], x[1]) for x in visited]
             duplicates = set(
                 [t for t in couple_visited if couple_visited.count(t) > 1]
