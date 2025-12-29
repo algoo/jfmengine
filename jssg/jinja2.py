@@ -31,6 +31,10 @@ def static_with_hash(path):
     This is the equivalent of static for django templates except that it is ready
     to use in jinja. The default static function of jinja2 does not compute hashed name
     """
+    # In development, skip hashing for live reloading
+    if settings.DEBUG:
+        return staticfiles_storage.url(path)
+        
     if hasattr(staticfiles_storage, 'stored_name'):
         try:
             hashed_name = staticfiles_storage.stored_name(path)
