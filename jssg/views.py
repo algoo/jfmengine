@@ -97,11 +97,12 @@ def jfme_seo_helper(request):
             path=list(map(lambda p: Path(p).absolute(), settings.JFME_PAGES_DIRS)),
             all=True,
     ):
-        og_image = page.metadata["og:image"]
-        og_image = og_image.replace("https://" + settings.JFME_DOMAIN, "")
-        og_image = og_image.replace("http://" + settings.JFME_DOMAIN, "")
-        page.metadata["og:image_local_url"] = og_image  # HACK - D.A. - 2025-09-22 - Allow to show local images
-        pages.append(page)
+        if "og:image" in page.metadata:
+            og_image = page.metadata["og:image"]
+            og_image = og_image.replace("https://" + settings.JFME_DOMAIN, "")
+            og_image = og_image.replace("http://" + settings.JFME_DOMAIN, "")
+            page.metadata["og:image_local_url"] = og_image  # HACK - D.A. - 2025-09-22 - Allow to show local images
+            pages.append(page)
 
     # TODO - 2025-09-22 - D.A. - Also add blog articles to SEO helper page
 
