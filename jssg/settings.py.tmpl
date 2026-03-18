@@ -66,6 +66,12 @@ JFME_ADDITIONAL_JINJA2_FILTERS = {}
 # This (also) allows to avoid double canonical pages because / and /en/index.html may be both primary page (and we need a / canonical page)
 JFME_SITEMAP_EXCLUDED_LOCATIONS = []
 
+# Image conversion settings (used by jssg.imagework / convert-images command)
+JFME_RESIZE_PREFIX = ".jfme-reworked__"  # prefix for original backup files
+JFME_RESIZE_DEFAULT_SIZE = "1024x1024"   # WxH, e.g. "1920x1080"
+JFME_RESIZE_DEFAULT_STRATEGY = "fit"     # fit | fillcrop | min_fit | stretch
+JFME_RESIZE_DEFAULT_QUALITY = 0.75       # WebP quality, float in [0.0, 1.0]
+
 #Django sites and sitemap app
 SITE_ID = 1
 

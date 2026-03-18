@@ -1,3 +1,5 @@
+import dataclasses
+
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
@@ -17,6 +19,29 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        # TODO - D.A. - 2026-03-18 - Move / refactor this code to put it in a reusable library, eg jssg/widget.py
+        from collections import defaultdict
+        import typing
+        @dataclasses.dataclass
+        class Widget:
+            name: str
+            path: str
+            module: str
+            type: str  # jinja or django
+
+        widgets = []
+
+        def find_duplicates(widgets: typing.List[Widget]) -> typing.List[typing.List[Widget]]:
+            """
+            Find duplicate widgets based on their name. Return a list of groups of duplicates.
+            """
+            groups = defaultdict(list)
+            for w in widgets:
+                groups[w.name].append(w)
+            return [group for group in groups.values() if len(group) > 1]
+
+
+
         if options["jinja2"] and options["django"]:
             call_command("list-widgets", "-django")
             self.stdout.write("\n")
@@ -61,7 +86,9 @@ class Command(BaseCommand):
                                 visited.append(
                                     (widget.stem, macro.name, rel_widget_path)
                                 )
-                                self.stdout.write("\t%s()" % macro.name)
+                                self.stdout.write(f"FFF {widget.stem} - {macro.name} - {rel_widget_path}")
+                                widgets.append(Widget(name=macro.name, path=rel_widget_path, module=widget.stem, type="jinja"))
+                                self.stdout.write("MAC\t%s()" % macro.name)
                                 nb_macro_found += 1
             self.stdout.write(
                 self.style.HTTP_INFO(
@@ -91,6 +118,20 @@ class Command(BaseCommand):
                 ]  # get the paths corresponding to (widget.stem, macro.name)
                 for p in paths:
                     self.stdout.write(self.style.WARNING("\t- %s" % p))
+
+            print("## WIDGET LIST\n")
+            max_name_length = max(len(w.name) for w in widgets)
+            for widget in widgets:
+                print(f"{widget.name.ljust(max_name_length)}\t{widget.type}\t{widget.path}")
+
+            print("\n## DUPLICATED WIDGETS\n")
+            real_duplicates = find_duplicates(widgets)
+
+            max_name_length = max(len(duplicates[0].name) for duplicates in real_duplicates)
+            for duplicates in real_duplicates:
+                duplicated_paths = [str(d.path) for d in duplicates]
+                print(f"{duplicates[0].name.ljust(max_name_length)}\t{','.join(duplicated_paths)}")
+
 
         else:
             call_command("list-widgets", "-django")
