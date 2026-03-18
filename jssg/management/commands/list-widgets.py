@@ -19,6 +19,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        # TODO - D.A. - 2026-03-18 - Move / refactor this code to put it in a reusable library, eg jssg/widget.py
         from collections import defaultdict
         import typing
         @dataclasses.dataclass
