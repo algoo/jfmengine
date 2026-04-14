@@ -21,6 +21,7 @@ from jssg import settings
 
 from django.contrib.sitemaps.views import sitemap
 from jssg.sitemaps import PageSitemap, PostSitemap, PostListSitemap, ConstantUrlSitemap
+from jssg.views import StaticPageView
 
 urlpatterns = [
     distill_path(
@@ -53,6 +54,13 @@ urlpatterns = [
         name="django.contrib.sitemaps.views.sitemap",
     ),
 ]
+
+for spf in settings.JFME_STATIC_PAGES:  # spf = static page filepath
+    urlpatterns.append(
+        distill_path(spf, StaticPageView.as_view(static_page_filepath=spf), name=spf),
+    )
+
+
 
 if len(list(Post.get_posts())) > 0:
     urlpatterns += [

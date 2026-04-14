@@ -65,6 +65,11 @@ JFME_ADDITIONAL_JINJA2_FILTERS = {}
 # Example: ["/en/index.html"] would exclude the /en/index.html file from pages to be included in generated sitemap.xml
 # This (also) allows to avoid double canonical pages because / and /en/index.html may be both primary page (and we need a / canonical page)
 JFME_SITEMAP_EXCLUDED_LOCATIONS = []
+# Static pages are contents to serve at the root folder (or relative to root folder) compared to static contents
+# which are found in <root>/static/xxx. This is usefull for robots.txt and llms.txt, for example.
+# static pages may be text or binary files - JFME manage the mime type according to the original content
+# Example value: JFME_STATIC_PAGES = ["robots.txt", "llms.txt"]   # add both files to the pages/ folder
+JFME_STATIC_PAGES = []
 
 # Image conversion settings (used by jssg.imagework / convert-images command)
 JFME_RESIZE_PREFIX = ".jfme-reworked__"  # prefix for original backup files
