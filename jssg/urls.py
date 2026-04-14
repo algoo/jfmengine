@@ -61,7 +61,6 @@ for spf in settings.JFME_STATIC_PAGES:  # spf = static page filepath
     )
 
 
-
 if len(list(Post.get_posts())) > 0:
     urlpatterns += [
         distill_path("atom.xml", views.PostFeedsView(), name="atom_feed"),
@@ -98,4 +97,3 @@ if len(PostList().categories) > 0:
 urlpatterns += [
     path("jfme/seo_helper", views.jfme_seo_helper, name="jfme_seo_helper"),
 ]
-

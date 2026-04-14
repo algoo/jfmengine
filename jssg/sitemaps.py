@@ -20,10 +20,15 @@ class MySitemap(Sitemap):
         instead, they must implement the _jssg_sitemap_items() method
         """
         from django.conf import settings
+
         items = []
         found_items = self._jssg_sitemap_items()
         # Exclude items if their location is found in locations to exclude
-        items = [item for item in found_items if self.location(item) not in settings.JFME_SITEMAP_EXCLUDED_LOCATIONS]
+        items = [
+            item
+            for item in found_items
+            if self.location(item) not in settings.JFME_SITEMAP_EXCLUDED_LOCATIONS
+        ]
 
         return items
 

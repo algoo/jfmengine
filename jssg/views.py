@@ -20,7 +20,7 @@ from typing import List
 from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.db.models.base import Model as Model
-from django.http import Http404,HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed
@@ -93,12 +93,14 @@ class PostListView(DetailView):
             self.kwargs["category"], self.kwargs["page"]
         )
 
+
 class StaticPageView(View):
     """
     Rendering of static pages. Static pages are raw pages, like a pdf or text file.
     Compared to static files, they can be found in the original page tree, eg /robots.txt or /en/documentation.pdf.
     If it was static files, they would be found in /static/robots.txt or /static/en/documentation.pdf, etc
     """
+
     static_page_filepath: str = None  # set via as_view(filename="...")
 
     def get(self, request):
@@ -107,14 +109,18 @@ class StaticPageView(View):
 
         file_path = ""
         for folder_path in settings.JFME_PAGES_DIRS:
-            static_page_absolute_path = os.path.join(folder_path, self.static_page_filepath)
+            static_page_absolute_path = os.path.join(
+                folder_path, self.static_page_filepath
+            )
             if os.path.exists(static_page_absolute_path):
                 file_path = static_page_absolute_path
                 print(f"Found {file_path}")
                 break
 
         if not file_path:
-            print(f"{self.static_page_filepath} not found in {settings.JFME_PAGES_DIRS}")
+            print(
+                f"{self.static_page_filepath} not found in {settings.JFME_PAGES_DIRS}"
+            )
             raise Http404("File not found.")
 
         mime_type, encoding = mimetypes.guess_type(self.static_page_filepath)
@@ -137,8 +143,8 @@ def jfme_seo_helper(request):
 
     pages = []
     for page in Page.load_glob(
-            path=list(map(lambda p: Path(p).absolute(), settings.JFME_PAGES_DIRS)),
-            all=True,
+        path=list(map(lambda p: Path(p).absolute(), settings.JFME_PAGES_DIRS)),
+        all=True,
     ):
         if "og:image" in page.metadata:
             og_image = page.metadata["og:image"]

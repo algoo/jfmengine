@@ -34,8 +34,8 @@ def static_with_hash(path):
     # In development, skip hashing for live reloading
     if settings.DEBUG:
         return staticfiles_storage.url(path)
-        
-    if hasattr(staticfiles_storage, 'stored_name'):
+
+    if hasattr(staticfiles_storage, "stored_name"):
         try:
             hashed_name = staticfiles_storage.stored_name(path)
             return staticfiles_storage.url(hashed_name)
