@@ -71,7 +71,7 @@ class Command(BaseCommand):
             nb_macro_found = 0
             visited = []
 
-            jinja_engine = engines['jinja2']
+            jinja_engine = engines["jinja2"]
             jinja2_env = jinja_engine.env
 
             for template_dir in settings.JFME_TEMPLATES_DIRS:

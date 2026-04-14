@@ -170,7 +170,9 @@ class Document:
         seen_states = set()
         iteration = 0
 
-        substitution_pattern = re.compile(r'\(\(([^)]+)\)\)')  # match ((metadata_name)) patterns in metadata values
+        substitution_pattern = re.compile(
+            r"\(\(([^)]+)\)\)"
+        )  # match ((metadata_name)) patterns in metadata values
 
         while True:
             iteration += 1
@@ -213,14 +215,21 @@ class Document:
                         pattern_to_replace = f"(({metadata_name}))"
 
                         # Check if the referenced metadata exists and is a string
-                        if (metadata_name in substituted_metadata and
-                                isinstance(substituted_metadata[metadata_name], str)):
+                        if metadata_name in substituted_metadata and isinstance(
+                            substituted_metadata[metadata_name], str
+                        ):
 
                             replacement_value = substituted_metadata[metadata_name]
-                            new_value = new_value.replace(pattern_to_replace, replacement_value)
-                            print(f"    Replacing {pattern_to_replace} with '{replacement_value}'")
+                            new_value = new_value.replace(
+                                pattern_to_replace, replacement_value
+                            )
+                            print(
+                                f"    Replacing {pattern_to_replace} with '{replacement_value}'"
+                            )
                         else:
-                            print(f"    Warning: Referenced metadata '{metadata_name}' not found or not a string")
+                            print(
+                                f"    Warning: Referenced metadata '{metadata_name}' not found or not a string"
+                            )
 
                 # Check if this value changed
                 if new_value != original_value:
