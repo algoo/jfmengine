@@ -109,7 +109,10 @@ TEMPLATES = [
         "APP_DIRS": False,
         "OPTIONS": {
             "environment": "jssg.jinja2.environment",
-            "extensions": ["jssg.jinja2.JFMEMarkdownExtension"]
+            "extensions": [
+                "jssg.jinja2.JFMEMarkdownExtension",
+                "jssg.jinja2.SpacelessExtension"
+            ]
         },
     },
     {
