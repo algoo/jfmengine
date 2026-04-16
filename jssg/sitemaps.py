@@ -19,7 +19,6 @@ class MySitemap(Sitemap):
         All child classes must NOT implement this method.
         instead, they must implement the _jssg_sitemap_items() method
         """
-        from django.conf import settings
 
         items = []
         found_items = self._jssg_sitemap_items()

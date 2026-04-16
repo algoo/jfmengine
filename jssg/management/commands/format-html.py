@@ -6,6 +6,11 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
+import re
+
+MINIFIED_JS_FILEPATH_PATTERN = r".*\.min.*\.js"  # minified JS files are like .min.js or .min.dfd824922bdc.js
+MINIFIED_CSS_FILEPATH_PATTERN = r".*\.min.*\.css"  # minified CSS files are like .min.js or .min.dfd824922bdc.css
+
 
 class Command(BaseCommand):
     help = "Format (beautify or minify) the html files in dist content"
@@ -31,9 +36,15 @@ class Command(BaseCommand):
             for path in Path(options["distpath"]).rglob("*.html"):
                 self.__minify_file(path)
             for path in Path(options["distpath"]).rglob("*.js"):
-                self.__minify_file(path)
+                if re.match(MINIFIED_JS_FILEPATH_PATTERN, str(path)):
+                    print(f"Skip minification for {path}")
+                else:
+                    self.__minify_file(path)
             for path in Path(options["distpath"]).rglob("*.css"):
-                self.__minify_file(path)
+                if re.match(MINIFIED_CSS_FILEPATH_PATTERN, str(path)):
+                    print(f"Skip minification for {path}")
+                else:
+                    self.__minify_file(path)
         else:
             for path in Path(options["distpath"]).rglob("*.html"):
                 self.__beautify_file(path)
@@ -46,13 +57,10 @@ class Command(BaseCommand):
             # INFO - 2025-08-21 - D.A. - see API https://github.com/wilsonzlin/minify-html/blob/master/minify-html/src/cfg/mod.rs
             minified = minify_html.minify(
                 file.read(),
-                do_not_minify_doctype=True,
-                # For minify-html 0.16.xxx --- minify_doctype=False,
-                ensure_spec_compliant_unquoted_attribute_values=True,
-                # For minify-html 0.16.xxx --- allow_noncompliant_unquoted_attribute_values=True,
+                minify_doctype=False,
+                allow_noncompliant_unquoted_attribute_values=True,
                 keep_closing_tags=True,
-                keep_spaces_between_attributes=True,
-                # For minify-html 0.16.xxx --- allow_removing_spaces_between_attributes=False,
+                allow_removing_spaces_between_attributes=False,
                 keep_comments=False,
                 keep_html_and_head_opening_tags=True,
                 keep_input_type_text_attr=True,

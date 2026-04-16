@@ -1,4 +1,5 @@
 import importlib
+import re
 from textwrap import dedent
 
 from django.conf import settings
@@ -9,10 +10,28 @@ from django.urls import reverse
 from django_jinja_markdown.extensions import MarkdownExtension
 from django_jinja_markdown.templatetags.md import markdown
 from jinja2 import Environment
+from jinja2 import nodes
+from jinja2.ext import Extension
 
 from jssg.templatetags.filter_opengraph_metadata import filter_opengraph_metadata
 from jssg.templatetags.functions_url import url_for_slug, url_for_slug_path
 
+
+class SpacelessExtension(Extension):
+    tags = {"spaceless"}
+
+    def parse(self, parser):
+        lineno = next(parser.stream).lineno
+        body = parser.parse_statements(["name:endspaceless"], drop_needle=True)
+        return nodes.CallBlock(
+            self.call_method("_strip_spaces", []),
+            [],
+            [],
+            body,
+        ).set_lineno(lineno)
+
+    def _strip_spaces(self, caller):
+        return re.sub(r">\s+<", "><", caller())
 
 class JFMEMarkdownExtension(MarkdownExtension):
     def _markdown_support(self, caller):
